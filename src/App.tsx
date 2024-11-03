@@ -1,0 +1,26 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Layout from './layout'
+import MovieCategories from './pages/categories/Movie'
+import MusicCategories from './pages/categories/Music'
+import BookCategories from './pages/categories/Book'
+
+const App = () => {
+	return (
+		<>
+			<BrowserRouter>
+				<Routes>
+					<Route element={<Layout />}>
+						<Route path='/' />
+						<Route path='category'>
+							<Route path='movie' element={<MovieCategories />} />
+							<Route path='music' element={<MusicCategories />} />
+							<Route path='book' element={<BookCategories />} />
+						</Route>
+					</Route>
+				</Routes>
+			</BrowserRouter>
+		</>
+	)
+}
+
+export default App
