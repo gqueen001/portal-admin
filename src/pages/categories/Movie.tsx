@@ -6,7 +6,6 @@ import { Categories } from '../../types/categories'
 import { getCategories } from '../../services/category'
 import Actions from '../../components/actions'
 import OpenModal from '../../components/modal/modal'
-// import { TableRow } from '../../types/table'
 
 const MovieCategories = () => {
 	const [dataRows, setDataRows] = useState<TableRows>()
@@ -15,27 +14,29 @@ const MovieCategories = () => {
 	const [categoryId, setCategoryId] = useState<string>('')
 
 	useEffect(() => {
-		const fetchCategories = async () => {
-			try {
-				const categories: Categories = await getCategories()
+		if (!openEditModal) {
+			const fetchCategories = async () => {
+				try {
+					const categories: Categories = await getCategories()
 
-				setDataRows(
-					categories.map(category => ({
-						key: `${category.id}`,
-						titleTk: category.title.tk,
-						titleRu: category.title.ru,
-					}))
-				)
-			} catch (error) {
-				messageApi.open({
-					type: 'error',
-					content: "Couldn't fetch data",
-				})
+					setDataRows(
+						categories.map(category => ({
+							key: `${category.id}`,
+							titleTk: category.title.tk,
+							titleRu: category.title.ru,
+						}))
+					)
+				} catch (error) {
+					messageApi.open({
+						type: 'error',
+						content: "Couldn't fetch data",
+					})
+				}
 			}
-		}
 
-		fetchCategories()
-	}, [])
+			fetchCategories()
+		}
+	}, [openEditModal])
 
 	const columns: TableColumns = [
 		{
