@@ -3,7 +3,10 @@ import { Button, Col, Row } from 'antd'
 import { FC } from 'react'
 import { ActionProps } from '../types/actions'
 
-const Actions: FC<ActionProps> = ({ setOpenModal = () => {} }): JSX.Element => {
+const Actions: FC<ActionProps> = ({
+	setOpenModal = () => {},
+	setOpenDeleteModal = () => {},
+}): JSX.Element => {
 	return (
 		<Row justify={'center'} align={'middle'} gutter={8}>
 			<Col>
@@ -21,7 +24,13 @@ const Actions: FC<ActionProps> = ({ setOpenModal = () => {} }): JSX.Element => {
 					size='large'
 					type='primary'
 					danger
-					icon={<DeleteOutlined onClick={() => {}} />}
+					icon={
+						<DeleteOutlined
+							onClick={() => {
+								setOpenDeleteModal(true)
+							}}
+						/>
+					}
 				></Button>
 			</Col>
 		</Row>

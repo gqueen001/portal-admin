@@ -5,38 +5,38 @@ import { TableColumns, TableRows, TableRow } from '../../types/table'
 import { Categories } from '../../types/categories'
 import { getCategories } from '../../services/category'
 import Actions from '../../components/actions'
-import OpenModal from '../../components/modal/modal'
+import OpenModal from '../../components/modal/openModal'
+import DeleteModal from '../../components/modal/deleteModal'
 
 const MovieCategories = () => {
 	const [dataRows, setDataRows] = useState<TableRows>()
 	const [messageApi, contextHolder] = message.useMessage()
-	const [openEditModal, setOpenEditModal] = useState(false)
+	const [openEditModal, setOpenEditModal] = useState<boolean>(false)
 	const [categoryId, setCategoryId] = useState<string>('')
+	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 
 	useEffect(() => {
-		if (!openEditModal) {
-			const fetchCategories = async () => {
-				try {
-					const categories: Categories = await getCategories()
+		const fetchCategories = async () => {
+			try {
+				const categories: Categories = await getCategories()
 
-					setDataRows(
-						categories.map(category => ({
-							key: `${category.id}`,
-							titleTk: category.title.tk,
-							titleRu: category.title.ru,
-						}))
-					)
-				} catch (error) {
-					messageApi.open({
-						type: 'error',
-						content: "Couldn't fetch data",
-					})
-				}
+				setDataRows(
+					categories.map(category => ({
+						key: `${category.id}`,
+						titleTk: category.title.tk,
+						titleRu: category.title.ru,
+					}))
+				)
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: "Couldn't fetch data",
+				})
 			}
-
-			fetchCategories()
 		}
-	}, [openEditModal])
+
+		fetchCategories()
+	}, [openEditModal, openDeleteModal])
 
 	const columns: TableColumns = [
 		{
@@ -61,7 +61,9 @@ const MovieCategories = () => {
 			title: 'action',
 			key: 'action',
 			align: 'center',
-			render: () => <Actions setOpenModal={setOpenEditModal} />,
+			render: () => (
+				<Actions setOpenModal={setOpenEditModal} setOpenDeleteModal={setOpenDeleteModal} />
+			),
 		},
 	]
 
@@ -93,6 +95,12 @@ const MovieCategories = () => {
 				isOpen={openEditModal}
 				setCloseModal={setOpenEditModal}
 				categoryId={categoryId}
+			/>
+
+			<DeleteModal
+				isOpen={openDeleteModal}
+				setCloseModal={setOpenDeleteModal}
+				deleteId={categoryId}
 			/>
 		</>
 	)

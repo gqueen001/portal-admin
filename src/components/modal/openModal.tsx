@@ -2,10 +2,10 @@ import { Divider, Flex, Form, Input, message } from 'antd'
 import Modal from 'antd/es/modal/Modal'
 import { FC, useEffect, useState } from 'react'
 import { Category } from '../../types/categories'
-import { CategoryById } from '../../types/modal'
+import { CategoryById } from '../../types/openModal'
 import { getCategoriesById } from '../../services/category'
 import { updateCategoriesById } from '../../services/category'
-import { ModalProps } from '../../types/modal'
+import { ModalProps } from '../../types/openModal'
 import { createNewCategory } from '../../services/category'
 
 const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.Element => {

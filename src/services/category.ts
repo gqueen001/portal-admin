@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { CategoryById } from '../types/modal'
+import { CategoryById } from '../types/openModal'
 
 export async function getCategories() {
 	const { data } = await axios(`${import.meta.env.VITE_API}/categories/1/sub`)
@@ -31,5 +31,10 @@ export async function createNewCategory(values: CategoryById) {
 
 		category_id: 1,
 	})
+	return data
+}
+
+export async function deleteCategory(id: number) {
+	const { data } = await axios.delete(`${import.meta.env.VITE_API}/categories/sub/${id}`)
 	return data
 }
