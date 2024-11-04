@@ -1,11 +1,9 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Button, Col, Row } from 'antd'
 import { FC } from 'react'
+import { ActionProps } from '../types/actions'
 
-interface actionprop {
-	setOpenModal: (value: boolean) => void
-}
-const Actions: FC<actionprop> = ({ setOpenModal = () => {} }): JSX.Element => {
+const Actions: FC<ActionProps> = ({ setOpenModal = () => {} }): JSX.Element => {
 	return (
 		<Row justify={'center'} align={'middle'} gutter={8}>
 			<Col>

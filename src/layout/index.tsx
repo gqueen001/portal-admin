@@ -54,9 +54,9 @@ const Layout = () => {
 					mode='inline'
 					items={items}
 				/>
-				<Flex justify='space-between' align='end' vertical style={{ width: '100%' }}>
-					<Outlet></Outlet>
-				</Flex>
+				{/* <Flex justify='space-between' align='end' vertical style={{ width: '100%' }}> */}
+				<Outlet></Outlet>
+				{/* </Flex> */}
 			</Flex>
 		</>
 	)

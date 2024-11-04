@@ -5,24 +5,19 @@ import { Category } from '../../types/categories'
 import { CategoryById } from '../../types/modal'
 import { getCategoriesById } from '../../services/category'
 import { updateCategoriesById } from '../../services/category'
+import { ModalProps } from '../../types/modal'
+import { createNewCategory } from '../../services/category'
 
-interface modalProps {
-	isOpen: boolean
-	setCloseModal: (value: boolean) => void
-	categoryById: string
-}
-
-const OpenModal: FC<modalProps> = ({ isOpen, setCloseModal, categoryById }): JSX.Element => {
+const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.Element => {
 	const [messageApi, contextHolder] = message.useMessage()
 	const [dataById, setDataById] = useState<CategoryById>({ titletk: '', titleru: '' })
 	const [form] = Form.useForm()
 
 	useEffect(() => {
-		if (isOpen) {
+		if (isOpen && categoryId !== 'new') {
 			const fetchCategoryById = async () => {
 				try {
-					const category: Category = await getCategoriesById(+categoryById)
-					console.log('category by id', category)
+					const category: Category = await getCategoriesById(+categoryId)
 					setDataById({
 						titletk: `${category.title.tk}`,
 						titleru: `${category.title.ru}`,
@@ -36,11 +31,9 @@ const OpenModal: FC<modalProps> = ({ isOpen, setCloseModal, categoryById }): JSX
 			}
 			fetchCategoryById()
 		}
-	}, [isOpen])
+	}, [categoryId, isOpen])
 
 	useEffect(() => {
-		console.log('databyid', dataById)
-
 		if (dataById) {
 			form.setFieldsValue({
 				titletk: dataById.titletk,
@@ -57,19 +50,46 @@ const OpenModal: FC<modalProps> = ({ isOpen, setCloseModal, categoryById }): JSX
 	}
 
 	const onFinish = (values: CategoryById) => {
-		const updateCategoyr = async () => {
-			try {
-				await updateCategoriesById(values, +categoryById)
-				setCloseModal(false)
-			} catch (error) {
-				messageApi.open({
-					type: 'error',
-					content: "Couldn't post data",
-				})
+		if (categoryId !== 'new') {
+			const updateCategory = async () => {
+				try {
+					await updateCategoriesById(values, +categoryId)
+					setCloseModal(false)
+					messageApi.open({
+						type: 'success',
+						content: 'Updates successfully',
+					})
+				} catch (error) {
+					messageApi.open({
+						type: 'error',
+						content: "Couldn't post data",
+					})
+				}
 			}
-		}
 
-		updateCategoyr()
+			updateCategory()
+		} else {
+			const createCategory = async () => {
+				try {
+					await createNewCategory(values)
+					setCloseModal(false)
+					messageApi.open({
+						type: 'success',
+						content: 'Created successfully',
+					})
+				} catch (error) {
+					messageApi.open({
+						type: 'error',
+						content: "Couldn't create data",
+					})
+				}
+			}
+			createCategory()
+		}
+		setDataById({
+			titleru: '',
+			titletk: '',
+		})
 	}
 
 	return (
@@ -81,20 +101,16 @@ const OpenModal: FC<modalProps> = ({ isOpen, setCloseModal, categoryById }): JSX
 				open={isOpen}
 				onOk={form.submit}
 				onCancel={() => {
+					setDataById({
+						titleru: '',
+						titletk: '',
+					})
 					setCloseModal(false)
 				}}
 			>
 				<Divider />
 
-				<Form
-					layout='vertical'
-					initialValues={{
-						titletk: `${dataById?.titletk}`,
-						titleru: `${dataById?.titleru}`,
-					}}
-					onFinish={values => onFinish(values)}
-					form={form}
-				>
+				<Form layout='vertical' onFinish={values => onFinish(values)} form={form}>
 					<Flex justify='space-between'>
 						<Form.Item label='Title tk:' name='titletk'>
 							<Input name='titletk' onChange={e => editInput(e)} />

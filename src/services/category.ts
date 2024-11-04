@@ -21,3 +21,15 @@ export async function updateCategoriesById(values: CategoryById, id: number) {
 	})
 	return data
 }
+
+export async function createNewCategory(values: CategoryById) {
+	const { data } = await axios.post(`${import.meta.env.VITE_API}/categories/sub`, {
+		title: {
+			tk: values.titletk,
+			ru: values.titleru,
+		},
+
+		category_id: 1,
+	})
+	return data
+}

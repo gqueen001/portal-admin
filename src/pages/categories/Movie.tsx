@@ -80,12 +80,19 @@ const MovieCategories = () => {
 				}}
 			/>
 
-			<FloatButton type='primary' icon={<PlusOutlined />} onClick={() => {}} />
+			<FloatButton
+				type='primary'
+				icon={<PlusOutlined />}
+				onClick={() => {
+					setOpenEditModal(true)
+					setCategoryId('new')
+				}}
+			/>
 
 			<OpenModal
 				isOpen={openEditModal}
 				setCloseModal={setOpenEditModal}
-				categoryById={categoryId}
+				categoryId={categoryId}
 			/>
 		</>
 	)
