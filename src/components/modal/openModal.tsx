@@ -10,7 +10,7 @@ import { createNewCategory } from '../../services/category'
 
 const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.Element => {
 	const [messageApi, contextHolder] = message.useMessage()
-	const [dataById, setDataById] = useState<CategoryById>({ titletk: '', titleru: '' })
+	const [dataById, setDataById] = useState<CategoryById>()
 	const [form] = Form.useForm()
 
 	useEffect(() => {
@@ -41,13 +41,6 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 			})
 		}
 	}, [dataById, form])
-
-	const editInput = (e: any) => {
-		setDataById(prevState => ({
-			...prevState,
-			[e.target.name]: e.target.value,
-		}))
-	}
 
 	const onFinish = (values: CategoryById) => {
 		if (categoryId !== 'new') {
@@ -86,10 +79,7 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 			}
 			createCategory()
 		}
-		setDataById({
-			titleru: '',
-			titletk: '',
-		})
+		form.resetFields()
 	}
 
 	return (
@@ -97,27 +87,24 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 			{contextHolder}
 			<Modal
 				forceRender
-				title='Edit Category'
+				title={categoryId === 'new' ? 'Add category' : 'Edit category'}
 				open={isOpen}
 				onOk={form.submit}
 				onCancel={() => {
-					setDataById({
-						titleru: '',
-						titletk: '',
-					})
+					form.resetFields()
 					setCloseModal(false)
 				}}
 			>
 				<Divider />
 
-				<Form layout='vertical' onFinish={values => onFinish(values)} form={form}>
+				<Form layout='vertical' onFinish={onFinish} form={form}>
 					<Flex justify='space-between'>
-						<Form.Item label='Title tk:' name='titletk'>
-							<Input name='titletk' onChange={e => editInput(e)} />
+						<Form.Item label='Title tk:' name='titletk' rules={[{ required: true }]}>
+							<Input name='titletk' placeholder='Enter category' />
 						</Form.Item>
 
-						<Form.Item label='Title ru:' name='titleru'>
-							<Input name='titleru' onChange={e => editInput(e)} />
+						<Form.Item label='Title ru:' name='titleru' rules={[{ required: true }]}>
+							<Input name='titleru' placeholder='Enter category' />
 						</Form.Item>
 					</Flex>
 				</Form>

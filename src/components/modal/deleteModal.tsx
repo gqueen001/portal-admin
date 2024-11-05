@@ -27,6 +27,7 @@ const DeleteModal: FC<DeleteModalProps> = ({ isOpen, setCloseModal, deleteId }):
 			{contextHolder}
 			<Modal
 				forceRender
+				title='Delete category'
 				open={isOpen}
 				centered={true}
 				okType='danger'

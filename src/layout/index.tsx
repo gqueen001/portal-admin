@@ -1,5 +1,5 @@
 import { Flex, Menu } from 'antd'
-import { MailOutlined } from '@ant-design/icons'
+import { MailOutlined, ReadOutlined } from '@ant-design/icons'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 const Layout = () => {
@@ -41,7 +41,7 @@ const Layout = () => {
 		{
 			key: 'books',
 			label: 'Books',
-			icon: <MailOutlined />,
+			icon: <ReadOutlined />,
 		},
 	]
 
@@ -54,9 +54,7 @@ const Layout = () => {
 					mode='inline'
 					items={items}
 				/>
-				{/* <Flex justify='space-between' align='end' vertical style={{ width: '100%' }}> */}
 				<Outlet></Outlet>
-				{/* </Flex> */}
 			</Flex>
 		</>
 	)
