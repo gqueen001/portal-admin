@@ -6,6 +6,7 @@ import BookCategories from './pages/categories/Book'
 import Movies from './pages/movies'
 import Books from './pages/books'
 import Musics from './pages/musics'
+import EditMovie from './pages/editMovie'
 
 const App = () => {
 	return (
@@ -22,6 +23,7 @@ const App = () => {
 						<Route path='movies' element={<Movies />} />
 						<Route path='books' element={<Books />} />
 						<Route path='musics' element={<Musics />} />
+						<Route path='edit/:id' element={<EditMovie />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>

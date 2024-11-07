@@ -46,13 +46,13 @@ const MovieCategories = () => {
 			align: 'center',
 		},
 		{
-			title: 'Title TK',
+			title: 'Title in turkmen',
 			dataIndex: 'titleTk',
 			key: 'titleTk',
 			align: 'center',
 		},
 		{
-			title: 'Title RU',
+			title: 'Title in russsion',
 			dataIndex: 'titleRu',
 			key: 'titleRu',
 			align: 'center',

@@ -3,28 +3,31 @@ import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
 import { TableColumns, TableRows, TableRow } from '../types/table'
 import { Categories } from '../types/categories'
-import { getCategories } from '../services/category'
+import { getMovies } from '../services/movies.ts'
 import Actions from '../components/actions'
 import OpenModal from '../components/modal/openModal'
 import DeleteModal from '../components/modal/deleteModal'
+import { TitleOfMovie } from '../types/movies'
+import { TitleOfMovies } from '../types/movies'
+import { MoviesType } from '../types/movies'
+import { useNavigate } from 'react-router-dom'
 
 const Movies = () => {
-	const [dataRows, setDataRows] = useState<TableRows>()
+	const [dataRows, setDataRows] = useState<TitleOfMovies>()
 	const [messageApi, contextHolder] = message.useMessage()
-	const [openEditModal, setOpenEditModal] = useState<boolean>(false)
-	const [categoryId, setCategoryId] = useState<string>('')
-	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
-
+	const [editMovie, setEditMovie] = useState<boolean>(false)
+	const [movieId, setMovieId] = useState<string>('new')
+	const [openEditPage, setOpenEditPage] = useState<boolean>(false)
+	const navigate = useNavigate()
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
-				const categories: Categories = await getCategories()
-
+				const moviesTitle: MoviesType = await getMovies()
 				setDataRows(
-					categories.map(category => ({
-						key: `${category.id}`,
-						titleTk: category.title.tk,
-						titleRu: category.title.ru,
+					moviesTitle.map((movie: any) => ({
+						key: `${movie.id}`,
+						titleTk: movie.title.tk,
+						titleRu: movie.title.ru,
 					}))
 				)
 			} catch (error) {
@@ -36,7 +39,13 @@ const Movies = () => {
 		}
 
 		fetchCategories()
-	}, [openEditModal, openDeleteModal])
+	}, [])
+
+	useEffect(() => {
+		if (openEditPage) {
+			navigate(`/edit/${movieId}`)
+		}
+	}, [openEditPage])
 
 	const columns: TableColumns = [
 		{
@@ -46,13 +55,13 @@ const Movies = () => {
 			align: 'center',
 		},
 		{
-			title: 'Title TK',
+			title: 'Title in turkmen',
 			dataIndex: 'titleTk',
 			key: 'titleTk',
 			align: 'center',
 		},
 		{
-			title: 'Title RU',
+			title: 'Title in russion',
 			dataIndex: 'titleRu',
 			key: 'titleRu',
 			align: 'center',
@@ -61,9 +70,9 @@ const Movies = () => {
 			title: 'action',
 			key: 'action',
 			align: 'center',
-			render: () => (
-				<Actions setOpenModal={setOpenEditModal} setOpenDeleteModal={setOpenDeleteModal} />
-			),
+			render: () => {
+				return <Actions setOpenModal={setOpenEditPage} />
+			},
 		},
 	]
 
@@ -75,9 +84,11 @@ const Movies = () => {
 				columns={columns}
 				style={{ width: '100%' }}
 				dataSource={dataRows}
-				onRow={(record: TableRow) => {
+				onRow={(record: TitleOfMovie) => {
 					return {
-						onClick: () => setCategoryId(record.key),
+						onClick: () => {
+							setMovieId(record.key)
+						},
 					}
 				}}
 			/>
@@ -86,22 +97,23 @@ const Movies = () => {
 				type='primary'
 				icon={<PlusOutlined />}
 				onClick={() => {
-					setOpenEditModal(true)
-					setCategoryId('new')
+					// setOpenEditModal(true)
+					// setCategoryId('new')
+					navigate(`/edit/${movieId}`)
 				}}
 			/>
 
-			<OpenModal
+			{/* <OpenModal
 				isOpen={openEditModal}
 				setCloseModal={setOpenEditModal}
 				categoryId={categoryId}
-			/>
+			/> */}
 
-			<DeleteModal
+			{/* <DeleteModal
 				isOpen={openDeleteModal}
 				setCloseModal={setOpenDeleteModal}
 				deleteId={categoryId}
-			/>
+			/> */}
 		</>
 	)
 }

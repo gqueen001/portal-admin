@@ -1,10 +1,10 @@
-import Example from './example'
+import Example from './editMovie'
 
 const Books = () => {
 	return (
 		<>
-			{/* <h1>it is books</h1> */}
-			<Example />
+			<h1>it is books</h1>
+			{/* <Example /> */}
 		</>
 	)
 }

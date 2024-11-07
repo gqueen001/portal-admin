@@ -99,11 +99,19 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 
 				<Form layout='vertical' onFinish={onFinish} form={form}>
 					<Flex justify='space-between'>
-						<Form.Item label='Title tk:' name='titletk' rules={[{ required: true }]}>
+						<Form.Item
+							label='Title in turkmen:'
+							name='titletk'
+							rules={[{ required: true, message: 'Title in turkmen is required' }]}
+						>
 							<Input name='titletk' placeholder='Enter category' />
 						</Form.Item>
 
-						<Form.Item label='Title ru:' name='titleru' rules={[{ required: true }]}>
+						<Form.Item
+							label='Title in russion:'
+							name='titleru'
+							rules={[{ required: true, message: 'Title in russion is required' }]}
+						>
 							<Input name='titleru' placeholder='Enter category' />
 						</Form.Item>
 					</Flex>
