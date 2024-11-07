@@ -1,12 +1,16 @@
-import { Divider, Flex, Form, Input, message } from 'antd'
-import Modal from 'antd/es/modal/Modal'
+import { Divider, Flex, Form, Input, message, Modal } from 'antd'
+// import Modal from 'antd/es/modal/Modal'
 import { FC, useEffect, useState } from 'react'
-import { Category } from '../../types/categories'
-import { CategoryById } from '../../types/openModal'
-import { getCategoriesById } from '../../services/category'
-import { updateCategoriesById } from '../../services/category'
-import { ModalProps } from '../../types/openModal'
-import { createNewCategory } from '../../services/category'
+import { Category } from '../../types/categories/movie'
+import { CategoryById, ModalProps } from '../../types/openModal'
+import {
+	getCategoriesById,
+	updateCategoriesById,
+	createNewCategory,
+} from '../../services/categories/movie.ts'
+// import { updateCategoriesById } from '../../services/categories/movie.ts'
+// import { ModalProps } from '../../types/openModal'
+// import { createNewCategory } from '../../services/categories/movie.ts'
 
 const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.Element => {
 	const [messageApi, contextHolder] = message.useMessage()
@@ -19,8 +23,8 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 				try {
 					const category: Category = await getCategoriesById(+categoryId)
 					setDataById({
-						titletk: `${category.title.tk}`,
-						titleru: `${category.title.ru}`,
+						titleTk: `${category.title.tk}`,
+						titleRu: `${category.title.ru}`,
 					})
 				} catch (error) {
 					messageApi.open({
@@ -36,8 +40,8 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 	useEffect(() => {
 		if (dataById) {
 			form.setFieldsValue({
-				titletk: dataById.titletk,
-				titleru: dataById.titleru,
+				titleTk: dataById.titleTk,
+				titleRu: dataById.titleRu,
 			})
 		}
 	}, [dataById, form])
@@ -50,7 +54,7 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 					setCloseModal(false)
 					messageApi.open({
 						type: 'success',
-						content: 'Updates successfully',
+						content: 'Updated successfully',
 					})
 				} catch (error) {
 					messageApi.open({
@@ -101,18 +105,18 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 					<Flex justify='space-between'>
 						<Form.Item
 							label='Title in turkmen:'
-							name='titletk'
+							name='titleTk'
 							rules={[{ required: true, message: 'Title in turkmen is required' }]}
 						>
-							<Input name='titletk' placeholder='Enter category' />
+							<Input name='titleTk' placeholder='Enter category' />
 						</Form.Item>
 
 						<Form.Item
-							label='Title in russion:'
-							name='titleru'
-							rules={[{ required: true, message: 'Title in russion is required' }]}
+							label='Title in russian:'
+							name='titleRu'
+							rules={[{ required: true, message: 'Title in russian is required' }]}
 						>
-							<Input name='titleru' placeholder='Enter category' />
+							<Input name='titleRu' placeholder='Enter category' />
 						</Form.Item>
 					</Flex>
 				</Form>

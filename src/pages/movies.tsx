@@ -2,7 +2,7 @@ import { FloatButton, message, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
 import { TableColumns, TableRows, TableRow } from '../types/table'
-import { Categories } from '../types/categories'
+import { Categories } from '../types/categories/movie.ts'
 import { getMovies } from '../services/movies.ts'
 import Actions from '../components/actions'
 import OpenModal from '../components/modal/openModal'
@@ -18,6 +18,7 @@ const Movies = () => {
 	const [editMovie, setEditMovie] = useState<boolean>(false)
 	const [movieId, setMovieId] = useState<string>('new')
 	const [openEditPage, setOpenEditPage] = useState<boolean>(false)
+	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 	const navigate = useNavigate()
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -61,7 +62,7 @@ const Movies = () => {
 			align: 'center',
 		},
 		{
-			title: 'Title in russion',
+			title: 'Title in russian',
 			dataIndex: 'titleRu',
 			key: 'titleRu',
 			align: 'center',
@@ -70,9 +71,9 @@ const Movies = () => {
 			title: 'action',
 			key: 'action',
 			align: 'center',
-			render: () => {
-				return <Actions setOpenModal={setOpenEditPage} />
-			},
+			render: () => (
+				<Actions setOpenModal={setOpenEditPage} setOpenDeleteModal={setOpenDeleteModal} />
+			),
 		},
 	]
 
@@ -109,11 +110,12 @@ const Movies = () => {
 				categoryId={categoryId}
 			/> */}
 
-			{/* <DeleteModal
+			<DeleteModal
 				isOpen={openDeleteModal}
 				setCloseModal={setOpenDeleteModal}
-				deleteId={categoryId}
-			/> */}
+				deleteId={movieId}
+				item='movie'
+			/>
 		</>
 	)
 }

@@ -1,6 +1,6 @@
 export type CategoryById = {
-	titletk: string
-	titleru: string
+	titleTk: string
+	titleRu: string
 }
 
 export interface ModalProps {

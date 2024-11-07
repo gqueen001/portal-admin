@@ -9,16 +9,23 @@ import {
 	Select,
 	TimePicker,
 	type ThemeConfig,
+	message,
 } from 'antd'
 import { useEffect, useState } from 'react'
-import { DataOfMovie } from '../types/example'
-import { convertToSeconds } from '../utils/converter'
+import { DataOfMovie } from '../types/editMovie'
+
+import { convertToSeconds, convertToHour } from '../utils/converter'
 import UploadImg from '../components/uploadImg'
 import { useParams } from 'react-router-dom'
 import { getMovieById } from '../services/movies'
-import { Movie } from '../types/movies'
-import { convertToHour } from '../utils/converter'
+import { Movie, TkAndRu } from '../types/movies'
+// import { convertToHour } from '../utils/converter'
 import dayjs from 'dayjs'
+import { getCategories } from '../services/categories/movie'
+import { Categories } from '../types/categories/movie'
+import Title from 'antd/es/skeleton/Title'
+// import { TkAndRu } from '../types/movies'
+// import Categories
 
 const EditMovie = () => {
 	const { TextArea } = Input
@@ -32,11 +39,11 @@ const EditMovie = () => {
 
 	const [data, setData] = useState<DataOfMovie>()
 	const [form] = Form.useForm()
-	const arr: string[] = ['.com', '.jp', '.cn', '.org']
-	const selectOptions = arr.map(val => ({ value: val, label: val, name: 'category' }))
+	// const arr: string[] = ['.com', '.jp', '.cn', '.org']
+	// const selectOptions = arr.map(val => ({ value: val, label: val, name: 'category' }))
 	let { id } = useParams()
-
-	// console.log('id', id)
+	const [messageApi, contextHolder] = message.useMessage()
+	const [categories, setCategories] = useState<TkAndRu[]>([{ tk: '', ru: '' }])
 
 	useEffect(() => {
 		if (id && id !== 'new') {
@@ -45,8 +52,8 @@ const EditMovie = () => {
 					const movie: Movie = await getMovieById(+id)
 					// console.log('movie', movie)
 					setData({
-						titleru: movie.title.ru,
-						titletk: movie.title.tk,
+						titleRu: movie.title.ru,
+						titleTk: movie.title.tk,
 						categoryRu: movie.sub_categories.map(category => {
 							return category.title.ru
 						}),
@@ -54,12 +61,15 @@ const EditMovie = () => {
 							return category.title.tk
 						}),
 						duration: `${movie.duration}`,
-						descriptionru: movie.description.ru,
-						descriptiontk: movie.description.tk,
+						descriptionRu: movie.description.ru,
+						descriptionTk: movie.description.tk,
 						status: movie.status,
 					})
 				} catch (error) {
-					console.log('it is error', error)
+					messageApi.open({
+						type: 'error',
+						content: "Couldn't fetch data",
+					})
 				}
 			}
 
@@ -72,10 +82,10 @@ const EditMovie = () => {
 	useEffect(() => {
 		if (data) {
 			form.setFieldsValue({
-				titletk: data.titletk,
-				titleru: data.titleru,
-				descriptionru: data.descriptionru,
-				descriptiontk: data.descriptiontk,
+				titleTk: data.titleTk,
+				titleRu: data.titleRu,
+				descriptionRu: data.descriptionRu,
+				descriptionTk: data.descriptionTk,
 				duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
 				status: data.status,
 				categoryTk: data.categoryTk,
@@ -84,21 +94,55 @@ const EditMovie = () => {
 		}
 	}, [data])
 
+	useEffect(() => {
+		const fetchCategory = async () => {
+			try {
+				const categories: Categories = await getCategories()
+				setCategories(categories.map(category => category.title))
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: "Couldn't fetch data",
+				})
+			}
+		}
+
+		fetchCategory()
+	}, [id])
+
+	const selectCategoryTk = categories.map(categoryTk => ({
+		value: categoryTk.tk,
+		label: categoryTk.tk,
+		name: 'categoryTk',
+	}))
+
+	const selectCategoryRu = categories.map(categoryRu => ({
+		value: categoryRu.ru,
+		label: categoryRu.ru,
+		name: 'categoryRu',
+	}))
+
 	const onFinish = (value: DataOfMovie) => {
 		setData({
-			titletk: value.titletk,
-			titleru: value.titleru,
-			descriptiontk: value.descriptiontk,
-			descriptionru: value.descriptionru,
+			titleTk: value.titleTk,
+			titleRu: value.titleRu,
+			descriptionTk: value.descriptionTk,
+			descriptionRu: value.descriptionRu,
 			duration: convertToSeconds(value.duration),
 			status: value.status,
 			categoryTk: value.categoryTk,
 			categoryRu: value.categoryRu,
 		})
+
+		messageApi.open({
+			type: 'success',
+			content: 'Success data',
+		})
 	}
 
 	return (
 		<>
+			{contextHolder}
 			<ConfigProvider theme={theme}>
 				<div style={{ width: '30%' }}>
 					<Form layout='vertical' onFinish={onFinish} form={form}>
@@ -117,25 +161,25 @@ const EditMovie = () => {
 										{ required: true, message: 'Title in turkmen is required' },
 									]}
 									label='Title in turkmen:'
-									name={'titletk'}
+									name={'titleTk'}
 								>
 									<Input
 										allowClear
 										placeholder='Enter title of movie'
-										name='titletk'
+										name='titleTk'
 									/>
 								</Form.Item>
 								<Form.Item
 									rules={[
-										{ required: true, message: 'Title in russion is required' },
+										{ required: true, message: 'Title in russian is required' },
 									]}
-									label='Title in russion:'
-									name={'titleru'}
+									label='Title in russian:'
+									name={'titleRu'}
 								>
 									<Input
 										allowClear
 										placeholder='Enter title of movie'
-										name='titleru'
+										name='titleRu'
 									/>
 								</Form.Item>
 							</Flex>
@@ -157,7 +201,8 @@ const EditMovie = () => {
 								>
 									<Select
 										style={{ width: '200px' }}
-										options={selectOptions}
+										// options={selectOptions}
+										options={selectCategoryTk}
 										placeholder='Choose categories'
 										mode='multiple'
 									></Select>
@@ -170,7 +215,7 @@ const EditMovie = () => {
 								>
 									<Select
 										style={{ width: '200px' }}
-										options={selectOptions}
+										options={selectCategoryRu}
 										placeholder='Choose categories'
 										mode='multiple'
 									></Select>
@@ -225,29 +270,29 @@ const EditMovie = () => {
 											message: 'Description in turkmen is required',
 										},
 									]}
-									name={'descriptiontk'}
+									name={'descriptionTk'}
 									label='Description in turkmen:'
 								>
 									<TextArea
 										rows={5}
 										placeholder='Write a description about movie'
-										name='descriptiontk'
+										name='descriptionTk'
 									/>
 								</Form.Item>
 								<Form.Item
 									rules={[
 										{
 											required: true,
-											message: 'Description in russion is required',
+											message: 'Description in russian is required',
 										},
 									]}
-									name={'descriptionru'}
-									label='Description in russion:'
+									name={'descriptionRu'}
+									label='Description in russian:'
 								>
 									<TextArea
 										rows={5}
 										placeholder='Write a description about movie'
-										name='descriptionru'
+										name='descriptionRu'
 									/>
 								</Form.Item>
 							</Flex>
@@ -272,7 +317,6 @@ const EditMovie = () => {
 						</Flex>
 					</Form>
 					<UploadImg></UploadImg>
-					{/* <Upload></Upload> */}
 				</div>
 			</ConfigProvider>
 		</>
@@ -280,6 +324,3 @@ const EditMovie = () => {
 }
 
 export default EditMovie
-// function moment(arg0: string): any {
-// 	throw new Error('Function not implemented.')
-// }
