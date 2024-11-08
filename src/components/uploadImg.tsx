@@ -1,39 +1,55 @@
-import { PlusOutlined } from '@ant-design/icons'
+import { UploadOutlined } from '@ant-design/icons'
 import ImgCrop from 'antd-img-crop'
-import { Upload, Button } from 'antd'
-import { useState } from 'react'
+import { Upload, Button, Image, message } from 'antd'
+import { FC } from 'react'
+import axios from 'axios'
+import { UploadImgProps } from '../types/uploadImg'
 
-const UploadImg = () => {
-	const [base64Image, setBase64Image] = useState(null)
+const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage }) => {
+	const [messageApi, contextHolder] = message.useMessage()
 
-	const handleBeforeUpload = (file: any) => {
-		const reader = new FileReader()
+	const uploadFile = async (options: any) => {
+		const { file } = options
+		const formData = new FormData()
+		formData.append('file', file.arrayBuffer())
 
-		reader.onload = (e: any) => {
-			setBase64Image(e.target.result)
+		try {
+			await axios.post(`${import.meta.env.VITE_API}/movies/image/${id}`, file)
+			setUpdateImage(true)
+
+			messageApi.open({
+				type: 'success',
+				content: 'Success data',
+			})
+		} catch (error) {
+			messageApi.open({
+				type: 'error',
+				content: "Couldn't fetch data",
+			})
 		}
-
-		reader.readAsDataURL(file)
-		return false
 	}
-
 	return (
 		<>
-			<ImgCrop rotationSlider>
-				<Upload
-					action='`${import.meta.env.VITE_API}'
-					listType='picture-card'
-					maxCount={1}
-					beforeUpload={file => handleBeforeUpload(file)}
-				>
-					<Button
-						icon={<PlusOutlined />}
-						style={{ border: 'none', backgroundColor: 'transparent' }}
-					>
-						Upload img
-					</Button>
-				</Upload>
-			</ImgCrop>
+			{contextHolder}
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					gap: '80px',
+				}}
+			>
+				<ImgCrop rotationSlider>
+					<Upload name='file' customRequest={uploadFile} showUploadList={false}>
+						<Button icon={<UploadOutlined />}>Click to upload image</Button>
+					</Upload>
+				</ImgCrop>
+				<Image
+					style={{ width: '200px', borderRadius: '10px' }}
+					height={200}
+					src={`${imageURL}` && `${import.meta.env.VITE_API}${imageURL}?t=${Date.now()}`}
+				/>
+			</div>
 		</>
 	)
 }

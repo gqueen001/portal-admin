@@ -9,3 +9,7 @@ export async function getMovies() {
 	const { data } = await axios(`${import.meta.env.VITE_API}/movies?page=1&count=10`)
 	return data
 }
+
+// export async function updateMovieById(:type) {
+
+// }

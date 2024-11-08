@@ -1,5 +1,4 @@
 import { Divider, Flex, Form, Input, message, Modal } from 'antd'
-// import Modal from 'antd/es/modal/Modal'
 import { FC, useEffect, useState } from 'react'
 import { Category } from '../../types/categories/movie'
 import { CategoryById, ModalProps } from '../../types/openModal'
@@ -8,9 +7,6 @@ import {
 	updateCategoriesById,
 	createNewCategory,
 } from '../../services/categories/movie.ts'
-// import { updateCategoriesById } from '../../services/categories/movie.ts'
-// import { ModalProps } from '../../types/openModal'
-// import { createNewCategory } from '../../services/categories/movie.ts'
 
 const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.Element => {
 	const [messageApi, contextHolder] = message.useMessage()
