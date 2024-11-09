@@ -1,12 +1,14 @@
 import { UploadOutlined } from '@ant-design/icons'
 import ImgCrop from 'antd-img-crop'
 import { Upload, Button, Image, message } from 'antd'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import axios from 'axios'
 import { UploadImgProps } from '../types/uploadImg'
 
 const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage }) => {
 	const [messageApi, contextHolder] = message.useMessage()
+
+	const [timestamp, setTimestamp] = useState(Date.now())
 
 	const uploadFile = async (options: any) => {
 		const { file } = options
@@ -15,6 +17,7 @@ const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage }) => {
 
 		try {
 			await axios.post(`${import.meta.env.VITE_API}/movies/image/${id}`, file)
+			setTimestamp(Date.now())
 			setUpdateImage(true)
 
 			messageApi.open({
@@ -45,9 +48,13 @@ const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage }) => {
 					</Upload>
 				</ImgCrop>
 				<Image
-					style={{ width: '200px', borderRadius: '10px' }}
 					height={200}
-					src={`${imageURL}` && `${import.meta.env.VITE_API}${imageURL}?t=${Date.now()}`}
+					width={200}
+					src={
+						`${imageURL}`
+							? `${import.meta.env.VITE_API}${imageURL}?t=${timestamp}`
+							: 'error'
+					}
 				/>
 			</div>
 		</>

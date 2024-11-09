@@ -15,12 +15,13 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 import UploadImg from '../components/uploadImg'
-import { getMovieById } from '../services/movies'
+import { getMovieById, updateMovieById } from '../services/movies'
 import { getCategories } from '../services/categories/movie'
 import { DataOfMovie } from '../types/editMovie'
-import { Movie, TkAndRu } from '../types/movies'
-import { Categories } from '../types/categories/movie'
+import { Movie } from '../types/movies'
+// import { Categories } from '../types/categories/movie'
 import { convertToSeconds, convertToHour } from '../utils/converter'
+import { Categories } from '../types/editMovie'
 
 const EditMovie = () => {
 	const { TextArea } = Input
@@ -34,8 +35,8 @@ const EditMovie = () => {
 
 	const [data, setData] = useState<DataOfMovie>()
 	const [messageApi, contextHolder] = message.useMessage()
-	const [categories, setCategories] = useState<TkAndRu[]>([{ tk: '', ru: '' }])
-	const [updateImage, setUpdateImage] = useState<boolean>(false)
+	const [categories, setCategories] = useState<Categories>([{ id: 0, title: { ru: '', tk: '' } }])
+	const [updateImage, setUpdateImage] = useState(false)
 	const [form] = Form.useForm()
 	let { id } = useParams()
 
@@ -48,10 +49,16 @@ const EditMovie = () => {
 						titleRu: movie.title.ru,
 						titleTk: movie.title.tk,
 						categoryRu: movie.sub_categories.map(category => {
-							return category.title.ru
+							return {
+								key: category.id,
+								title: category.title.ru,
+							}
 						}),
 						categoryTk: movie.sub_categories.map(category => {
-							return category.title.tk
+							return {
+								key: category.id,
+								title: category.title.tk,
+							}
 						}),
 						duration: `${movie.duration}`,
 						descriptionRu: movie.description.ru,
@@ -68,11 +75,27 @@ const EditMovie = () => {
 				}
 			}
 
+			const fetchCategory = async () => {
+				try {
+					const categories: Categories = await getCategories()
+					setCategories(categories)
+				} catch (error) {
+					messageApi.open({
+						type: 'error',
+						content: "Couldn't fetch data",
+					})
+				}
+			}
+
+			fetchCategory()
+
 			fetchMovieById()
 		} else {
 			// console.log('it is new id', id)
 		}
+	}, [id, updateImage])
 
+	useEffect(() => {
 		if (data) {
 			form.setFieldsValue({
 				titleTk: data.titleTk,
@@ -81,84 +104,71 @@ const EditMovie = () => {
 				descriptionTk: data.descriptionTk,
 				duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
 				status: data.status,
-				categoryTk: data.categoryTk,
-				categoryRu: data.categoryRu,
+				categoryTk: data.categoryTk.map(category => ({
+					label: category.title,
+					value: category.key,
+				})),
+				categoryRu: data.categoryRu.map(category => ({
+					label: category.title,
+					value: category.key,
+				})),
 			})
 		}
-
-		const fetchCategory = async () => {
-			try {
-				const categories: Categories = await getCategories()
-				setCategories(categories.map(category => category.title))
-			} catch (error) {
-				messageApi.open({
-					type: 'error',
-					content: "Couldn't fetch data",
-				})
-			}
-		}
-
-		fetchCategory()
-	}, [id, updateImage, data])
+	}, [data])
 
 	// useEffect(() => {
-	// if (data) {
-	// 	form.setFieldsValue({
-	// 		titleTk: data.titleTk,
-	// 		titleRu: data.titleRu,
-	// 		descriptionRu: data.descriptionRu,
-	// 		descriptionTk: data.descriptionTk,
-	// 		duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
-	// 		status: data.status,
-	// 		categoryTk: data.categoryTk,
-	// 		categoryRu: data.categoryRu,
-	// 	})
-	// }
-	// }, [data])
-
-	// useEffect(() => {
-	// const fetchCategory = async () => {
-	// 	try {
-	// 		const categories: Categories = await getCategories()
-	// 		setCategories(categories.map(category => category.title))
-	// 	} catch (error) {
-	// 		messageApi.open({
-	// 			type: 'error',
-	// 			content: "Couldn't fetch data",
-	// 		})
+	// 	const fetchCategory = async () => {
+	// 		try {
+	// 			const categories: Categories = await getCategories()
+	// 			setCategories(categories.map(category => category.title))
+	// 		} catch (error) {
+	// 			messageApi.open({
+	// 				type: 'error',
+	// 				content: "Couldn't fetch data",
+	// 			})
+	// 		}
 	// 	}
-	// }
-	// fetchCategory()
+	// 	fetchCategory()
 	// }, [id])
 
 	const selectCategoryTk = categories.map(categoryTk => ({
-		value: categoryTk.tk,
-		label: categoryTk.tk,
+		label: categoryTk.title.tk,
+		value: categoryTk.id,
 		name: 'categoryTk',
 	}))
 
 	const selectCategoryRu = categories.map(categoryRu => ({
-		value: categoryRu.ru,
-		label: categoryRu.ru,
+		value: categoryRu.id,
+		label: categoryRu.title.ru,
 		name: 'categoryRu',
 	}))
 
-	const onFinish = (value: DataOfMovie) => {
-		setData({
-			titleTk: value.titleTk,
-			titleRu: value.titleRu,
-			descriptionTk: value.descriptionTk,
-			descriptionRu: value.descriptionRu,
-			duration: convertToSeconds(value.duration),
-			status: value.status,
-			categoryTk: value.categoryTk,
-			categoryRu: value.categoryRu,
-		})
-
-		messageApi.open({
-			type: 'success',
-			content: 'Updated successfully data',
-		})
+	const onFinish = async (value: DataOfMovie) => {
+		if (id) {
+			value.duration = convertToSeconds(value.duration)
+			try {
+				await updateMovieById(value, +id)
+				messageApi.open({
+					type: 'success',
+					content: 'Updated successfully data',
+				})
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: 'Couldn`t update data',
+				})
+			}
+			// setData({
+			// 	titleTk: value.titleTk,
+			// 	titleRu: value.titleRu,
+			// 	descriptionTk: value.descriptionTk,
+			// 	descriptionRu: value.descriptionRu,
+			// 	duration: convertToSeconds(value.duration),
+			// 	status: value.status,
+			// 	categoryTk: value.categoryTk,
+			// 	categoryRu: value.categoryRu,
+			// })
+		}
 	}
 
 	return (
