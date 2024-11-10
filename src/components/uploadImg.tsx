@@ -1,6 +1,6 @@
 import { UploadOutlined } from '@ant-design/icons'
 import ImgCrop from 'antd-img-crop'
-import { Upload, Button, Image, message } from 'antd'
+import { Upload, Button, Image, message, Flex } from 'antd'
 import { FC, useState } from 'react'
 import axios from 'axios'
 import { UploadImgProps } from '../types/uploadImg'
@@ -31,17 +31,16 @@ const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage }) => {
 			})
 		}
 	}
+	// style={{
+	// 	display: 'flex',
+	// 	justifyContent: 'space-between',
+	// 	alignItems: 'center',
+	// 	gap: '80px',
+	// }}
 	return (
 		<>
 			{contextHolder}
-			<div
-				style={{
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-					gap: '80px',
-				}}
-			>
+			<Flex justify='space-between' align='center' gap={80}>
 				<ImgCrop rotationSlider>
 					<Upload name='file' customRequest={uploadFile} showUploadList={false}>
 						<Button icon={<UploadOutlined />}>Click to upload image</Button>
@@ -56,7 +55,7 @@ const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage }) => {
 							: 'error'
 					}
 				/>
-			</div>
+			</Flex>
 		</>
 	)
 }

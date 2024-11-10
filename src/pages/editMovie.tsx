@@ -22,6 +22,7 @@ import { Movie } from '../types/movies'
 // import { Categories } from '../types/categories/movie'
 import { convertToSeconds, convertToHour } from '../utils/converter'
 import { Categories } from '../types/editMovie'
+import UploadMovie from '../components/uploadMovie'
 
 const EditMovie = () => {
 	const { TextArea } = Input
@@ -353,11 +354,14 @@ const EditMovie = () => {
 							</Form.Item>
 						</Flex>
 					</Form>
-					<UploadImg
-						imageURL={data?.image ? data.image : ''}
-						id={Number(id)}
-						setUpdateImage={setUpdateImage}
-					></UploadImg>
+					<Flex vertical gap={150}>
+						<UploadImg
+							imageURL={data?.image ? data.image : ''}
+							id={Number(id)}
+							setUpdateImage={setUpdateImage}
+						></UploadImg>
+						<UploadMovie id={Number(id)}></UploadMovie>
+					</Flex>
 				</div>
 			</ConfigProvider>
 		</>
