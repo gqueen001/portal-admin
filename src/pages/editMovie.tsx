@@ -131,7 +131,6 @@ const EditMovie = () => {
 
 			try {
 				const newId: { id: number } = await createNewMovie(value)
-				console.log('it is new id', newId.id)
 
 				messageApi.open({
 					type: 'success',

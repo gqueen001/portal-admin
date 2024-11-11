@@ -37,8 +37,6 @@ export async function uploadImg(id: number, file: any) {
 }
 
 export async function uploadMovie(id: number, file: any) {
-	console.log('it is file', file)
-
 	const { data } = await axios.post(`${import.meta.env.VITE_API}/movies/${id}`, file)
 	return data
 }

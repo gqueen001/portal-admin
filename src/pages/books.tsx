@@ -1,12 +1,9 @@
-import Example from './editMovie'
-
-const Books = () => {
+const Book = () => {
 	return (
 		<>
-			<h1>it is books</h1>
-			{/* <Example /> */}
+			<div>Books</div>
 		</>
 	)
 }
 
-export default Books
+export default Book
