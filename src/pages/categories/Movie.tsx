@@ -14,6 +14,7 @@ const MovieCategories = () => {
 	const [openEditModal, setOpenEditModal] = useState<boolean>(false)
 	const [categoryId, setCategoryId] = useState<string>('')
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+	const [deleteRowId, setDeleteRowId] = useState<string | null>('')
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -37,6 +38,17 @@ const MovieCategories = () => {
 
 		fetchCategories()
 	}, [openEditModal, openDeleteModal])
+
+	useEffect(() => {
+		if (!openDeleteModal) {
+			setDeleteRowId(categoryId)
+
+			setTimeout(() => {
+				setDataRows(prevData => prevData?.filter(item => item.key !== categoryId))
+				setDeleteRowId(null)
+			}, 500)
+		}
+	}, [openDeleteModal])
 
 	const columns: TableColumns = [
 		{
@@ -75,6 +87,9 @@ const MovieCategories = () => {
 				columns={columns}
 				style={{ width: '100%' }}
 				dataSource={dataRows}
+				rowClassName={(record: TableRow) =>
+					record.key === deleteRowId ? 'fade-row fade-exit' : 'fade-row'
+				}
 				onRow={(record: TableRow) => {
 					return {
 						onClick: () => setCategoryId(record.key),

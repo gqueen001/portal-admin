@@ -2,7 +2,6 @@ export type DataOfMovie = {
 	titleTk: string
 	titleRu: string
 	categoryTk: Category[]
-	categoryRu: Category[]
 	duration: string
 	descriptionTk: string
 	descriptionRu: string
@@ -11,8 +10,7 @@ export type DataOfMovie = {
 }
 
 type Category = {
-	key: number
-	title: string
+	value: number
 }
 
 export type Categories = [

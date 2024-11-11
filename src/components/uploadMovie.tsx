@@ -1,15 +1,18 @@
 import { Progress, Upload, Button, Flex, message } from 'antd'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import { uploadMovie } from '../services/movies'
+import { UploadMovieProps } from '../types/movies.ts'
 
-interface UploadMovieProps {
-	id: number
-}
-
-const UploadMovie: FC<UploadMovieProps> = ({ id }) => {
+const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 	const [percent, setPersent] = useState(0)
 	const [messageApi, contextHolder] = message.useMessage()
+
+	useEffect(() => {
+		if (isUpload) {
+			setPersent(100)
+		}
+	})
 
 	const videoFraction = () => {
 		const url = `${import.meta.env.VITE_API}/movies/fraction/${id}`
@@ -49,7 +52,9 @@ const UploadMovie: FC<UploadMovieProps> = ({ id }) => {
 			{contextHolder}
 			<Flex justify='space-between' align='center' gap={80}>
 				<Upload name='file' customRequest={uploadFile} showUploadList={false}>
-					<Button icon={<UploadOutlined />}>Click to upload movie</Button>
+					<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
+						Click to upload movie
+					</Button>
 				</Upload>
 				<Progress type='circle' percent={percent} />
 			</Flex>

@@ -2,10 +2,10 @@ import { UploadOutlined } from '@ant-design/icons'
 import ImgCrop from 'antd-img-crop'
 import { Upload, Button, Image, message, Flex } from 'antd'
 import { FC, useState } from 'react'
-import { UploadImgProps } from '../types/uploadImg'
+import { UploadImgProps } from '../types/movies.ts'
 import { uploadImg } from '../services/movies'
 
-const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage }) => {
+const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage, uploadDisabled }) => {
 	const [messageApi, contextHolder] = message.useMessage()
 	const [timestamp, setTimestamp] = useState(Date.now())
 
@@ -36,8 +36,10 @@ const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage }) => {
 			{contextHolder}
 			<Flex justify='space-between' align='center' gap={80}>
 				<ImgCrop rotationSlider>
-					<Upload name='file' customRequest={uploadFile} showUploadList={false}>
-						<Button icon={<UploadOutlined />}>Click to upload image</Button>
+					<Upload name='file' customRequest={uploadFile}>
+						<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
+							Click to upload image
+						</Button>
 					</Upload>
 				</ImgCrop>
 				<Image

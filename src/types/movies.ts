@@ -24,3 +24,16 @@ export type TkAndRu = {
 }
 
 export type MoviesType = Movie[]
+
+export interface UploadMovieProps {
+	id: number
+	isUpload: boolean
+	uploadDisabled: boolean
+}
+
+export interface UploadImgProps {
+	imageURL: string
+	id: number
+	setUpdateImage: (value: boolean) => void
+	uploadDisabled: boolean
+}

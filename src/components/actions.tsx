@@ -24,13 +24,10 @@ const Actions: FC<ActionProps> = ({
 					size='large'
 					type='primary'
 					danger
-					icon={
-						<DeleteOutlined
-							onClick={() => {
-								setOpenDeleteModal(true)
-							}}
-						/>
-					}
+					icon={<DeleteOutlined />}
+					onClick={() => {
+						setOpenDeleteModal(true)
+					}}
 				></Button>
 			</Col>
 		</Row>

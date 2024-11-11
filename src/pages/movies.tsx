@@ -1,26 +1,32 @@
 import { FloatButton, message, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
-import { TableColumns, TableRows, TableRow } from '../types/table'
-import { Categories } from '../types/categories/movie.ts'
+import { TableColumns } from '../types/table'
 import { getMovies } from '../services/movies.ts'
 import Actions from '../components/actions'
-import OpenModal from '../components/modal/openModal'
 import DeleteModal from '../components/modal/deleteModal'
-import { TitleOfMovie } from '../types/movies'
-import { TitleOfMovies } from '../types/movies'
-import { MoviesType } from '../types/movies'
+import { TitleOfMovie, TitleOfMovies, MoviesType } from '../types/movies'
 import { useNavigate } from 'react-router-dom'
+import '../index.css'
 
 const Movies = () => {
 	const [dataRows, setDataRows] = useState<TitleOfMovies>()
 	const [messageApi, contextHolder] = message.useMessage()
-	// const [editMovie, setEditMovie] = useState<boolean>(false)
 	const [movieId, setMovieId] = useState<string>('new')
 	const [openEditPage, setOpenEditPage] = useState<boolean>(false)
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+	const [deleteRowId, setDeleteRowId] = useState<string | null>(' ')
 	const navigate = useNavigate()
-	// const
+
+	useEffect(() => {
+		if (!openDeleteModal) {
+			setDeleteRowId(movieId)
+			setTimeout(() => {
+				setDataRows(prevData => prevData?.filter(item => item.key !== movieId))
+				setDeleteRowId(null)
+			}, 500)
+		}
+	}, [openDeleteModal])
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -87,6 +93,9 @@ const Movies = () => {
 				columns={columns}
 				style={{ width: '100%' }}
 				dataSource={dataRows}
+				rowClassName={(record: TitleOfMovie) =>
+					record.key === deleteRowId ? 'fade-row fade-exit' : 'fade-row'
+				}
 				onRow={(record: TitleOfMovie) => {
 					return {
 						onClick: () => {
@@ -100,17 +109,9 @@ const Movies = () => {
 				type='primary'
 				icon={<PlusOutlined />}
 				onClick={() => {
-					// setOpenEditModal(true)
-					// setCategoryId('new')
 					navigate(`/edit/${movieId}`)
 				}}
 			/>
-
-			{/* <OpenModal
-				isOpen={openEditModal}
-				setCloseModal={setOpenEditModal}
-				categoryId={categoryId}
-			/> */}
 
 			<DeleteModal
 				isOpen={openDeleteModal}

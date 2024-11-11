@@ -13,39 +13,31 @@ const DeleteModal: FC<DeleteModalProps> = ({
 	const { Text } = Typography
 	const [messageApi, contextHolder] = message.useMessage()
 
-	// console.log('it is delete', deleteId)
-
-	// const findItem: string = {
-	// 	category: 'category',
-	// 	movie: 'movie',
-	// }
-
 	const deleteById = async () => {
 		if (item === 'category') {
 			try {
 				await deleteCategory(+deleteId)
 				messageApi.open({
 					type: 'success',
-					content: 'Successfully deleted data',
+					content: 'Successfully deleted',
 				})
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: "Couldn't delete data",
+					content: "Couldn't delete",
 				})
 			}
-			// setCloseModal(false)
 		} else if (item === 'movie') {
 			try {
 				await deleteMovie(+deleteId)
 				messageApi.open({
 					type: 'success',
-					content: 'Successfully deleted data',
+					content: 'Successfully deleted',
 				})
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: "Couldn't delete data",
+					content: "Couldn't delete",
 				})
 			}
 		}

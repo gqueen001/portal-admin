@@ -17,11 +17,9 @@ import dayjs from 'dayjs'
 import UploadImg from '../components/uploadImg'
 import { getMovieById, updateMovieById, createNewMovie } from '../services/movies'
 import { getCategories } from '../services/categories/movie'
-import { DataOfMovie } from '../types/editMovie'
+import { DataOfMovie, Categories } from '../types/editMovie'
 import { Movie } from '../types/movies'
-// import { Categories } from '../types/categories/movie'
 import { convertToSeconds, convertToHour } from '../utils/converter'
-import { Categories } from '../types/editMovie'
 import UploadMovie from '../components/uploadMovie'
 
 const EditMovie = () => {
@@ -38,6 +36,8 @@ const EditMovie = () => {
 	const [messageApi, contextHolder] = message.useMessage()
 	const [categories, setCategories] = useState<Categories>([{ id: 0, title: { ru: '', tk: '' } }])
 	const [updateImage, setUpdateImage] = useState(false)
+	const [isUpload, setIsUpload] = useState<boolean>(false)
+	const [uploadDisabled, setUploadDisabled] = useState<boolean>(true)
 	const [form] = Form.useForm()
 	let { id } = useParams()
 
@@ -46,19 +46,13 @@ const EditMovie = () => {
 			const fetchMovieById = async () => {
 				try {
 					const movie: Movie = await getMovieById(+id)
+
 					setData({
 						titleRu: movie.title.ru,
 						titleTk: movie.title.tk,
-						categoryRu: movie.sub_categories.map(category => {
-							return {
-								key: category.id,
-								title: category.title.ru,
-							}
-						}),
 						categoryTk: movie.sub_categories.map(category => {
 							return {
-								key: category.id,
-								title: category.title.tk,
+								value: category.id,
 							}
 						}),
 						duration: `${movie.duration}`,
@@ -67,7 +61,10 @@ const EditMovie = () => {
 						status: movie.status,
 						image: movie.image,
 					})
+
+					setIsUpload(true)
 					setUpdateImage(false)
+					setUploadDisabled(false)
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
@@ -102,43 +99,15 @@ const EditMovie = () => {
 				descriptionTk: data.descriptionTk,
 				duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
 				status: data.status,
-				categoryTk: data.categoryTk.map(category => ({
-					label: category.title,
-					value: category.key,
-				})),
-				categoryRu: data.categoryRu.map(category => ({
-					label: category.title,
-					value: category.key,
-				})),
+				categoryTk: data.categoryTk.map(category => category.value),
 			})
 		}
 	}, [data])
-
-	// useEffect(() => {
-	// 	const fetchCategory = async () => {
-	// 		try {
-	// 			const categories: Categories = await getCategories()
-	// 			setCategories(categories.map(category => category.title))
-	// 		} catch (error) {
-	// 			messageApi.open({
-	// 				type: 'error',
-	// 				content: "Couldn't fetch data",
-	// 			})
-	// 		}
-	// 	}
-	// 	fetchCategory()
-	// }, [id])
 
 	const selectCategoryTk = categories.map(categoryTk => ({
 		label: categoryTk.title.tk,
 		value: categoryTk.id,
 		name: 'categoryTk',
-	}))
-
-	const selectCategoryRu = categories.map(categoryRu => ({
-		value: categoryRu.id,
-		label: categoryRu.title.ru,
-		name: 'categoryRu',
 	}))
 
 	const onFinish = async (value: DataOfMovie) => {
@@ -156,16 +125,6 @@ const EditMovie = () => {
 					content: 'Couldn`t update movie',
 				})
 			}
-			// setData({
-			// 	titleTk: value.titleTk,
-			// 	titleRu: value.titleRu,
-			// 	descriptionTk: value.descriptionTk,
-			// 	descriptionRu: value.descriptionRu,
-			// 	duration: convertToSeconds(value.duration),
-			// 	status: value.status,
-			// 	categoryTk: value.categoryTk,
-			// 	categoryRu: value.categoryRu,
-			// })
 		} else {
 			value.duration = convertToSeconds(value.duration)
 
@@ -175,6 +134,7 @@ const EditMovie = () => {
 					type: 'success',
 					content: 'Movie is succeccfully updated',
 				})
+				setUploadDisabled(false)
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
@@ -206,7 +166,7 @@ const EditMovie = () => {
 							}}
 						>
 							<Divider>Title</Divider>
-							<Flex justify='space-between'>
+							<Flex justify='space-between' gap={20}>
 								<Form.Item
 									rules={[
 										{ required: true, message: 'Title in turkmen is required' },
@@ -244,7 +204,7 @@ const EditMovie = () => {
 							}}
 						>
 							<Divider>Categories</Divider>
-							<Flex justify='space-between'>
+							<Flex justify='center'>
 								<Form.Item
 									rules={[{ required: true, message: 'Categories are required' }]}
 									name={'categoryTk'}
@@ -253,19 +213,6 @@ const EditMovie = () => {
 									<Select
 										style={{ width: '200px' }}
 										options={selectCategoryTk}
-										placeholder='Choose categories'
-										mode='multiple'
-									></Select>
-								</Form.Item>
-
-								<Form.Item
-									rules={[{ required: true, message: 'Categories are required' }]}
-									name={'categoryRu'}
-									label='Categories are in russian:'
-								>
-									<Select
-										style={{ width: '200px' }}
-										options={selectCategoryRu}
 										placeholder='Choose categories'
 										mode='multiple'
 									></Select>
@@ -281,8 +228,8 @@ const EditMovie = () => {
 								borderRadius: '5px',
 							}}
 						>
-							<Divider>Duration and status</Divider>
-							<Flex justify='space-between'>
+							<Divider>Duration {id !== 'new' && 'and status'}</Divider>
+							<Flex justify={id === 'new' ? 'center' : 'space-between'}>
 								<Form.Item
 									rules={[{ required: true, message: 'Duration is required' }]}
 									name={'duration'}
@@ -293,14 +240,16 @@ const EditMovie = () => {
 										onChange={value => convertToSeconds(value)}
 									/>
 								</Form.Item>
-								<Form.Item
-									name='status'
-									valuePropName='checked'
-									initialValue={false}
-									label='Status of movie:'
-								>
-									<Checkbox checked={false}></Checkbox>
-								</Form.Item>
+								{id !== 'new' && (
+									<Form.Item
+										name='status'
+										valuePropName='checked'
+										initialValue={false}
+										label='Status of movie:'
+									>
+										<Checkbox checked={false}></Checkbox>
+									</Form.Item>
+								)}
 							</Flex>
 						</div>
 						<div
@@ -371,8 +320,13 @@ const EditMovie = () => {
 							imageURL={data?.image ? data.image : ''}
 							id={Number(id)}
 							setUpdateImage={setUpdateImage}
+							uploadDisabled={uploadDisabled}
 						></UploadImg>
-						<UploadMovie id={Number(id)}></UploadMovie>
+						<UploadMovie
+							id={Number(id)}
+							isUpload={isUpload}
+							uploadDisabled={uploadDisabled}
+						></UploadMovie>
 					</Flex>
 				</div>
 			</ConfigProvider>

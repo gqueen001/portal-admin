@@ -8,6 +8,7 @@ export async function getMovieById(id: number) {
 
 export async function getMovies() {
 	const { data } = await axios(`${import.meta.env.VITE_API}/movies?page=1&count=10`)
+
 	return data
 }
 
@@ -20,7 +21,7 @@ export async function updateMovieById(value: DataOfMovie, id: number) {
 		},
 		duration: value.duration,
 		status: value.status,
-		sub_categories: value.categoryRu,
+		sub_categories: value.categoryTk,
 		title: {
 			ru: value.titleRu,
 			tk: value.titleTk,
@@ -44,14 +45,14 @@ export async function createNewMovie(value: DataOfMovie) {
 	const { data } = await axios.post(`${import.meta.env.VITE_API}/movies`, {
 		title: {
 			tk: value.titleTk,
-			ru: value.titleTk,
+			ru: value.titleRu,
 		},
 		description: {
 			tk: value.descriptionTk,
 			ru: value.descriptionRu,
 		},
 		duration: 3600,
-		sub_categories: value.categoryRu,
+		sub_categories: value.categoryTk,
 	})
 
 	return data
