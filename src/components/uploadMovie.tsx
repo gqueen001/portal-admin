@@ -5,16 +5,17 @@ import { uploadMovie } from '../services/movies'
 import { UploadMovieProps } from '../types/movies.ts'
 
 const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
-	const [percent, setPersent] = useState(0)
+	const [percent, setPersent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
 
 	useEffect(() => {
 		if (isUpload) {
 			setPersent(100)
 		}
-	})
+	}, [isUpload])
 
 	const videoFraction = () => {
+		setPersent(0)
 		const url = `${import.meta.env.VITE_API}/movies/fraction/${id}`
 		const source = new EventSource(url)
 
