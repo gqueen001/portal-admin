@@ -21,12 +21,12 @@ const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage, uploadDis
 
 			messageApi.open({
 				type: 'success',
-				content: 'Success data',
+				content: 'Successfully uploaded',
 			})
 		} catch (error) {
 			messageApi.open({
 				type: 'error',
-				content: "Couldn't fetch data",
+				content: "Couldn't fetch",
 			})
 		}
 	}
@@ -36,7 +36,7 @@ const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage, uploadDis
 			{contextHolder}
 			<Flex justify='space-between' align='center' gap={80}>
 				<ImgCrop rotationSlider>
-					<Upload name='file' customRequest={uploadFile}>
+					<Upload name='file' customRequest={uploadFile} showUploadList={false}>
 						<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
 							Click to upload image
 						</Button>

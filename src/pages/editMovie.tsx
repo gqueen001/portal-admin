@@ -12,7 +12,7 @@ import {
 	message,
 } from 'antd'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 import UploadImg from '../components/uploadImg'
 import { getMovieById, updateMovieById, createNewMovie } from '../services/movies'
@@ -40,6 +40,7 @@ const EditMovie = () => {
 	const [uploadDisabled, setUploadDisabled] = useState<boolean>(true)
 	const [form] = Form.useForm()
 	let { id } = useParams()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		if (id && id !== 'new') {
@@ -62,13 +63,13 @@ const EditMovie = () => {
 						image: movie.image,
 					})
 
-					setIsUpload(true)
+					setIsUpload(movie.is_uploaded)
 					setUpdateImage(false)
 					setUploadDisabled(false)
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
-						content: "Couldn't fetch data",
+						content: "Couldn't fetch",
 					})
 				}
 			}
@@ -82,7 +83,7 @@ const EditMovie = () => {
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: "Couldn't fetch data",
+					content: "Couldn't fetch",
 				})
 			}
 		}
@@ -117,28 +118,31 @@ const EditMovie = () => {
 				await updateMovieById(value, +id)
 				messageApi.open({
 					type: 'success',
-					content: 'Movie is succeccfully updated',
+					content: 'Succeccfully updated',
 				})
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: 'Couldn`t update movie',
+					content: 'Couldn`t update',
 				})
 			}
 		} else {
 			value.duration = convertToSeconds(value.duration)
 
 			try {
-				await createNewMovie(value)
+				const newId: { id: number } = await createNewMovie(value)
+				console.log('it is new id', newId.id)
+
 				messageApi.open({
 					type: 'success',
-					content: 'Movie is succeccfully updated',
+					content: 'Succeccfully created',
 				})
+				navigate(`/edit/${newId.id}`)
 				setUploadDisabled(false)
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: 'Couldn`t update movie',
+					content: 'Couldn`t create',
 				})
 			}
 		}

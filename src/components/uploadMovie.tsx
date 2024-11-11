@@ -33,16 +33,17 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 
 		try {
 			await uploadMovie(id, file)
+			console.log('movie upload')
 
 			messageApi.open({
 				type: 'success',
-				content: 'Movie is successfully uploaded',
+				content: 'Successfully uploaded',
 			})
 			videoFraction()
 		} catch (error) {
 			messageApi.open({
 				type: 'error',
-				content: "Couldn't upload movie",
+				content: "Couldn't upload",
 			})
 		}
 	}

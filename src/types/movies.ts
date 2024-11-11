@@ -16,6 +16,7 @@ export type Movie = {
 	status: boolean
 	sub_categories: Category[]
 	title: TkAndRu
+	is_uploaded: boolean
 }
 
 export type TkAndRu = {
