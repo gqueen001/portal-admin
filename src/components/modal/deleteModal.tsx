@@ -2,6 +2,7 @@ import { DeleteModalProps } from '../../types/deleteModal'
 import { FC } from 'react'
 import { message, Typography, Modal } from 'antd'
 import { deleteCategory } from '../../services/categories/movie.ts'
+import { deleteMovie } from '../../services/movies.ts'
 
 const DeleteModal: FC<DeleteModalProps> = ({
 	isOpen,
@@ -12,18 +13,41 @@ const DeleteModal: FC<DeleteModalProps> = ({
 	const { Text } = Typography
 	const [messageApi, contextHolder] = message.useMessage()
 
+	// console.log('it is delete', deleteId)
+
+	// const findItem: string = {
+	// 	category: 'category',
+	// 	movie: 'movie',
+	// }
+
 	const deleteById = async () => {
-		try {
-			await deleteCategory(+deleteId)
-			messageApi.open({
-				type: 'success',
-				content: 'Successfully deleted data',
-			})
-		} catch (error) {
-			messageApi.open({
-				type: 'error',
-				content: "Couldn't delete data",
-			})
+		if (item === 'category') {
+			try {
+				await deleteCategory(+deleteId)
+				messageApi.open({
+					type: 'success',
+					content: 'Successfully deleted data',
+				})
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: "Couldn't delete data",
+				})
+			}
+			// setCloseModal(false)
+		} else if (item === 'movie') {
+			try {
+				await deleteMovie(+deleteId)
+				messageApi.open({
+					type: 'success',
+					content: 'Successfully deleted data',
+				})
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: "Couldn't delete data",
+				})
+			}
 		}
 		setCloseModal(false)
 	}

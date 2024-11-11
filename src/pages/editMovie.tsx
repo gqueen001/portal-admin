@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
 import UploadImg from '../components/uploadImg'
-import { getMovieById, updateMovieById } from '../services/movies'
+import { getMovieById, updateMovieById, createNewMovie } from '../services/movies'
 import { getCategories } from '../services/categories/movie'
 import { DataOfMovie } from '../types/editMovie'
 import { Movie } from '../types/movies'
@@ -76,24 +76,21 @@ const EditMovie = () => {
 				}
 			}
 
-			const fetchCategory = async () => {
-				try {
-					const categories: Categories = await getCategories()
-					setCategories(categories)
-				} catch (error) {
-					messageApi.open({
-						type: 'error',
-						content: "Couldn't fetch data",
-					})
-				}
-			}
-
-			fetchCategory()
-
 			fetchMovieById()
-		} else {
-			// console.log('it is new id', id)
 		}
+		const fetchCategory = async () => {
+			try {
+				const categories: Categories = await getCategories()
+				setCategories(categories)
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: "Couldn't fetch data",
+				})
+			}
+		}
+
+		fetchCategory()
 	}, [id, updateImage])
 
 	useEffect(() => {
@@ -145,18 +142,18 @@ const EditMovie = () => {
 	}))
 
 	const onFinish = async (value: DataOfMovie) => {
-		if (id) {
+		if (id && id !== 'new') {
 			value.duration = convertToSeconds(value.duration)
 			try {
 				await updateMovieById(value, +id)
 				messageApi.open({
 					type: 'success',
-					content: 'Updated successfully data',
+					content: 'Movie is succeccfully updated',
 				})
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: 'Couldn`t update data',
+					content: 'Couldn`t update movie',
 				})
 			}
 			// setData({
@@ -169,6 +166,21 @@ const EditMovie = () => {
 			// 	categoryTk: value.categoryTk,
 			// 	categoryRu: value.categoryRu,
 			// })
+		} else {
+			value.duration = convertToSeconds(value.duration)
+
+			try {
+				await createNewMovie(value)
+				messageApi.open({
+					type: 'success',
+					content: 'Movie is succeccfully updated',
+				})
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: 'Couldn`t update movie',
+				})
+			}
 		}
 	}
 

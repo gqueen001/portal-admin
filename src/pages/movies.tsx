@@ -15,11 +15,13 @@ import { useNavigate } from 'react-router-dom'
 const Movies = () => {
 	const [dataRows, setDataRows] = useState<TitleOfMovies>()
 	const [messageApi, contextHolder] = message.useMessage()
-	const [editMovie, setEditMovie] = useState<boolean>(false)
+	// const [editMovie, setEditMovie] = useState<boolean>(false)
 	const [movieId, setMovieId] = useState<string>('new')
 	const [openEditPage, setOpenEditPage] = useState<boolean>(false)
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 	const navigate = useNavigate()
+	// const
+
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {

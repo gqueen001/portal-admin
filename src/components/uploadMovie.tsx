@@ -1,7 +1,7 @@
 import { Progress, Upload, Button, Flex, message } from 'antd'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
-import axios from 'axios'
+import { uploadMovie } from '../services/movies'
 
 interface UploadMovieProps {
 	id: number
@@ -16,7 +16,6 @@ const UploadMovie: FC<UploadMovieProps> = ({ id }) => {
 		const source = new EventSource(url)
 
 		source.onmessage = event => {
-			console.log(event.data)
 			setPersent(event.data)
 			if (+event.data === 100) {
 				source.close()
@@ -25,25 +24,22 @@ const UploadMovie: FC<UploadMovieProps> = ({ id }) => {
 	}
 
 	const uploadFile = async (options: any) => {
-		// console.log('it is video', file)
 		const { file } = options
 		const formData = new FormData()
 		formData.append('video', file.arrayBuffer())
 
 		try {
-			await axios.post(`${import.meta.env.VITE_API}/movies/${id}`, file)
-			// setTimestamp(Date.now())
-			// setUpdateImage(true)
+			await uploadMovie(id, file)
 
 			messageApi.open({
 				type: 'success',
-				content: 'Movie is successfully updated',
+				content: 'Movie is successfully uploaded',
 			})
 			videoFraction()
 		} catch (error) {
 			messageApi.open({
 				type: 'error',
-				content: "Couldn't update movie",
+				content: "Couldn't upload movie",
 			})
 		}
 	}
@@ -60,5 +56,5 @@ const UploadMovie: FC<UploadMovieProps> = ({ id }) => {
 		</>
 	)
 }
-// customRequest={uploadFile}
+
 export default UploadMovie

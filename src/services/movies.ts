@@ -12,9 +12,7 @@ export async function getMovies() {
 }
 
 export async function updateMovieById(value: DataOfMovie, id: number) {
-	// console.log('value:', value, 'id', id)
-
-	const { data } = await axios.put(`${import.meta.env.VITE_API}/movies/${id}`, {
+	const { data } = await axios.put(`${import.meta.env.VITE_API}/movies`, {
 		id,
 		description: {
 			ru: value.descriptionRu,
@@ -29,5 +27,37 @@ export async function updateMovieById(value: DataOfMovie, id: number) {
 		},
 	})
 
+	return data
+}
+
+export async function uploadImg(id: number, file: any) {
+	const { data } = await axios.post(`${import.meta.env.VITE_API}/movies/image/${id}`, file)
+	return data
+}
+
+export async function uploadMovie(id: number, file: any) {
+	const { data } = await axios.post(`${import.meta.env.VITE_API}/movies/${id}`, file)
+	return data
+}
+
+export async function createNewMovie(value: DataOfMovie) {
+	const { data } = await axios.post(`${import.meta.env.VITE_API}/movies`, {
+		title: {
+			tk: value.titleTk,
+			ru: value.titleTk,
+		},
+		description: {
+			tk: value.descriptionTk,
+			ru: value.descriptionRu,
+		},
+		duration: 3600,
+		sub_categories: value.categoryRu,
+	})
+
+	return data
+}
+
+export async function deleteMovie(id: number) {
+	const { data } = await axios.delete(`${import.meta.env.VITE_API}/movies/${id}`)
 	return data
 }
