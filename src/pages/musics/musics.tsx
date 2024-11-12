@@ -7,7 +7,7 @@ import Actions from '../../components/actions'
 import DeleteModal from '../../components/modal/deleteModal'
 import { TitleOfMovie, TitleOfMovies, MoviesType } from '../../types/movies/movies'
 import { useNavigate } from 'react-router-dom'
-import '../index.css'
+import '../../index.css'
 import { MusicsType, Music, MusicsRow } from '../../types/musics/musics.ts'
 
 const Musics = () => {
@@ -29,13 +29,13 @@ const Musics = () => {
 	// 	}
 	// }, [openDeleteModal])
 
-	console.log('it is row', dataRows)
+	// console.log('it is row', dataRows)
 
 	useEffect(() => {
 		const fetchMusics = async () => {
 			try {
 				const musicsTitle: MusicsType = await getMusics()
-				console.log('it is musics', musicsTitle.musics)
+				// console.log('it is musics', musicsTitle.musics)
 
 				setDataRows(
 					musicsTitle.musics.map(music => ({
@@ -111,13 +111,13 @@ const Musics = () => {
 				}}
 			/>
 
-			{/* <FloatButton
+			<FloatButton
 				type='primary'
 				icon={<PlusOutlined />}
 				onClick={() => {
-					navigate(`/movie/${movieId}`)
+					navigate(`/music/${movieId}`)
 				}}
-			/> */}
+			/>
 
 			{/* <DeleteModal
 				isOpen={openDeleteModal}

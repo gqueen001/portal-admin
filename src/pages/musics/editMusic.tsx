@@ -14,13 +14,15 @@ import {
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import UploadImg from '../../components/uploadImg'
+import UploadMusic from '../../components/uploadMusic'
 import { getMovieById, updateMovieById, createNewMovie } from '../../services/movies'
 import { getCategories } from '../../services/categories/movie'
 import { DataOfMovie, Categories } from '../../types/movies/editMovie'
 import { Movie } from '../../types/movies/movies'
 import { convertToSeconds, convertToHour } from '../../utils/converter'
 import UploadMovie from '../../components/uploadMovie'
+import { Music, DataOfMusic } from '../../types/musics/musics'
+import { getMusicById, updateMusicById, createNewMusic } from '../../services/musics'
 
 const EditMusic = () => {
 	const { TextArea } = Input
@@ -32,9 +34,9 @@ const EditMusic = () => {
 		},
 	}
 
-	const [data, setData] = useState<DataOfMovie>()
+	const [data, setData] = useState<DataOfMusic>()
 	const [messageApi, contextHolder] = message.useMessage()
-	const [categories, setCategories] = useState<Categories>([{ id: 0, title: { ru: '', tk: '' } }])
+	// const [categories, setCategories] = useState<Categories>([{ id: 0, title: { ru: '', tk: '' } }])
 	const [updateImage, setUpdateImage] = useState(false)
 	const [isUpload, setIsUpload] = useState<boolean>(false)
 	const [uploadDisabled, setUploadDisabled] = useState<boolean>(true)
@@ -42,68 +44,60 @@ const EditMusic = () => {
 	let { id } = useParams()
 	const navigate = useNavigate()
 
-	// useEffect(() => {
-	// 	if (id && id !== 'new') {
-	// 		const fetchMovieById = async () => {
-	// 			try {
-	// 				const movie: Movie = await getMovieById(+id)
+	useEffect(() => {
+		if (id && id !== 'new') {
+			const fetchMusicById = async () => {
+				try {
+					const music: Music = await getMusicById(+id)
+					console.log('it is music', music)
 
-	// 				setData({
-	// 					titleRu: movie.title.ru,
-	// 					titleTk: movie.title.tk,
-	// 					categoryTk: movie.sub_categories.map(category => {
-	// 						return {
-	// 							value: category.id,
-	// 						}
-	// 					}),
-	// 					duration: `${movie.duration}`,
-	// 					descriptionRu: movie.description.ru,
-	// 					descriptionTk: movie.description.tk,
-	// 					status: movie.status,
-	// 					image: movie.image,
-	// 				})
+					setData({
+						id: `${music.id}`,
+						titleRu: music.title.ru,
+						titleTk: music.title.tk,
+					})
 
-	// 				setIsUpload(movie.is_uploaded)
-	// 				setUpdateImage(false)
-	// 				setUploadDisabled(false)
-	// 			} catch (error) {
-	// 				messageApi.open({
-	// 					type: 'error',
-	// 					content: "Couldn't fetch",
-	// 				})
-	// 			}
-	// 		}
+					// setIsUpload(movie.is_uploaded)
+					// setUpdateImage(false)
+					setUploadDisabled(false)
+				} catch (error) {
+					messageApi.open({
+						type: 'error',
+						content: "Couldn't fetch",
+					})
+				}
+			}
 
-	// 		fetchMovieById()
-	// 	}
-	// 	const fetchCategory = async () => {
-	// 		try {
-	// 			const categories: Categories = await getCategories()
-	// 			setCategories(categories)
-	// 		} catch (error) {
-	// 			messageApi.open({
-	// 				type: 'error',
-	// 				content: "Couldn't fetch",
-	// 			})
-	// 		}
-	// 	}
+			fetchMusicById()
+		}
+		// 	const fetchCategory = async () => {
+		// 		try {
+		// 			const categories: Categories = await getCategories()
+		// 			setCategories(categories)
+		// 		} catch (error) {
+		// 			messageApi.open({
+		// 				type: 'error',
+		// 				content: "Couldn't fetch",
+		// 			})
+		// 		}
+		// 	}
 
-	// 	fetchCategory()
-	// }, [id, updateImage])
+		// 	fetchCategory()
+	}, [id, updateImage])
 
-	// useEffect(() => {
-	// 	if (data) {
-	// 		form.setFieldsValue({
-	// 			titleTk: data.titleTk,
-	// 			titleRu: data.titleRu,
-	// 			descriptionRu: data.descriptionRu,
-	// 			descriptionTk: data.descriptionTk,
-	// 			duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
-	// 			status: data.status,
-	// 			categoryTk: data.categoryTk.map(category => category.value),
-	// 		})
-	// 	}
-	// }, [data])
+	useEffect(() => {
+		if (data) {
+			form.setFieldsValue({
+				titleTk: data.titleTk,
+				titleRu: data.titleRu,
+				// descriptionRu: data.descriptionRu,
+				// descriptionTk: data.descriptionTk,
+				// duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
+				// status: data.status,
+				// categoryTk: data.categoryTk.map(category => category.value),
+			})
+		}
+	}, [data])
 
 	// const selectCategoryTk = categories.map(categoryTk => ({
 	// 	label: categoryTk.title.tk,
@@ -111,38 +105,40 @@ const EditMusic = () => {
 	// 	name: 'categoryTk',
 	// }))
 
-	const onFinish = async (value: DataOfMovie) => {
-		// 	if (id && id !== 'new') {
-		// 		value.duration = convertToSeconds(value.duration)
-		// 		try {
-		// 			await updateMovieById(value, +id)
-		// 			messageApi.open({
-		// 				type: 'success',
-		// 				content: 'Succeccfully updated',
-		// 			})
-		// 		} catch (error) {
-		// 			messageApi.open({
-		// 				type: 'error',
-		// 				content: 'Couldn`t update',
-		// 			})
-		// 		}
-		// 	} else {
-		// 		value.duration = convertToSeconds(value.duration)
-		// 		try {
-		// 			const newId: { id: number } = await createNewMovie(value)
-		// 			messageApi.open({
-		// 				type: 'success',
-		// 				content: 'Succeccfully created',
-		// 			})
-		// 			navigate(`/movie/${newId.id}`)
-		// 			setUploadDisabled(false)
-		// 		} catch (error) {
-		// 			messageApi.open({
-		// 				type: 'error',
-		// 				content: 'Couldn`t create',
-		// 			})
-		// 		}
-		// 	}
+	const onFinish = async (value: DataOfMusic) => {
+		console.log('it is value', value)
+
+		if (id && id !== 'new') {
+			// value.duration = convertToSeconds(value.duration)
+			try {
+				await updateMusicById(value, +id)
+				messageApi.open({
+					type: 'success',
+					content: 'Succeccfully updated',
+				})
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: 'Couldn`t update',
+				})
+			}
+		} else {
+			// value.duration = convertToSeconds(value.duration)
+			try {
+				const newId: { id: number } = await createNewMusic(value)
+				messageApi.open({
+					type: 'success',
+					content: 'Succeccfully created',
+				})
+				navigate(`/music/${newId.id}`)
+				setUploadDisabled(false)
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: 'Couldn`t create',
+				})
+			}
+		}
 	}
 
 	return (
@@ -316,6 +312,11 @@ const EditMusic = () => {
 							</Form.Item>
 						</Flex>
 					</Form>
+					<UploadMusic
+						id={Number(id)}
+						isUpload={isUpload}
+						uploadDisabled={uploadDisabled}
+					></UploadMusic>
 					{/* <Flex vertical gap={150}>
 						<UploadImg
 							imageURL={data?.image ? data.image : ''}

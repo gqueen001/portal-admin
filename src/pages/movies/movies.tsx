@@ -7,7 +7,7 @@ import Actions from '../../components/actions'
 import DeleteModal from '../../components/modal/deleteModal'
 import { TitleOfMovie, TitleOfMovies, MoviesType } from '../../types/movies/movies'
 import { useNavigate } from 'react-router-dom'
-import '../index.css'
+import '../../index.css'
 
 const Movies = () => {
 	const [dataRows, setDataRows] = useState<TitleOfMovies>()

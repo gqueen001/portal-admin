@@ -1,6 +1,6 @@
 export type Music = {
 	id: number
-	// path: string
+	path: string
 	title: {
 		ru: string
 		tk: string
@@ -18,3 +18,9 @@ type MusicRow = {
 }
 
 export type MusicsRow = MusicRow[]
+
+export type DataOfMusic = {
+	id: string
+	titleTk: string
+	titleRu: string
+}
