@@ -9,6 +9,7 @@ const DeleteModal: FC<DeleteModalProps> = ({
 	setCloseModal,
 	deleteId,
 	item,
+	setDelete,
 }): JSX.Element => {
 	const { Text } = Typography
 	const [messageApi, contextHolder] = message.useMessage()
@@ -42,6 +43,7 @@ const DeleteModal: FC<DeleteModalProps> = ({
 			}
 		}
 		setCloseModal(false)
+		setDelete(true)
 	}
 	return (
 		<>

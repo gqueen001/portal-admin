@@ -3,4 +3,5 @@ export interface DeleteModalProps {
 	setCloseModal: (value: boolean) => void
 	deleteId: string
 	item: string
+	setDelete: (value: boolean) => void
 }

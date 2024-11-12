@@ -56,11 +56,11 @@ const Musics = () => {
 		fetchMusics()
 	}, [])
 
-	// useEffect(() => {
-	// 	if (openEditPage) {
-	// 		navigate(`/edit/${movieId}`)
-	// 	}
-	// }, [openEditPage])
+	useEffect(() => {
+		if (openEditPage) {
+			navigate(`/movie/${movieId}`)
+		}
+	}, [openEditPage])
 
 	const columns: TableColumns = [
 		{
@@ -115,7 +115,7 @@ const Musics = () => {
 				type='primary'
 				icon={<PlusOutlined />}
 				onClick={() => {
-					navigate(`/edit/${movieId}`)
+					navigate(`/movie/${movieId}`)
 				}}
 			/> */}
 

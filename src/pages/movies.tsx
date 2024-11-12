@@ -16,17 +16,18 @@ const Movies = () => {
 	const [openEditPage, setOpenEditPage] = useState<boolean>(false)
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 	const [deleteRowId, setDeleteRowId] = useState<string | null>(' ')
+	const [isDelete, setIsDelete] = useState<boolean>(false)
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		if (!openDeleteModal) {
+		if (isDelete) {
 			setDeleteRowId(movieId)
 			setTimeout(() => {
 				setDataRows(prevData => prevData?.filter(item => item.key !== movieId))
 				setDeleteRowId(null)
 			}, 500)
 		}
-	}, [openDeleteModal])
+	}, [isDelete])
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -52,7 +53,7 @@ const Movies = () => {
 
 	useEffect(() => {
 		if (openEditPage) {
-			navigate(`/edit/${movieId}`)
+			navigate(`/movie/${movieId}`)
 		}
 	}, [openEditPage])
 
@@ -109,7 +110,7 @@ const Movies = () => {
 				type='primary'
 				icon={<PlusOutlined />}
 				onClick={() => {
-					navigate(`/edit/${movieId}`)
+					navigate(`/movie/${movieId}`)
 				}}
 			/>
 
@@ -117,6 +118,7 @@ const Movies = () => {
 				isOpen={openDeleteModal}
 				setCloseModal={setOpenDeleteModal}
 				deleteId={movieId}
+				setDelete={setIsDelete}
 				item='movie'
 			/>
 		</>

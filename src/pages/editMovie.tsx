@@ -136,7 +136,7 @@ const EditMovie = () => {
 					type: 'success',
 					content: 'Succeccfully created',
 				})
-				navigate(`/edit/${newId.id}`)
+				navigate(`/movie/${newId.id}`)
 				setUploadDisabled(false)
 			} catch (error) {
 				messageApi.open({
