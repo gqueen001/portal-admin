@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { CategoryById } from '../../types/openModal'
+import { CategoryById } from '../../types/modal/openModal'
 
 export async function getCategories() {
 	const { data } = await axios(`${import.meta.env.VITE_API}/categories/1/sub`)

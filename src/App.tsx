@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './layout'
 import MovieCategories from './pages/categories/Movie'
-import Movies from './pages/movies'
-import Books from './pages/books'
-import Musics from './pages/musics'
-import EditMovie from './pages/editMovie'
+import Movies from './pages/movies/movies'
+import Books from './pages/books/books'
+import Musics from './pages/musics/musics'
+import EditMovie from './pages/movies/editMovie'
+import EditMusic from './pages/musics/editMusic'
 
 const App = () => {
 	return (
@@ -20,6 +21,7 @@ const App = () => {
 						<Route path='books' element={<Books />} />
 						<Route path='musics' element={<Musics />} />
 						<Route path='movie/:id' element={<EditMovie />} />
+						<Route path='music/:id' element={<EditMusic />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>

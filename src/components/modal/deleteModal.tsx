@@ -1,4 +1,4 @@
-import { DeleteModalProps } from '../../types/deleteModal'
+import { DeleteModalProps } from '../../types/modal/deleteModal.ts'
 import { FC } from 'react'
 import { message, Typography, Modal } from 'antd'
 import { deleteCategory } from '../../services/categories/movie.ts'

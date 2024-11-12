@@ -14,13 +14,13 @@ import {
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import UploadImg from '../components/uploadImg'
-import { getMovieById, updateMovieById, createNewMovie } from '../services/movies'
-import { getCategories } from '../services/categories/movie'
-import { DataOfMovie, Categories } from '../types/editMovie'
-import { Movie } from '../types/movies'
-import { convertToSeconds, convertToHour } from '../utils/converter'
-import UploadMovie from '../components/uploadMovie'
+import UploadImg from '../../components/uploadImg'
+import { getMovieById, updateMovieById, createNewMovie } from '../../services/movies'
+import { getCategories } from '../../services/categories/movie'
+import { DataOfMovie, Categories } from '../../types/movies/editMovie'
+import { Movie } from '../../types/movies/movies'
+import { convertToSeconds, convertToHour } from '../../utils/converter'
+import UploadMovie from '../../components/uploadMovie'
 
 const EditMovie = () => {
 	const { TextArea } = Input

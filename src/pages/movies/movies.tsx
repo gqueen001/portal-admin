@@ -1,50 +1,46 @@
 import { FloatButton, message, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
-import { TableColumns } from '../types/table'
-import { getMusics } from '../services/musics.ts'
-import Actions from '../components/actions'
-import DeleteModal from '../components/modal/deleteModal'
-import { TitleOfMovie, TitleOfMovies, MoviesType } from '../types/movies'
+import { TableColumns } from '../../types/table'
+import { getMovies } from '../../services/movies.ts'
+import Actions from '../../components/actions'
+import DeleteModal from '../../components/modal/deleteModal'
+import { TitleOfMovie, TitleOfMovies, MoviesType } from '../../types/movies/movies'
 import { useNavigate } from 'react-router-dom'
 import '../index.css'
-import { MusicsType, Music, MusicsRow } from '../types/musics.ts'
 
-const Musics = () => {
-	const [dataRows, setDataRows] = useState<MusicsRow>()
+const Movies = () => {
+	const [dataRows, setDataRows] = useState<TitleOfMovies>()
 	const [messageApi, contextHolder] = message.useMessage()
 	const [movieId, setMovieId] = useState<string>('new')
 	const [openEditPage, setOpenEditPage] = useState<boolean>(false)
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 	const [deleteRowId, setDeleteRowId] = useState<string | null>(' ')
+	const [isDelete, setIsDelete] = useState<boolean>(false)
 	const navigate = useNavigate()
 
-	// useEffect(() => {
-	// 	if (!openDeleteModal) {
-	// 		setDeleteRowId(movieId)
-	// 		setTimeout(() => {
-	// 			setDataRows(prevData => prevData?.filter(item => item.key !== movieId))
-	// 			setDeleteRowId(null)
-	// 		}, 500)
-	// 	}
-	// }, [openDeleteModal])
-
-	console.log('it is row', dataRows)
+	useEffect(() => {
+		if (isDelete) {
+			setDeleteRowId(movieId)
+			setTimeout(() => {
+				setDataRows(prevData => prevData?.filter(item => item.key !== movieId))
+				setDeleteRowId(null)
+			}, 500)
+			setIsDelete(false)
+		}
+	}, [isDelete])
 
 	useEffect(() => {
-		const fetchMusics = async () => {
+		const fetchCategories = async () => {
 			try {
-				const musicsTitle: MusicsType = await getMusics()
-				console.log('it is musics', musicsTitle.musics)
-
+				const moviesTitle: MoviesType = await getMovies()
 				setDataRows(
-					musicsTitle.musics.map(music => ({
-						key: `${music.id}`,
-						titleRu: music.title.ru,
-						titleTk: music.title.tk,
+					moviesTitle.map((movie: any) => ({
+						key: `${movie.id}`,
+						titleTk: movie.title.tk,
+						titleRu: movie.title.ru,
 					}))
 				)
-				// setDataRows(musicsTitle.musics)
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
@@ -53,7 +49,7 @@ const Musics = () => {
 			}
 		}
 
-		fetchMusics()
+		fetchCategories()
 	}, [])
 
 	useEffect(() => {
@@ -99,34 +95,35 @@ const Musics = () => {
 				columns={columns}
 				style={{ width: '100%' }}
 				dataSource={dataRows}
-				// rowClassName={(record: TitleOfMovie) =>
-				// 	record.key === deleteRowId ? 'fade-row fade-exit' : 'fade-row'
-				// }
-				// onRow={(record: TitleOfMovie) => {
-				// 	return {
-				// 		onClick: () => {
-				// 			setMovieId(record.key)
-				// 		},
-				// 	}
-				// }}
+				rowClassName={(record: TitleOfMovie) =>
+					record.key === deleteRowId ? 'fade-row fade-exit' : 'fade-row'
+				}
+				onRow={(record: TitleOfMovie) => {
+					return {
+						onClick: () => {
+							setMovieId(record.key)
+						},
+					}
+				}}
 			/>
 
-			{/* <FloatButton
+			<FloatButton
 				type='primary'
 				icon={<PlusOutlined />}
 				onClick={() => {
 					navigate(`/movie/${movieId}`)
 				}}
-			/> */}
+			/>
 
-			{/* <DeleteModal
+			<DeleteModal
 				isOpen={openDeleteModal}
 				setCloseModal={setOpenDeleteModal}
 				deleteId={movieId}
+				setDelete={setIsDelete}
 				item='movie'
-			/> */}
+			/>
 		</>
 	)
 }
 
-export default Musics
+export default Movies

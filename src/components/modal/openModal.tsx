@@ -1,7 +1,7 @@
 import { Divider, Flex, Form, Input, message, Modal } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { Category } from '../../types/categories/movie'
-import { CategoryById, ModalProps } from '../../types/openModal'
+import { CategoryById, ModalProps } from '../../types/modal/openModal'
 import {
 	getCategoriesById,
 	updateCategoriesById,

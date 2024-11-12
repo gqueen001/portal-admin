@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { DataOfMovie } from '../types/editMovie'
+import { DataOfMovie } from '../types/movies/editMovie'
 
 export async function getMovieById(id: number) {
 	const { data } = await axios(`${import.meta.env.VITE_API}/movies/${id}`)

@@ -2,7 +2,7 @@ import { Progress, Upload, Button, Flex, message } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import { uploadMovie } from '../services/movies'
-import { UploadMovieProps } from '../types/movies.ts'
+import { UploadMovieProps } from '../types/movies/movies.ts'
 import { UploadFile } from 'antd/es/upload/interface'
 
 type uploading = {
