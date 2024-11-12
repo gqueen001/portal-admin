@@ -16,16 +16,16 @@ const Layout = () => {
 					label: 'Movie',
 					icon: <MailOutlined />,
 				},
-				{
-					key: '/category/music',
-					label: 'Music',
-					icon: <MailOutlined />,
-				},
-				{
-					key: '/category/book',
-					label: 'Book',
-					icon: <MailOutlined />,
-				},
+				// {
+				// 	key: '/category/music',
+				// 	label: 'Music',
+				// 	icon: <MailOutlined />,
+				// },
+				// {
+				// 	key: '/category/book',
+				// 	label: 'Book',
+				// 	icon: <MailOutlined />,
+				// },
 			],
 		},
 		{
