@@ -15,6 +15,7 @@ const MovieCategories = () => {
 	const [categoryId, setCategoryId] = useState<string>('')
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 	const [deleteRowId, setDeleteRowId] = useState<string | null>('')
+	const [isDelete, setIsDelete] = useState<boolean>(false)
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -37,18 +38,19 @@ const MovieCategories = () => {
 		}
 
 		fetchCategories()
-	}, [openEditModal, openDeleteModal])
+	}, [openEditModal])
 
 	useEffect(() => {
-		if (!openDeleteModal) {
+		if (isDelete) {
 			setDeleteRowId(categoryId)
 
 			setTimeout(() => {
 				setDataRows(prevData => prevData?.filter(item => item.key !== categoryId))
 				setDeleteRowId(null)
 			}, 500)
+			setIsDelete(false)
 		}
-	}, [openDeleteModal])
+	}, [isDelete])
 
 	const columns: TableColumns = [
 		{
@@ -116,6 +118,7 @@ const MovieCategories = () => {
 				isOpen={openDeleteModal}
 				setCloseModal={setOpenDeleteModal}
 				deleteId={categoryId}
+				setDelete={setIsDelete}
 				item='category'
 			/>
 		</>

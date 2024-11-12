@@ -26,6 +26,7 @@ const Movies = () => {
 				setDataRows(prevData => prevData?.filter(item => item.key !== movieId))
 				setDeleteRowId(null)
 			}, 500)
+			setIsDelete(false)
 		}
 	}, [isDelete])
 
