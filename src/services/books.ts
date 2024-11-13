@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export async function getBook() {
-	const { data } = await axios(`${import.meta.env.VITE_API}/books?page=1&count=10}`)
+export async function getBooks() {
+	const { data } = await axios(`${import.meta.env.VITE_API}/books/admin`)
 	return data
 }
