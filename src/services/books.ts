@@ -36,3 +36,8 @@ export async function deleteBook(id: number) {
 	const { data } = await axios.delete(`${import.meta.env.VITE_API}/musics/${id}`)
 	return data
 }
+
+export async function uploadBook(id: number, file: any) {
+	const { data } = await axios.post(`${import.meta.env.VITE_API}/books/${id}`, file)
+	return data
+}

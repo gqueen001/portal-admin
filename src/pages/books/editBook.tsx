@@ -5,6 +5,8 @@ import UploadMusic from '../../components/uploadMusic'
 import { Music, DataOfMusic } from '../../types/musics/musics'
 import { getMusicById, updateMusicById, createNewMusic } from '../../services/musics'
 import { getBookById, updateBookById, createNewBook } from '../../services/books'
+// import { UploadBook } from '../../services/books'
+import UploadBook from '../../components/uploadBook'
 
 const EditMusic = () => {
 	const { TextArea } = Input
@@ -166,11 +168,11 @@ const EditMusic = () => {
 							</Form.Item>
 						</Flex>
 					</Form>
-					<UploadMusic
+					<UploadBook
 						id={Number(id)}
 						isUpload={isUpload}
 						uploadDisabled={uploadDisabled}
-					></UploadMusic>
+					></UploadBook>
 				</div>
 			</ConfigProvider>
 		</>
