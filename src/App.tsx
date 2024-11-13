@@ -6,6 +6,7 @@ import Books from './pages/books/books'
 import Musics from './pages/musics/musics'
 import EditMovie from './pages/movies/editMovie'
 import EditMusic from './pages/musics/editMusic'
+import EditBook from './pages/books/editBook'
 
 const App = () => {
 	return (
@@ -22,6 +23,7 @@ const App = () => {
 						<Route path='musics' element={<Musics />} />
 						<Route path='movie/:id' element={<EditMovie />} />
 						<Route path='music/:id' element={<EditMusic />} />
+						<Route path='book/:id' element={<EditBook />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>

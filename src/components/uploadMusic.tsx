@@ -5,11 +5,6 @@ import { uploadMusic } from '../services/musics'
 import { UploadMovieProps } from '../types/movies/movies.ts'
 import { UploadFile } from 'antd/es/upload/interface'
 
-type uploading = {
-	uid: string
-	name: string
-	status: string
-}
 const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 	const [percent, setPersent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
@@ -21,18 +16,6 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		}
 	}, [isUpload])
 
-	// const videoFraction = () => {
-	// 	const url = `${import.meta.env.VITE_API}/movies/fraction/${id}`
-	// 	const source = new EventSource(url)
-
-	// 	source.onmessage = event => {
-	// 		setPersent(event.data)
-	// 		if (+event.data === 100) {
-	// 			source.close()
-	// 		}
-	// 	}
-	// }
-
 	const uploadFile = async (options: any) => {
 		setPersent(0)
 
@@ -42,19 +25,15 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 
 		console.log('it is work', file)
 
-		// const { file, onSuccess, onError } = options
+		try {
+			setFileList([{ uid: file.uid, name: file.name, status: 'uploading' }])
 
-		// try {
-		// 	setFileList([{ uid: file.uid, name: file.name, status: 'uploading' }])
+			await new Promise(resolve => setTimeout(resolve, 1000))
 
-		// 	await new Promise(resolve => setTimeout(resolve, 1000))
-
-		// 	setFileList([{ uid: file.uid, name: file.name, status: 'done' }])
-		// 	// onSuccess('ok')
-		// } catch (error) {
-		// 	setFileList([{ uid: file.uid, name: file.name, status: 'error' }])
-		// 	// onError(error)
-		// }
+			setFileList([{ uid: file.uid, name: file.name, status: 'done' }])
+		} catch (error) {
+			setFileList([{ uid: file.uid, name: file.name, status: 'error' }])
+		}
 		try {
 			await uploadMusic(id, file)
 
@@ -62,7 +41,6 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 				type: 'success',
 				content: 'Successfully uploaded',
 			})
-			// videoFraction()
 		} catch (error) {
 			messageApi.open({
 				type: 'error',
@@ -70,8 +48,6 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 			})
 		}
 	}
-
-	// const uploadingFile = async (options: any) => {}
 
 	return (
 		<>
@@ -81,8 +57,7 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 					name='file'
 					customRequest={uploadFile}
 					showUploadList={false}
-					// customRequest={uploadingFile}
-					// fileList={fileList}
+					fileList={fileList}
 				>
 					<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
 						Click to upload movie

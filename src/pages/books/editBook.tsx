@@ -1,5 +1,6 @@
 import {
 	Button,
+	Checkbox,
 	ConfigProvider,
 	Divider,
 	Flex,
@@ -13,15 +14,17 @@ import {
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import UploadImg from '../../components/uploadImg'
+import UploadMusic from '../../components/uploadMusic'
 import { getMovieById, updateMovieById, createNewMovie } from '../../services/movies'
 import { getCategories } from '../../services/categories/movie'
 import { DataOfMovie, Categories } from '../../types/movies/editMovie'
 import { Movie } from '../../types/movies/movies'
 import { convertToSeconds, convertToHour } from '../../utils/converter'
 import UploadMovie from '../../components/uploadMovie'
+import { Music, DataOfMusic } from '../../types/musics/musics'
+import { getMusicById, updateMusicById, createNewMusic } from '../../services/musics'
 
-const EditMovie = () => {
+const EditBook = () => {
 	const { TextArea } = Input
 	const theme: ThemeConfig = {
 		components: {
@@ -31,9 +34,9 @@ const EditMovie = () => {
 		},
 	}
 
-	const [data, setData] = useState<DataOfMovie>()
+	const [data, setData] = useState<DataOfMusic>()
 	const [messageApi, contextHolder] = message.useMessage()
-	const [categories, setCategories] = useState<Categories>([{ id: 0, title: { ru: '', tk: '' } }])
+	// const [categories, setCategories] = useState<Categories>([{ id: 0, title: { ru: '', tk: '' } }])
 	const [updateImage, setUpdateImage] = useState(false)
 	const [isUpload, setIsUpload] = useState<boolean>(false)
 	const [uploadDisabled, setUploadDisabled] = useState<boolean>(true)
@@ -43,26 +46,19 @@ const EditMovie = () => {
 
 	useEffect(() => {
 		if (id && id !== 'new') {
-			const fetchMovieById = async () => {
+			const fetchMusicById = async () => {
 				try {
-					const movie: Movie = await getMovieById(+id)
+					const music: Music = await getMusicById(+id)
+					console.log('it is music', music)
 
 					setData({
-						titleRu: movie.title.ru,
-						titleTk: movie.title.tk,
-						categoryTk: movie.sub_categories.map(category => {
-							return {
-								value: category.id,
-							}
-						}),
-						duration: `${movie.duration}`,
-						descriptionRu: movie.description.ru,
-						descriptionTk: movie.description.tk,
-						image: movie.image,
+						id: `${music.id}`,
+						titleRu: music.title.ru,
+						titleTk: music.title.tk,
 					})
 
-					setIsUpload(movie.is_uploaded)
-					setUpdateImage(false)
+					// setIsUpload(movie.is_uploaded)
+					// setUpdateImage(false)
 					setUploadDisabled(false)
 				} catch (error) {
 					messageApi.open({
@@ -72,21 +68,21 @@ const EditMovie = () => {
 				}
 			}
 
-			fetchMovieById()
+			fetchMusicById()
 		}
-		const fetchCategory = async () => {
-			try {
-				const categories: Categories = await getCategories()
-				setCategories(categories)
-			} catch (error) {
-				messageApi.open({
-					type: 'error',
-					content: "Couldn't fetch",
-				})
-			}
-		}
+		// 	const fetchCategory = async () => {
+		// 		try {
+		// 			const categories: Categories = await getCategories()
+		// 			setCategories(categories)
+		// 		} catch (error) {
+		// 			messageApi.open({
+		// 				type: 'error',
+		// 				content: "Couldn't fetch",
+		// 			})
+		// 		}
+		// 	}
 
-		fetchCategory()
+		// 	fetchCategory()
 	}, [id, updateImage])
 
 	useEffect(() => {
@@ -94,25 +90,28 @@ const EditMovie = () => {
 			form.setFieldsValue({
 				titleTk: data.titleTk,
 				titleRu: data.titleRu,
-				descriptionRu: data.descriptionRu,
-				descriptionTk: data.descriptionTk,
-				duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
-				categoryTk: data.categoryTk.map(category => category.value),
+				// descriptionRu: data.descriptionRu,
+				// descriptionTk: data.descriptionTk,
+				// duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
+				// status: data.status,
+				// categoryTk: data.categoryTk.map(category => category.value),
 			})
 		}
 	}, [data])
 
-	const selectCategoryTk = categories.map(categoryTk => ({
-		label: categoryTk.title.tk,
-		value: categoryTk.id,
-		name: 'categoryTk',
-	}))
+	// const selectCategoryTk = categories.map(categoryTk => ({
+	// 	label: categoryTk.title.tk,
+	// 	value: categoryTk.id,
+	// 	name: 'categoryTk',
+	// }))
 
-	const onFinish = async (value: DataOfMovie) => {
+	const onFinish = async (value: DataOfMusic) => {
+		console.log('it is value', value)
+
 		if (id && id !== 'new') {
-			value.duration = convertToSeconds(value.duration)
+			// value.duration = convertToSeconds(value.duration)
 			try {
-				await updateMovieById(value, +id)
+				await updateMusicById(value, +id)
 				messageApi.open({
 					type: 'success',
 					content: 'Succeccfully updated',
@@ -124,16 +123,14 @@ const EditMovie = () => {
 				})
 			}
 		} else {
-			value.duration = convertToSeconds(value.duration)
-
+			// value.duration = convertToSeconds(value.duration)
 			try {
-				const newId: { id: number } = await createNewMovie(value)
-
+				const newId: { id: number } = await createNewMusic(value)
 				messageApi.open({
 					type: 'success',
 					content: 'Succeccfully created',
 				})
-				navigate(`/movie/${newId.id}`)
+				navigate(`/music/${newId.id}`)
 				setUploadDisabled(false)
 			} catch (error) {
 				messageApi.open({
@@ -195,7 +192,7 @@ const EditMovie = () => {
 								</Form.Item>
 							</Flex>
 						</div>
-						<div
+						{/* <div
 							style={{
 								backgroundColor: '#ffffff',
 								margin: '0 0 10px 0',
@@ -228,8 +225,8 @@ const EditMovie = () => {
 								borderRadius: '5px',
 							}}
 						>
-							<Divider>Duration</Divider>
-							<Flex justify='center'>
+							<Divider>Duration {id !== 'new' && 'and status'}</Divider>
+							<Flex justify={id === 'new' ? 'center' : 'space-between'}>
 								<Form.Item
 									rules={[{ required: true, message: 'Duration is required' }]}
 									name={'duration'}
@@ -240,6 +237,16 @@ const EditMovie = () => {
 										onChange={value => convertToSeconds(value)}
 									/>
 								</Form.Item>
+								{id !== 'new' && (
+									<Form.Item
+										name='status'
+										valuePropName='checked'
+										initialValue={false}
+										label='Status of movie:'
+									>
+										<Checkbox checked={false}></Checkbox>
+									</Form.Item>
+								)}
 							</Flex>
 						</div>
 						<div
@@ -285,7 +292,7 @@ const EditMovie = () => {
 									/>
 								</Form.Item>
 							</Flex>
-						</div>
+						</div> */}
 
 						<Flex gap={'10px'} justify='flex-end'>
 							<Form.Item>
@@ -305,7 +312,12 @@ const EditMovie = () => {
 							</Form.Item>
 						</Flex>
 					</Form>
-					<Flex vertical gap={150}>
+					<UploadMusic
+						id={Number(id)}
+						isUpload={isUpload}
+						uploadDisabled={uploadDisabled}
+					></UploadMusic>
+					{/* <Flex vertical gap={150}>
 						<UploadImg
 							imageURL={data?.image ? data.image : ''}
 							id={Number(id)}
@@ -317,11 +329,11 @@ const EditMovie = () => {
 							isUpload={isUpload}
 							uploadDisabled={uploadDisabled}
 						></UploadMovie>
-					</Flex>
+					</Flex> */}
 				</div>
 			</ConfigProvider>
 		</>
 	)
 }
 
-export default EditMovie
+export default EditBook

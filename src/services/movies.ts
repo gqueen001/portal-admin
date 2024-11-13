@@ -19,7 +19,6 @@ export async function updateMovieById(value: DataOfMovie, id: number) {
 			tk: value.descriptionTk,
 		},
 		duration: value.duration,
-		status: value.status,
 		sub_categories: value.categoryTk,
 		title: {
 			ru: value.titleRu,

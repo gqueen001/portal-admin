@@ -1,26 +1,7 @@
-import {
-	Button,
-	Checkbox,
-	ConfigProvider,
-	Divider,
-	Flex,
-	Form,
-	Input,
-	Select,
-	TimePicker,
-	type ThemeConfig,
-	message,
-} from 'antd'
+import { Button, ConfigProvider, Divider, Flex, Form, Input, type ThemeConfig, message } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import dayjs from 'dayjs'
 import UploadMusic from '../../components/uploadMusic'
-import { getMovieById, updateMovieById, createNewMovie } from '../../services/movies'
-import { getCategories } from '../../services/categories/movie'
-import { DataOfMovie, Categories } from '../../types/movies/editMovie'
-import { Movie } from '../../types/movies/movies'
-import { convertToSeconds, convertToHour } from '../../utils/converter'
-import UploadMovie from '../../components/uploadMovie'
 import { Music, DataOfMusic } from '../../types/musics/musics'
 import { getMusicById, updateMusicById, createNewMusic } from '../../services/musics'
 
@@ -36,7 +17,6 @@ const EditMusic = () => {
 
 	const [data, setData] = useState<DataOfMusic>()
 	const [messageApi, contextHolder] = message.useMessage()
-	// const [categories, setCategories] = useState<Categories>([{ id: 0, title: { ru: '', tk: '' } }])
 	const [updateImage, setUpdateImage] = useState(false)
 	const [isUpload, setIsUpload] = useState<boolean>(false)
 	const [uploadDisabled, setUploadDisabled] = useState<boolean>(true)
@@ -70,19 +50,6 @@ const EditMusic = () => {
 
 			fetchMusicById()
 		}
-		// 	const fetchCategory = async () => {
-		// 		try {
-		// 			const categories: Categories = await getCategories()
-		// 			setCategories(categories)
-		// 		} catch (error) {
-		// 			messageApi.open({
-		// 				type: 'error',
-		// 				content: "Couldn't fetch",
-		// 			})
-		// 		}
-		// 	}
-
-		// 	fetchCategory()
 	}, [id, updateImage])
 
 	useEffect(() => {
@@ -90,26 +57,14 @@ const EditMusic = () => {
 			form.setFieldsValue({
 				titleTk: data.titleTk,
 				titleRu: data.titleRu,
-				// descriptionRu: data.descriptionRu,
-				// descriptionTk: data.descriptionTk,
-				// duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
-				// status: data.status,
-				// categoryTk: data.categoryTk.map(category => category.value),
 			})
 		}
 	}, [data])
-
-	// const selectCategoryTk = categories.map(categoryTk => ({
-	// 	label: categoryTk.title.tk,
-	// 	value: categoryTk.id,
-	// 	name: 'categoryTk',
-	// }))
 
 	const onFinish = async (value: DataOfMusic) => {
 		console.log('it is value', value)
 
 		if (id && id !== 'new') {
-			// value.duration = convertToSeconds(value.duration)
 			try {
 				await updateMusicById(value, +id)
 				messageApi.open({
@@ -123,7 +78,6 @@ const EditMusic = () => {
 				})
 			}
 		} else {
-			// value.duration = convertToSeconds(value.duration)
 			try {
 				const newId: { id: number } = await createNewMusic(value)
 				messageApi.open({
@@ -192,107 +146,6 @@ const EditMusic = () => {
 								</Form.Item>
 							</Flex>
 						</div>
-						{/* <div
-							style={{
-								backgroundColor: '#ffffff',
-								margin: '0 0 10px 0',
-								padding: '0 10px 10px',
-								borderRadius: '5px',
-							}}
-						>
-							<Divider>Categories</Divider>
-							<Flex justify='center'>
-								<Form.Item
-									rules={[{ required: true, message: 'Categories are required' }]}
-									name={'categoryTk'}
-									label='Categories are in turkmen:'
-								>
-									<Select
-										style={{ width: '200px' }}
-										options={selectCategoryTk}
-										placeholder='Choose categories'
-										mode='multiple'
-									></Select>
-								</Form.Item>
-							</Flex>
-						</div>
-
-						<div
-							style={{
-								backgroundColor: '#ffffff',
-								margin: '0 0 10px 0',
-								padding: '0 10px 10px',
-								borderRadius: '5px',
-							}}
-						>
-							<Divider>Duration {id !== 'new' && 'and status'}</Divider>
-							<Flex justify={id === 'new' ? 'center' : 'space-between'}>
-								<Form.Item
-									rules={[{ required: true, message: 'Duration is required' }]}
-									name={'duration'}
-									label='Duration of movie:'
-								>
-									<TimePicker
-										showNow={false}
-										onChange={value => convertToSeconds(value)}
-									/>
-								</Form.Item>
-								{id !== 'new' && (
-									<Form.Item
-										name='status'
-										valuePropName='checked'
-										initialValue={false}
-										label='Status of movie:'
-									>
-										<Checkbox checked={false}></Checkbox>
-									</Form.Item>
-								)}
-							</Flex>
-						</div>
-						<div
-							style={{
-								backgroundColor: '#ffffff',
-								margin: '0 0 10px 0',
-								padding: '0 10px 10px',
-								borderRadius: '5px',
-							}}
-						>
-							<Divider>Description</Divider>
-							<Flex justify='space-between'>
-								<Form.Item
-									rules={[
-										{
-											required: true,
-											message: 'Description in turkmen is required',
-										},
-									]}
-									name={'descriptionTk'}
-									label='Description in turkmen:'
-								>
-									<TextArea
-										rows={5}
-										placeholder='Write a description about movie'
-										name='descriptionTk'
-									/>
-								</Form.Item>
-								<Form.Item
-									rules={[
-										{
-											required: true,
-											message: 'Description in russian is required',
-										},
-									]}
-									name={'descriptionRu'}
-									label='Description in russian:'
-								>
-									<TextArea
-										rows={5}
-										placeholder='Write a description about movie'
-										name='descriptionRu'
-									/>
-								</Form.Item>
-							</Flex>
-						</div> */}
 
 						<Flex gap={'10px'} justify='flex-end'>
 							<Form.Item>
@@ -317,19 +170,6 @@ const EditMusic = () => {
 						isUpload={isUpload}
 						uploadDisabled={uploadDisabled}
 					></UploadMusic>
-					{/* <Flex vertical gap={150}>
-						<UploadImg
-							imageURL={data?.image ? data.image : ''}
-							id={Number(id)}
-							setUpdateImage={setUpdateImage}
-							uploadDisabled={uploadDisabled}
-						></UploadImg>
-						<UploadMovie
-							id={Number(id)}
-							isUpload={isUpload}
-							uploadDisabled={uploadDisabled}
-						></UploadMovie>
-					</Flex> */}
 				</div>
 			</ConfigProvider>
 		</>

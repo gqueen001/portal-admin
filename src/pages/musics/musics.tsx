@@ -1,14 +1,14 @@
 import { FloatButton, message, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
 import { TableColumns } from '../../types/table'
 import { getMusics } from '../../services/musics.ts'
 import Actions from '../../components/actions'
 import DeleteModal from '../../components/modal/deleteModal'
-import { TitleOfMovie, TitleOfMovies, MoviesType } from '../../types/movies/movies'
-import { useNavigate } from 'react-router-dom'
+import { TitleOfMovie } from '../../types/movies/movies'
+import { MusicsType, MusicsRow } from '../../types/musics/musics.ts'
 import '../../index.css'
-import { MusicsType, Music, MusicsRow } from '../../types/musics/musics.ts'
 
 const Musics = () => {
 	const [dataRows, setDataRows] = useState<MusicsRow>()
@@ -17,34 +17,33 @@ const Musics = () => {
 	const [openEditPage, setOpenEditPage] = useState<boolean>(false)
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 	const [deleteRowId, setDeleteRowId] = useState<string | null>(' ')
+	const [isDelete, setIsDelete] = useState<boolean>(false)
 	const navigate = useNavigate()
 
-	// useEffect(() => {
-	// 	if (!openDeleteModal) {
-	// 		setDeleteRowId(movieId)
-	// 		setTimeout(() => {
-	// 			setDataRows(prevData => prevData?.filter(item => item.key !== movieId))
-	// 			setDeleteRowId(null)
-	// 		}, 500)
-	// 	}
-	// }, [openDeleteModal])
-
-	// console.log('it is row', dataRows)
+	useEffect(() => {
+		if (isDelete) {
+			setDeleteRowId(movieId)
+			setTimeout(() => {
+				setDataRows(prevData => prevData?.filter(item => item.key !== movieId))
+				setDeleteRowId(null)
+			}, 500)
+			setIsDelete(false)
+		}
+	}, [isDelete])
 
 	useEffect(() => {
 		const fetchMusics = async () => {
 			try {
 				const musicsTitle: MusicsType = await getMusics()
-				// console.log('it is musics', musicsTitle.musics)
+				console.log('it is musics', musicsTitle)
 
 				setDataRows(
-					musicsTitle.musics.map(music => ({
+					musicsTitle.map(music => ({
 						key: `${music.id}`,
 						titleRu: music.title.ru,
 						titleTk: music.title.tk,
 					}))
 				)
-				// setDataRows(musicsTitle.musics)
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
@@ -99,9 +98,9 @@ const Musics = () => {
 				columns={columns}
 				style={{ width: '100%' }}
 				dataSource={dataRows}
-				// rowClassName={(record: TitleOfMovie) =>
-				// 	record.key === deleteRowId ? 'fade-row fade-exit' : 'fade-row'
-				// }
+				rowClassName={(record: TitleOfMovie) =>
+					record.key === deleteRowId ? 'fade-row fade-exit' : 'fade-row'
+				}
 				onRow={(record: TitleOfMovie) => {
 					return {
 						onClick: () => {
@@ -119,12 +118,13 @@ const Musics = () => {
 				}}
 			/>
 
-			{/* <DeleteModal
+			<DeleteModal
 				isOpen={openDeleteModal}
 				setCloseModal={setOpenDeleteModal}
 				deleteId={movieId}
-				item='movie'
-			/> */}
+				setDelete={setIsDelete}
+				item='music'
+			/>
 		</>
 	)
 }

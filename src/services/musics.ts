@@ -2,7 +2,7 @@ import axios from 'axios'
 import { DataOfMusic } from '../types/musics/musics'
 
 export async function getMusics() {
-	const { data } = await axios(`${import.meta.env.VITE_API}/musics?page=1&count=10`)
+	const { data } = await axios(`${import.meta.env.VITE_API}/musics/admin`)
 	return data
 }
 
@@ -33,8 +33,15 @@ export async function createNewMusic(value: DataOfMusic) {
 }
 
 export async function uploadMusic(id: number, file: any) {
-	const { data } = await axios.post(`${import.meta.env.VITE_API}/musics/upload/${id}`, file)
-	console.log('it is data', data)
+	console.log('it is id', id)
 
+	const { data } = await axios.post(`${import.meta.env.VITE_API}/musics/${id}`, file)
+	return data
+}
+
+export async function deleteMusic(id: number) {
+	console.log('it is id', id)
+
+	const { data } = await axios.delete(`${import.meta.env.VITE_API}/musics/${id}`)
 	return data
 }

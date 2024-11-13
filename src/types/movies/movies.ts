@@ -1,4 +1,4 @@
-import { Category } from './categories/movie'
+import { Category } from '../categories/movie'
 
 export type TitleOfMovie = {
 	key: string
@@ -13,7 +13,6 @@ export type Movie = {
 	duration: number
 	id: number
 	image: string
-	status: boolean
 	sub_categories: Category[]
 	title: TkAndRu
 	is_uploaded: boolean

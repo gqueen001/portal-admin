@@ -7,9 +7,7 @@ export type Music = {
 	}
 }
 
-export type MusicsType = {
-	musics: Music[]
-}
+export type MusicsType = Music[]
 
 type MusicRow = {
 	key: string

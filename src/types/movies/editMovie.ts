@@ -5,7 +5,6 @@ export type DataOfMovie = {
 	duration: string
 	descriptionTk: string
 	descriptionRu: string
-	status: boolean
 	image?: string
 }
 
