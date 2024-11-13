@@ -4,6 +4,7 @@ import { message, Typography, Modal } from 'antd'
 import { deleteCategory } from '../../services/categories/movie.ts'
 import { deleteMovie } from '../../services/movies.ts'
 import { deleteMusic } from '../../services/musics.ts'
+import { deleteBook } from '../../services/books.ts'
 
 const DeleteModal: FC<DeleteModalProps> = ({
 	isOpen,
@@ -45,6 +46,19 @@ const DeleteModal: FC<DeleteModalProps> = ({
 		} else if (item === 'music') {
 			try {
 				await deleteMusic(+deleteId)
+				messageApi.open({
+					type: 'success',
+					content: 'Successfully deleted',
+				})
+			} catch (error) {
+				messageApi.open({
+					type: 'error',
+					content: "Couldn't delete",
+				})
+			}
+		} else if (item === 'book') {
+			try {
+				await deleteBook(+deleteId)
 				messageApi.open({
 					type: 'success',
 					content: 'Successfully deleted',

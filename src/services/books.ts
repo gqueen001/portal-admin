@@ -31,3 +31,8 @@ export async function createNewBook(value: DataOfMusic) {
 	})
 	return data
 }
+
+export async function deleteBook(id: number) {
+	const { data } = await axios.delete(`${import.meta.env.VITE_API}/musics/${id}`)
+	return data
+}

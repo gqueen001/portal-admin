@@ -33,15 +33,11 @@ export async function createNewMusic(value: DataOfMusic) {
 }
 
 export async function uploadMusic(id: number, file: any) {
-	console.log('it is id', id)
-
 	const { data } = await axios.post(`${import.meta.env.VITE_API}/musics/${id}`, file)
 	return data
 }
 
 export async function deleteMusic(id: number) {
-	console.log('it is id', id)
-
 	const { data } = await axios.delete(`${import.meta.env.VITE_API}/musics/${id}`)
 	return data
 }

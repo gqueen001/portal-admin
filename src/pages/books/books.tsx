@@ -124,7 +124,7 @@ const Musics = () => {
 				setCloseModal={setOpenDeleteModal}
 				deleteId={movieId}
 				setDelete={setIsDelete}
-				item='music'
+				item='book'
 			/>
 		</>
 	)
