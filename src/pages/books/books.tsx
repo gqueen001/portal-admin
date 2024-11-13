@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { TableColumns } from '../../types/table'
-import { getMusics } from '../../services/musics.ts'
+// import { getMusics } from '../../services/musics.ts'
 import Actions from '../../components/actions'
 import DeleteModal from '../../components/modal/deleteModal'
 import { TitleOfMovie } from '../../types/movies/movies'
@@ -58,7 +58,7 @@ const Musics = () => {
 
 	useEffect(() => {
 		if (openEditPage) {
-			navigate(`/music/${movieId}`)
+			navigate(`/book/${movieId}`)
 		}
 	}, [openEditPage])
 
@@ -115,7 +115,7 @@ const Musics = () => {
 				type='primary'
 				icon={<PlusOutlined />}
 				onClick={() => {
-					navigate(`/music/${movieId}`)
+					navigate(`/book/${movieId}`)
 				}}
 			/>
 
