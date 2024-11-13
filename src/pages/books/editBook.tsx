@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import UploadMusic from '../../components/uploadMusic'
 import { Music, DataOfMusic } from '../../types/musics/musics'
 import { getMusicById, updateMusicById, createNewMusic } from '../../services/musics'
-import { getBookById, updateBookById } from '../../services/books'
+import { getBookById, updateBookById, createNewBook } from '../../services/books'
 
 const EditMusic = () => {
 	const { TextArea } = Input
@@ -80,12 +80,12 @@ const EditMusic = () => {
 			}
 		} else {
 			try {
-				const newId: { id: number } = await createNewMusic(value)
+				const newId: { id: number } = await createNewBook(value)
 				messageApi.open({
 					type: 'success',
 					content: 'Succeccfully created',
 				})
-				navigate(`/music/${newId.id}`)
+				navigate(`/book/${newId.id}`)
 				setUploadDisabled(false)
 			} catch (error) {
 				messageApi.open({

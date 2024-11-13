@@ -21,3 +21,13 @@ export async function updateBookById(value: DataOfMusic, id: number) {
 	})
 	return data
 }
+
+export async function createNewBook(value: DataOfMusic) {
+	const { data } = await axios.post(`${import.meta.env.VITE_API}/books`, {
+		title: {
+			ru: value.titleRu,
+			tk: value.titleTk,
+		},
+	})
+	return data
+}
