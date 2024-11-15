@@ -1,9 +1,12 @@
 import { Flex, Menu } from 'antd'
 import { MailOutlined, ReadOutlined } from '@ant-design/icons'
 import { Outlet, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 const Layout = () => {
+	const [validateToken, setValidateToken] = useState<string>()
 	const navigate = useNavigate()
+	// localStorage.removeItem('token')
 
 	const items = [
 		{
@@ -16,16 +19,6 @@ const Layout = () => {
 					label: 'Movie',
 					icon: <MailOutlined />,
 				},
-				// {
-				// 	key: '/category/music',
-				// 	label: 'Music',
-				// 	icon: <MailOutlined />,
-				// },
-				// {
-				// 	key: '/category/book',
-				// 	label: 'Book',
-				// 	icon: <MailOutlined />,
-				// },
 			],
 		},
 		{
@@ -49,7 +42,10 @@ const Layout = () => {
 		<>
 			<Flex gap={'10px'}>
 				<Menu
-					onClick={record => navigate(`${record.key}`)}
+					onClick={record => {
+						navigate(`${record.key}`)
+						setValidateToken(`${record.key}`)
+					}}
 					style={{ width: 256, height: '100vh' }}
 					mode='inline'
 					items={items}

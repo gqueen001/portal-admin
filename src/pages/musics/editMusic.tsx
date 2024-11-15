@@ -23,6 +23,7 @@ const EditMusic = () => {
 	const [form] = Form.useForm()
 	let { id } = useParams()
 	const navigate = useNavigate()
+	console.log('upload', isUpload)
 
 	useEffect(() => {
 		if (id && id !== 'new') {
@@ -37,7 +38,7 @@ const EditMusic = () => {
 						titleTk: music.title.tk,
 					})
 
-					// setIsUpload(movie.is_uploaded)
+					setIsUpload(music.path !== null)
 					// setUpdateImage(false)
 					setUploadDisabled(false)
 				} catch (error) {

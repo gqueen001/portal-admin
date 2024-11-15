@@ -25,15 +25,15 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 
 		console.log('it is work', file)
 
-		try {
-			setFileList([{ uid: file.uid, name: file.name, status: 'uploading' }])
+		// try {
+		// 	setFileList([{ uid: file.uid, name: file.name, status: 'uploading' }])
 
-			await new Promise(resolve => setTimeout(resolve, 1000))
+		// 	await new Promise(resolve => setTimeout(resolve, 1000))
 
-			setFileList([{ uid: file.uid, name: file.name, status: 'done' }])
-		} catch (error) {
-			setFileList([{ uid: file.uid, name: file.name, status: 'error' }])
-		}
+		// 	setFileList([{ uid: file.uid, name: file.name, status: 'done' }])
+		// } catch (error) {
+		// 	setFileList([{ uid: file.uid, name: file.name, status: 'error' }])
+		// }
 		try {
 			await uploadMusic(id, file)
 

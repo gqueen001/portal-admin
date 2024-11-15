@@ -31,16 +31,16 @@ const EditMusic = () => {
 		if (id && id !== 'new') {
 			const fetchBookById = async () => {
 				try {
-					const music: Music = await getBookById(+id)
-					console.log('it is music', music)
+					const book: Music = await getBookById(+id)
+					console.log('it is music', book)
 
 					setData({
-						id: `${music.id}`,
-						titleRu: music.title.ru,
-						titleTk: music.title.tk,
+						id: `${book.id}`,
+						titleRu: book.title.ru,
+						titleTk: book.title.tk,
 					})
 
-					// setIsUpload(movie.is_uploaded)
+					setIsUpload(book.path !== null)
 					// setUpdateImage(false)
 					setUploadDisabled(false)
 				} catch (error) {

@@ -7,14 +7,33 @@ import Musics from './pages/musics/musics'
 import EditMovie from './pages/movies/editMovie'
 import EditMusic from './pages/musics/editMusic'
 import EditBook from './pages/books/editBook'
+import LogIn from './components/login/login'
+import Protected from './components/login/protected'
+import { useEffect } from 'react'
+import { authToken } from './components/login/authToken'
 
 const App = () => {
+	const token = localStorage.getItem('token')
+	const isAuthenticated = token ? true : false
+	console.log('it is isauth', isAuthenticated)
+	localStorage.removeItem('token')
+	// useEffect(() => {
+	// 	const token = localStorage.getItem('token')
+	// 	authToken(token)
+	// })
 	return (
 		<>
 			<BrowserRouter>
 				<Routes>
-					<Route element={<Layout />}>
-						<Route path='/' />
+					<Route path='/login' element={<LogIn />} />
+					<Route
+						path='/'
+						element={
+							<Protected isAuthenticated={isAuthenticated} outlet={<Layout />} />
+						}
+					>
+						{/* <Route element={<Layout />}> */}
+						{/* <Route path='/' /> */}
 						<Route path='category'>
 							<Route path='movie' element={<MovieCategories />} />
 						</Route>
@@ -24,6 +43,7 @@ const App = () => {
 						<Route path='movie/:id' element={<EditMovie />} />
 						<Route path='music/:id' element={<EditMusic />} />
 						<Route path='book/:id' element={<EditBook />} />
+						{/* </Route> */}
 					</Route>
 				</Routes>
 			</BrowserRouter>
