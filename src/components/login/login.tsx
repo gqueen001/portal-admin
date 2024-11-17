@@ -6,21 +6,23 @@ import { useNavigate } from 'react-router-dom'
 
 const LogIn = () => {
 	const [messageApi, contextHolder] = message.useMessage()
-	const [token, setToken] = useState<string>()
+	// const [token, setToken] = useState<string>('')
 	const navigate = useNavigate()
 
-	useEffect(() => {
-		localStorage.setItem('token', JSON.stringify(token))
-		navigate('/')
-	}, [token])
-
+	// useEffect(() => {
+	// 	localStorage.setItem('token', JSON.stringify(token))
+	// 	navigate('/')
+	// }, [token])
+	// localStorage.removeItem('token')
 	const onFinish = async (values: Login) => {
 		console.log('it is value', values)
 
 		try {
 			const token: { token: any } = await createLogin(values)
-			console.log('it is token', token)
-			setToken(token.token)
+			console.log('it is token', token.token)
+			navigate('/')
+			localStorage.setItem('token', JSON.stringify(token.token))
+			// setToken(token.token)
 			// messageApi.open({
 			// 	type: 'success',
 			// 	content: 'Succeccfully loged in',

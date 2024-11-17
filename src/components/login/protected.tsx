@@ -8,6 +8,7 @@ export type TProps = {
 }
 
 const Protected: FC<TProps> = ({ isAuthenticated, outlet }) => {
+	console.log('it is protected', isAuthenticated)
 	if (isAuthenticated) {
 		return outlet
 	}

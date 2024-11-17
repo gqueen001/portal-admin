@@ -1,8 +1,20 @@
 import axios from 'axios'
 import { DataOfMusic } from '../types/musics/musics'
+import { useNavigate } from 'react-router-dom'
+// const navigate = useNavigate()
+
+const token = localStorage.getItem('token')
+// const config = {
+// 	headers: {
+// 		Authorization: `Bearer ${token}`,
+// 	},
+// }
 
 export async function getBooks() {
 	const { data } = await axios(`${import.meta.env.VITE_API}/books/admin`)
+	// data.then((response: { data: any }) => {
+	// 	console.log(response.data)
+	// })
 	return data
 }
 
