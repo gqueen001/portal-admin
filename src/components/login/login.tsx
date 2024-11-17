@@ -1,7 +1,6 @@
 import { Form, Input, Button, Flex, message } from 'antd'
-import { Login } from '../../types/login'
-import { createLogin } from '../../services/login'
-import { useEffect, useState } from 'react'
+import { Login } from '@/types/login'
+import { createLogin } from '@/services/login'
 import { useNavigate } from 'react-router-dom'
 
 const LogIn = () => {
@@ -15,13 +14,10 @@ const LogIn = () => {
 	// }, [token])
 	// localStorage.removeItem('token')
 	const onFinish = async (values: Login) => {
-		console.log('it is value', values)
-
 		try {
 			const token: { token: any } = await createLogin(values)
-			console.log('it is token', token.token)
-			navigate('/')
 			localStorage.setItem('token', JSON.stringify(token.token))
+			navigate('/')
 			// setToken(token.token)
 			// messageApi.open({
 			// 	type: 'success',

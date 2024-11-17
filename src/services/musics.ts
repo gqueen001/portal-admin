@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import { DataOfMusic } from '../types/musics/musics'
 
 export async function getMusics() {

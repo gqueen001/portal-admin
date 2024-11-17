@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import { DataOfMovie } from '../types/movies/editMovie'
 
 export async function getMovieById(id: number) {

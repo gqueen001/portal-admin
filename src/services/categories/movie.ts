@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import { CategoryById } from '../../types/modal/openModal'
 
 export async function getCategories() {

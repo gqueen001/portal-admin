@@ -2,14 +2,12 @@ import { FC } from 'react'
 import { Navigate } from 'react-router-dom'
 
 export type TProps = {
-	isAuthenticated: boolean
 	authPath?: string
 	outlet: JSX.Element
 }
 
-const Protected: FC<TProps> = ({ isAuthenticated, outlet }) => {
-	console.log('it is protected', isAuthenticated)
-	if (isAuthenticated) {
+const Protected: FC<TProps> = ({ outlet }) => {
+	if (localStorage.getItem('token')) {
 		return outlet
 	}
 	return <Navigate to={{ pathname: '/login' }} />

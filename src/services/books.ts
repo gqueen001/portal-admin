@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import { DataOfMusic } from '../types/musics/musics'
 import { useNavigate } from 'react-router-dom'
 // const navigate = useNavigate()
