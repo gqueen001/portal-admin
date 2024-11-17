@@ -1,13 +1,13 @@
 import { FloatButton, message, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
-import { TableColumns } from '../../types/table'
-import { getMovies } from '../../services/movies.ts'
-import Actions from '../../components/actions'
-import DeleteModal from '../../components/modal/deleteModal'
-import { TitleOfMovie, TitleOfMovies, MoviesType } from '../../types/movies/movies'
+import { TableColumns } from '@/types/table'
+import { getMovies } from '@/services/movies.ts'
+import Actions from '@/components/actions'
+import DeleteModal from '@/components/modal/deleteModal'
+import { TitleOfMovie, TitleOfMovies, MoviesType } from '@/types/movies/movies'
 import { useNavigate } from 'react-router-dom'
-import '../../index.css'
+import '@/index.css'
 
 const Movies = () => {
 	const [dataRows, setDataRows] = useState<TitleOfMovies>()

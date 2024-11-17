@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosInstance } from 'axios'
 import baseAxios from 'axios'
 
-let baseURL = `${import.meta.env.VITE_API_URL}`
+let baseURL = `${import.meta.env.VITE_API}`
 
 export const getAxios = (): AxiosInstance => {
 	const instance = baseAxios.create({
@@ -19,6 +19,7 @@ export const getAxios = (): AxiosInstance => {
 	instance.interceptors.response.use(undefined, (error: AxiosError) => {
 		if (error.response?.status === 403 || error.response?.status === 401) {
 			localStorage.removeItem('token')
+			window.location.href = '/login'
 		}
 		return Promise.reject(error)
 	})

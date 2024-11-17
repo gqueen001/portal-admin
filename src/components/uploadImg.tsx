@@ -2,8 +2,8 @@ import { UploadOutlined } from '@ant-design/icons'
 import ImgCrop from 'antd-img-crop'
 import { Upload, Button, Image, message, Flex } from 'antd'
 import { FC, useState } from 'react'
-import { UploadImgProps } from '../types/movies/movies.ts'
-import { uploadImg } from '../services/movies'
+import { UploadImgProps } from '@/types/movies/movies.ts'
+import { uploadImg } from '@/services/movies'
 
 const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage, uploadDisabled }) => {
 	const [messageApi, contextHolder] = message.useMessage()

@@ -1,10 +1,10 @@
-import { DeleteModalProps } from '../../types/modal/deleteModal.ts'
+import { DeleteModalProps } from '@/types/modal/deleteModal.ts'
 import { FC } from 'react'
 import { message, Typography, Modal } from 'antd'
-import { deleteCategory } from '../../services/categories/movie.ts'
-import { deleteMovie } from '../../services/movies.ts'
-import { deleteMusic } from '../../services/musics.ts'
-import { deleteBook } from '../../services/books.ts'
+import { deleteCategory } from '@/services/categories/movie.ts'
+import { deleteMovie } from '@/services/movies.ts'
+import { deleteMusic } from '@/services/musics.ts'
+import { deleteBook } from '@/services/books.ts'
 
 const DeleteModal: FC<DeleteModalProps> = ({
 	isOpen,

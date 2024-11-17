@@ -2,13 +2,13 @@ import { FloatButton, message, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { TableColumns } from '../../types/table'
-import { getMusics } from '../../services/musics.ts'
-import Actions from '../../components/actions'
-import DeleteModal from '../../components/modal/deleteModal'
-import { TitleOfMovie } from '../../types/movies/movies'
-import { MusicsType, MusicsRow } from '../../types/musics/musics.ts'
-import '../../index.css'
+import { TableColumns } from '@/types/table'
+import { getMusics } from '@/services/musics.ts'
+import Actions from '@/components/actions'
+import DeleteModal from '@/components/modal/deleteModal'
+import { TitleOfMovie } from '@/types/movies/movies'
+import { MusicsType, MusicsRow } from '@/types/musics/musics.ts'
+import '@/index.css'
 
 const Musics = () => {
 	const [dataRows, setDataRows] = useState<MusicsRow>()
@@ -35,7 +35,6 @@ const Musics = () => {
 		const fetchMusics = async () => {
 			try {
 				const musicsTitle: MusicsType = await getMusics()
-				console.log('it is musics', musicsTitle)
 
 				setDataRows(
 					musicsTitle.map(music => ({

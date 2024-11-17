@@ -1,15 +1,11 @@
 import { Button, ConfigProvider, Divider, Flex, Form, Input, type ThemeConfig, message } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import UploadMusic from '../../components/uploadMusic'
-import { Music, DataOfMusic } from '../../types/musics/musics'
-import { getMusicById, updateMusicById, createNewMusic } from '../../services/musics'
-import { getBookById, updateBookById, createNewBook } from '../../services/books'
-// import { UploadBook } from '../../services/books'
-import UploadBook from '../../components/uploadBook'
+import { Music, DataOfMusic } from '@/types/musics/musics'
+import { getBookById, updateBookById, createNewBook } from '@/services/books'
+import UploadBook from '@/components/uploadBook'
 
 const EditMusic = () => {
-	const { TextArea } = Input
 	const theme: ThemeConfig = {
 		components: {
 			Form: {
@@ -32,7 +28,6 @@ const EditMusic = () => {
 			const fetchBookById = async () => {
 				try {
 					const book: Music = await getBookById(+id)
-					console.log('it is music', book)
 
 					setData({
 						id: `${book.id}`,
@@ -41,7 +36,6 @@ const EditMusic = () => {
 					})
 
 					setIsUpload(book.path !== null)
-					// setUpdateImage(false)
 					setUploadDisabled(false)
 				} catch (error) {
 					messageApi.open({
@@ -65,8 +59,6 @@ const EditMusic = () => {
 	}, [data])
 
 	const onFinish = async (value: DataOfMusic) => {
-		console.log('it is value', value)
-
 		if (id && id !== 'new') {
 			try {
 				await updateBookById(value, +id)

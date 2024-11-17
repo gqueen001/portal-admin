@@ -1,18 +1,18 @@
 import axios from '@/plugins/axios'
-import { DataOfMovie } from '../types/movies/editMovie'
+import { DataOfMovie } from '@/types/movies/editMovie'
 
 export async function getMovieById(id: number) {
-	const { data } = await axios(`${import.meta.env.VITE_API}/movies/${id}`)
+	const { data } = await axios(`/movies/${id}`)
 	return data
 }
 
 export async function getMovies() {
-	const { data } = await axios(`${import.meta.env.VITE_API}/movies/admin`)
+	const { data } = await axios(`/movies/admin`)
 	return data
 }
 
 export async function updateMovieById(value: DataOfMovie, id: number) {
-	const { data } = await axios.put(`${import.meta.env.VITE_API}/movies`, {
+	const { data } = await axios.put(`/movies`, {
 		id,
 		description: {
 			ru: value.descriptionRu,
@@ -30,17 +30,17 @@ export async function updateMovieById(value: DataOfMovie, id: number) {
 }
 
 export async function uploadImg(id: number, file: any) {
-	const { data } = await axios.post(`${import.meta.env.VITE_API}/movies/image/${id}`, file)
+	const { data } = await axios.post(`/movies/image/${id}`, file)
 	return data
 }
 
 export async function uploadMovie(id: number, file: any) {
-	const { data } = await axios.post(`${import.meta.env.VITE_API}/movies/${id}`, file)
+	const { data } = await axios.post(`/movies/${id}`, file)
 	return data
 }
 
 export async function createNewMovie(value: DataOfMovie) {
-	const { data } = await axios.post(`${import.meta.env.VITE_API}/movies`, {
+	const { data } = await axios.post(`/movies`, {
 		title: {
 			tk: value.titleTk,
 			ru: value.titleRu,
@@ -57,6 +57,6 @@ export async function createNewMovie(value: DataOfMovie) {
 }
 
 export async function deleteMovie(id: number) {
-	const { data } = await axios.delete(`${import.meta.env.VITE_API}/movies/${id}`)
+	const { data } = await axios.delete(`/movies/${id}`)
 	return data
 }

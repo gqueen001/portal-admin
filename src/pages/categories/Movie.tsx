@@ -1,12 +1,12 @@
 import { FloatButton, message, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
-import { TableColumns, TableRows, TableRow } from '../../types/table'
-import { Categories } from '../../types/categories/movie'
-import { getCategories } from '../../services/categories/movie.ts'
-import Actions from '../../components/actions'
-import OpenModal from '../../components/modal/openModal'
-import DeleteModal from '../../components/modal/deleteModal'
+import { TableColumns, TableRows, TableRow } from '@/types/table'
+import { Categories } from '@/types/categories/movie'
+import { getCategories } from '@/services/categories/movie.ts'
+import Actions from '@/components/actions'
+import OpenModal from '@/components/modal/openModal'
+import DeleteModal from '@/components/modal/deleteModal'
 
 const MovieCategories = () => {
 	const [dataRows, setDataRows] = useState<TableRows>()

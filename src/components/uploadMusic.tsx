@@ -1,8 +1,8 @@
 import { Progress, Upload, Button, Flex, message } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
-import { uploadMusic } from '../services/musics'
-import { UploadMovieProps } from '../types/movies/movies.ts'
+import { uploadMusic } from '@/services/musics'
+import { UploadMovieProps } from '@/types/movies/movies.ts'
 import { UploadFile } from 'antd/es/upload/interface'
 
 const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
@@ -23,17 +23,6 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		const formData = new FormData()
 		formData.append('music', file.arrayBuffer())
 
-		console.log('it is work', file)
-
-		// try {
-		// 	setFileList([{ uid: file.uid, name: file.name, status: 'uploading' }])
-
-		// 	await new Promise(resolve => setTimeout(resolve, 1000))
-
-		// 	setFileList([{ uid: file.uid, name: file.name, status: 'done' }])
-		// } catch (error) {
-		// 	setFileList([{ uid: file.uid, name: file.name, status: 'error' }])
-		// }
 		try {
 			await uploadMusic(id, file)
 

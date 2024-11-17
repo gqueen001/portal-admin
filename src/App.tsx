@@ -16,13 +16,7 @@ const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route path='/login' element={<LogIn />} />
-					<Route
-						path='/'
-						element={
-							// <Layout />
-							<Protected outlet={<Layout />} />
-						}
-					>
+					<Route path='/' element={<Protected outlet={<Layout />} />}>
 						<Route path='category'>
 							<Route path='movie' element={<MovieCategories />} />
 						</Route>

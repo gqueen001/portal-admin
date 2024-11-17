@@ -1,12 +1,11 @@
 import { Button, ConfigProvider, Divider, Flex, Form, Input, type ThemeConfig, message } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import UploadMusic from '../../components/uploadMusic'
-import { Music, DataOfMusic } from '../../types/musics/musics'
-import { getMusicById, updateMusicById, createNewMusic } from '../../services/musics'
+import UploadMusic from '@/components/uploadMusic'
+import { Music, DataOfMusic } from '@/types/musics/musics'
+import { getMusicById, updateMusicById, createNewMusic } from '@/services/musics'
 
 const EditMusic = () => {
-	const { TextArea } = Input
 	const theme: ThemeConfig = {
 		components: {
 			Form: {
@@ -23,14 +22,12 @@ const EditMusic = () => {
 	const [form] = Form.useForm()
 	let { id } = useParams()
 	const navigate = useNavigate()
-	console.log('upload', isUpload)
 
 	useEffect(() => {
 		if (id && id !== 'new') {
 			const fetchMusicById = async () => {
 				try {
 					const music: Music = await getMusicById(+id)
-					console.log('it is music', music)
 
 					setData({
 						id: `${music.id}`,
@@ -39,7 +36,6 @@ const EditMusic = () => {
 					})
 
 					setIsUpload(music.path !== null)
-					// setUpdateImage(false)
 					setUploadDisabled(false)
 				} catch (error) {
 					messageApi.open({
@@ -63,8 +59,6 @@ const EditMusic = () => {
 	}, [data])
 
 	const onFinish = async (value: DataOfMusic) => {
-		console.log('it is value', value)
-
 		if (id && id !== 'new') {
 			try {
 				await updateMusicById(value, +id)

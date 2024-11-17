@@ -1,18 +1,18 @@
 import axios from '@/plugins/axios'
-import { CategoryById } from '../../types/modal/openModal'
+import { CategoryById } from '@/types/modal/openModal'
 
 export async function getCategories() {
-	const { data } = await axios(`${import.meta.env.VITE_API}/categories/1/sub`)
+	const { data } = await axios(`/categories/1/sub`)
 	return data
 }
 
 export async function getCategoriesById(id: number) {
-	const { data } = await axios(`${import.meta.env.VITE_API}/categories/sub/${id}`)
+	const { data } = await axios(`/categories/sub/${id}`)
 	return data
 }
 
 export async function updateCategoriesById(values: CategoryById, id: number) {
-	const { data } = await axios.put(`${import.meta.env.VITE_API}/categories/sub`, {
+	const { data } = await axios.put(`/categories/sub`, {
 		id,
 		title: {
 			tk: values.titleTk,
@@ -23,7 +23,7 @@ export async function updateCategoriesById(values: CategoryById, id: number) {
 }
 
 export async function createNewCategory(values: CategoryById) {
-	const { data } = await axios.post(`${import.meta.env.VITE_API}/categories/sub`, {
+	const { data } = await axios.post(`/categories/sub`, {
 		title: {
 			tk: values.titleTk,
 			ru: values.titleRu,
@@ -35,6 +35,6 @@ export async function createNewCategory(values: CategoryById) {
 }
 
 export async function deleteCategory(id: number) {
-	const { data } = await axios.delete(`${import.meta.env.VITE_API}/categories/sub/${id}`)
+	const { data } = await axios.delete(`/categories/sub/${id}`)
 	return data
 }

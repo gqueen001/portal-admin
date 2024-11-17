@@ -1,12 +1,9 @@
 import { Flex, Menu } from 'antd'
 import { MailOutlined, ReadOutlined } from '@ant-design/icons'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
 
 const Layout = () => {
-	const [validateToken, setValidateToken] = useState<string>()
 	const navigate = useNavigate()
-	// localStorage.removeItem('token')
 
 	const items = [
 		{
@@ -44,7 +41,6 @@ const Layout = () => {
 				<Menu
 					onClick={record => {
 						navigate(`${record.key}`)
-						setValidateToken(`${record.key}`)
 					}}
 					style={{ width: 256, height: '100vh' }}
 					mode='inline'

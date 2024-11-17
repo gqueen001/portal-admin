@@ -5,24 +5,13 @@ import { useNavigate } from 'react-router-dom'
 
 const LogIn = () => {
 	const [messageApi, contextHolder] = message.useMessage()
-	// const [token, setToken] = useState<string>('')
 	const navigate = useNavigate()
 
-	// useEffect(() => {
-	// 	localStorage.setItem('token', JSON.stringify(token))
-	// 	navigate('/')
-	// }, [token])
-	// localStorage.removeItem('token')
 	const onFinish = async (values: Login) => {
 		try {
 			const token: { token: any } = await createLogin(values)
-			localStorage.setItem('token', JSON.stringify(token.token))
+			localStorage.setItem('token', token.token)
 			navigate('/')
-			// setToken(token.token)
-			// messageApi.open({
-			// 	type: 'success',
-			// 	content: 'Succeccfully loged in',
-			// })
 		} catch (error) {
 			messageApi.open({
 				type: 'error',
@@ -30,21 +19,11 @@ const LogIn = () => {
 			})
 		}
 	}
-	// console.log('it is token', token)
 	return (
 		<>
 			{contextHolder}
 			<Flex style={{ width: '100%', height: '100vh' }} justify='center' align='center'>
-				<Form
-					name='basic'
-					// labelCol={{ span: 8 }}
-					// wrapperCol={{ span: 16 }}
-					style={{ width: 600 }}
-					// initialValues={{ remember: true }}
-					onFinish={onFinish}
-					// onFinishFailed={onFinishFailed}
-					// autoComplete='off'
-				>
+				<Form name='basic' style={{ width: 600 }} onFinish={onFinish}>
 					<Form.Item
 						name='login'
 						rules={[{ required: true, message: 'Please input your username!' }]}
@@ -53,7 +32,6 @@ const LogIn = () => {
 					</Form.Item>
 
 					<Form.Item
-						// label='Password'
 						name='password'
 						rules={[{ required: true, message: 'Please input your password!' }]}
 					>

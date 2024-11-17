@@ -1,19 +1,12 @@
 import { Progress, Upload, Button, Flex, message } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
-import { uploadMovie } from '../services/movies'
-import { UploadMovieProps } from '../types/movies/movies.ts'
-import { UploadFile } from 'antd/es/upload/interface'
+import { uploadMovie } from '@/services/movies'
+import { UploadMovieProps } from '@/types/movies/movies.ts'
 
-type uploading = {
-	uid: string
-	name: string
-	status: string
-}
 const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 	const [percent, setPersent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
-	const [fileList, setFileList] = useState<UploadFile<any>[]>([])
 
 	useEffect(() => {
 		if (isUpload) {
@@ -40,21 +33,6 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		const formData = new FormData()
 		formData.append('video', file.arrayBuffer())
 
-		console.log('it is work', file)
-
-		// const { file, onSuccess, onError } = options
-
-		// try {
-		// 	setFileList([{ uid: file.uid, name: file.name, status: 'uploading' }])
-
-		// 	await new Promise(resolve => setTimeout(resolve, 1000))
-
-		// 	setFileList([{ uid: file.uid, name: file.name, status: 'done' }])
-		// 	// onSuccess('ok')
-		// } catch (error) {
-		// 	setFileList([{ uid: file.uid, name: file.name, status: 'error' }])
-		// 	// onError(error)
-		// }
 		try {
 			await uploadMovie(id, file)
 
@@ -71,19 +49,11 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		}
 	}
 
-	// const uploadingFile = async (options: any) => {}
-
 	return (
 		<>
 			{contextHolder}
 			<Flex justify='space-between' align='center' gap={80}>
-				<Upload
-					name='file'
-					customRequest={uploadFile}
-					showUploadList={false}
-					// customRequest={uploadingFile}
-					// fileList={fileList}
-				>
+				<Upload name='file' customRequest={uploadFile} showUploadList={false}>
 					<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
 						Click to upload movie
 					</Button>
