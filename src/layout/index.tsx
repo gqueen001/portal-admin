@@ -1,5 +1,10 @@
 import { Flex, Menu } from 'antd'
-import { MailOutlined, ReadOutlined } from '@ant-design/icons'
+import {
+	VideoCameraOutlined,
+	ReadOutlined,
+	CustomerServiceOutlined,
+	MenuOutlined,
+} from '@ant-design/icons'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 const Layout = () => {
@@ -9,24 +14,24 @@ const Layout = () => {
 		{
 			key: 'category',
 			label: 'Category',
-			icon: <MailOutlined />,
+			icon: <MenuOutlined />,
 			children: [
 				{
 					key: '/category/movie',
 					label: 'Movie',
-					icon: <MailOutlined />,
+					icon: <VideoCameraOutlined />,
 				},
 			],
 		},
 		{
 			key: 'movies',
 			label: 'Movies',
-			icon: <MailOutlined />,
+			icon: <VideoCameraOutlined />,
 		},
 		{
 			key: 'musics',
 			label: 'Musics',
-			icon: <MailOutlined />,
+			icon: <CustomerServiceOutlined />,
 		},
 		{
 			key: 'books',

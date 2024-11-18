@@ -1,4 +1,4 @@
-import { Category } from '@/categories/movie'
+import { Category } from '../categories/movie'
 
 export type TitleOfMovie = {
 	key: string

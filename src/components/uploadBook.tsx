@@ -2,13 +2,11 @@ import { Progress, Upload, Button, Flex, message } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadMovieProps } from '@/types/movies/movies.ts'
-import { UploadFile } from 'antd/es/upload/interface'
 import { uploadBook } from '@/services/books.ts'
 
 const UploadBook: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 	const [postPercent, setPostPercent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
-	const [fileList, setFileList] = useState<UploadFile<any>[]>([])
 
 	useEffect(() => {
 		if (isUpload) {
@@ -47,12 +45,7 @@ const UploadBook: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 		<>
 			{contextHolder}
 			<Flex justify='space-between' align='center' gap={80}>
-				<Upload
-					name='file'
-					customRequest={uploadFile}
-					showUploadList={false}
-					fileList={fileList}
-				>
+				<Upload name='file' customRequest={uploadFile} showUploadList={false}>
 					<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
 						Click to upload movie
 					</Button>
