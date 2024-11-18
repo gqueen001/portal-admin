@@ -32,8 +32,10 @@ export async function createNewMusic(value: DataOfMusic) {
 	return data
 }
 
-export async function uploadMusic(id: number, file: any) {
-	const { data } = await axios.post(`/musics/${id}`, file)
+export async function uploadMusic(id: number, file: any, onUploadProgress: any) {
+	const { data } = await axios.post(`/musics/${id}`, file, {
+		onUploadProgress,
+	})
 	return data
 }
 
