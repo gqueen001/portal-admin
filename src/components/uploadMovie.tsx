@@ -6,6 +6,7 @@ import { UploadMovieProps } from '@/types/movies/movies.ts'
 
 const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 	const [percent, setPersent] = useState<number>()
+	const [postPercent, setPostPercent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
 
 	useEffect(() => {
@@ -26,6 +27,11 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		}
 	}
 
+	const onUploadProgress = (ProgressEvent: { loaded: number; total: number }) => {
+		const progress = Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100)
+		setPostPercent(progress)
+	}
+
 	const uploadFile = async (options: any) => {
 		setPersent(0)
 
@@ -34,9 +40,9 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		formData.append('video', file.arrayBuffer())
 
 		try {
-			await uploadMovie(id, file)
+			await uploadMovie(id, file, onUploadProgress)
 
-			messageApi.open({
+			messageApi.success({
 				type: 'success',
 				content: 'Successfully uploaded',
 			})
@@ -53,11 +59,14 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		<>
 			{contextHolder}
 			<Flex justify='space-between' align='center' gap={80}>
-				<Upload name='file' customRequest={uploadFile} showUploadList={false}>
-					<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
-						Click to upload movie
-					</Button>
-				</Upload>
+				<div>
+					<Upload name='file' customRequest={uploadFile} showUploadList={false}>
+						<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
+							Click to upload movie
+						</Button>
+					</Upload>
+					<Progress percent={postPercent} size={[200, 10]} />
+				</div>
 				<Progress type='circle' percent={percent} />
 			</Flex>
 		</>

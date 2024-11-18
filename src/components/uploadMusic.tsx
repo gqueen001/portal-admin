@@ -16,6 +16,14 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		}
 	}, [isUpload])
 
+	// const onUploadProgress = (progressEvent: any) => {
+	// 	const { loaded, total } = progressEvent
+	// 	let percent = Math.floor((loaded * 100) / total)
+	// 	if (percent < 100) {
+	// 		console.log(`${loaded} bytes of ${total} bytes. ${percent}%`)
+	// 	}
+	// }
+
 	const uploadFile = async (options: any) => {
 		setPersent(0)
 
@@ -31,6 +39,11 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 				content: 'Successfully uploaded',
 			})
 		} catch (error) {
+			// onUploadProgress: function(progressEvent: { loaded: number; total: number }) {
+			// 	var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+			//   }
+			// }
+
 			messageApi.open({
 				type: 'error',
 				content: "Couldn't upload",
