@@ -6,7 +6,6 @@ import { UploadMovieProps } from '@/types/movies/movies.ts'
 
 const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 	const [postPercent, setPostPercent] = useState<number>()
-
 	const [messageApi, contextHolder] = message.useMessage()
 
 	useEffect(() => {

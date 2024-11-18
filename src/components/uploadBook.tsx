@@ -6,25 +6,30 @@ import { UploadFile } from 'antd/es/upload/interface'
 import { uploadBook } from '@/services/books.ts'
 
 const UploadBook: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
-	const [percent, setPersent] = useState<number>()
+	const [postPercent, setPostPercent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
 	const [fileList, setFileList] = useState<UploadFile<any>[]>([])
 
 	useEffect(() => {
 		if (isUpload) {
-			setPersent(100)
+			setPostPercent(100)
 		}
 	}, [isUpload])
 
+	const onUploadProgress = (ProgressEvent: { loaded: number; total: number }) => {
+		const progress = Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100)
+		setPostPercent(progress)
+	}
+
 	const uploadFile = async (options: any) => {
-		setPersent(0)
+		setPostPercent(0)
 
 		const { file } = options
 		const formData = new FormData()
 		formData.append('book', file.arrayBuffer())
 
 		try {
-			await uploadBook(id, file)
+			await uploadBook(id, file, onUploadProgress)
 
 			messageApi.open({
 				type: 'success',
@@ -52,7 +57,7 @@ const UploadBook: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 						Click to upload movie
 					</Button>
 				</Upload>
-				<Progress type='circle' percent={percent} />
+				<Progress type='circle' percent={postPercent} />
 			</Flex>
 		</>
 	)

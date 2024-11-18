@@ -37,7 +37,9 @@ export async function deleteBook(id: number) {
 	return data
 }
 
-export async function uploadBook(id: number, file: any) {
-	const { data } = await axios.post(`/books/${id}`, file)
+export async function uploadBook(id: number, file: any, onUploadProgress: any) {
+	const { data } = await axios.post(`/books/${id}`, file, {
+		onUploadProgress,
+	})
 	return data
 }
