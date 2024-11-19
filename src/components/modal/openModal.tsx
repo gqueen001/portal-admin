@@ -25,7 +25,7 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
-						content: "Couldn't fetch data",
+						content: "Couldn't get",
 					})
 				}
 			}
@@ -50,12 +50,12 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 					setCloseModal(false)
 					messageApi.open({
 						type: 'success',
-						content: 'Updated successfully',
+						content: 'Successfully updated',
 					})
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
-						content: "Couldn't post data",
+						content: "Couldn't update",
 					})
 				}
 			}
@@ -68,12 +68,12 @@ const OpenModal: FC<ModalProps> = ({ isOpen, setCloseModal, categoryId }): JSX.E
 					setCloseModal(false)
 					messageApi.open({
 						type: 'success',
-						content: 'Created successfully',
+						content: 'Successfully created',
 					})
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
-						content: "Couldn't create data",
+						content: "Couldn't create",
 					})
 				}
 			}

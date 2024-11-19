@@ -44,7 +44,7 @@ const Movies = () => {
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: "Couldn't fetch data",
+					content: "Couldn't get",
 				})
 			}
 		}

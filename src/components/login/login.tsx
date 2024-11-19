@@ -28,14 +28,16 @@ const LogIn = () => {
 						name='login'
 						rules={[{ required: true, message: 'Please input your username!' }]}
 					>
-						<Input addonBefore='Login:' />
+						<Input addonBefore={<span style={{ width: '150px' }}>Login:</span>} />
 					</Form.Item>
 
 					<Form.Item
 						name='password'
 						rules={[{ required: true, message: 'Please input your password!' }]}
 					>
-						<Input.Password addonBefore='Password:' />
+						<Input.Password
+							addonBefore={<span style={{ width: '150px' }}>Password:</span>}
+						/>
 					</Form.Item>
 					<Flex justify='end'>
 						<Form.Item label={null}>

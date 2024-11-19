@@ -6,12 +6,12 @@ import { TableColumns } from '@/types/table'
 import Actions from '@/components/actions'
 import DeleteModal from '@/components/modal/deleteModal'
 import { TitleOfMovie } from '@/types/movies/movies'
-import { MusicsType, MusicsRow } from '@/types/musics/musics.ts'
+import { MusAndBooksType, MusAndBooksRow } from '@/types/musicsAndBook'
 import { getBooks } from '@/services/books.ts'
 import '@/index.css'
 
 const Musics = () => {
-	const [dataRows, setDataRows] = useState<MusicsRow>()
+	const [dataRows, setDataRows] = useState<MusAndBooksRow>()
 	const [messageApi, contextHolder] = message.useMessage()
 	const [movieId, setMovieId] = useState<string>('new')
 	const [openEditPage, setOpenEditPage] = useState<boolean>(false)
@@ -34,7 +34,7 @@ const Musics = () => {
 	useEffect(() => {
 		const fetchBooks = async () => {
 			try {
-				const musicsTitle: MusicsType = await getBooks()
+				const musicsTitle: MusAndBooksType = await getBooks()
 
 				setDataRows(
 					musicsTitle.map(music => ({
@@ -46,7 +46,7 @@ const Musics = () => {
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: "Couldn't fetch",
+					content: "Couldn't get",
 				})
 			}
 		}

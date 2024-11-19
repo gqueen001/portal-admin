@@ -1,5 +1,5 @@
 import axios from '@/plugins/axios'
-import { DataOfMusic } from '@/types/musics/musics'
+import { DataOfMusic } from '@/types/musicsAndBook'
 
 export async function getMusics() {
 	const { data } = await axios(`/musics/admin`)

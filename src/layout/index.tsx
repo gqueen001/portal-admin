@@ -4,6 +4,7 @@ import {
 	ReadOutlined,
 	CustomerServiceOutlined,
 	MenuOutlined,
+	FormOutlined,
 } from '@ant-design/icons'
 import { Outlet, useNavigate } from 'react-router-dom'
 
@@ -37,6 +38,11 @@ const Layout = () => {
 			key: 'books',
 			label: 'Books',
 			icon: <ReadOutlined />,
+		},
+		{
+			key: 'dump',
+			label: 'Dump',
+			icon: <FormOutlined />,
 		},
 	]
 

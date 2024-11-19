@@ -2,7 +2,7 @@ import { Button, ConfigProvider, Divider, Flex, Form, Input, type ThemeConfig, m
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import UploadMusic from '@/components/uploadMusic'
-import { Music, DataOfMusic } from '@/types/musics/musics'
+import { MusAndBook, DataOfMusAndBooks } from '@/types/musicsAndBook'
 import { getMusicById, updateMusicById, createNewMusic } from '@/services/musics'
 
 const EditMusic = () => {
@@ -14,9 +14,8 @@ const EditMusic = () => {
 		},
 	}
 
-	const [data, setData] = useState<DataOfMusic>()
+	const [data, setData] = useState<DataOfMusAndBooks>()
 	const [messageApi, contextHolder] = message.useMessage()
-	const [updateImage, setUpdateImage] = useState(false)
 	const [isUpload, setIsUpload] = useState<boolean>(false)
 	const [uploadDisabled, setUploadDisabled] = useState<boolean>(true)
 	const [form] = Form.useForm()
@@ -27,7 +26,7 @@ const EditMusic = () => {
 		if (id && id !== 'new') {
 			const fetchMusicById = async () => {
 				try {
-					const music: Music = await getMusicById(+id)
+					const music: MusAndBook = await getMusicById(+id)
 
 					setData({
 						id: `${music.id}`,
@@ -40,14 +39,14 @@ const EditMusic = () => {
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
-						content: "Couldn't fetch",
+						content: "Couldn't get",
 					})
 				}
 			}
 
 			fetchMusicById()
 		}
-	}, [id, updateImage])
+	}, [id])
 
 	useEffect(() => {
 		if (data) {
@@ -58,7 +57,7 @@ const EditMusic = () => {
 		}
 	}, [data])
 
-	const onFinish = async (value: DataOfMusic) => {
+	const onFinish = async (value: DataOfMusAndBooks) => {
 		if (id && id !== 'new') {
 			try {
 				await updateMusicById(value, +id)

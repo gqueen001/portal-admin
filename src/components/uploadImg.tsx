@@ -26,7 +26,7 @@ const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage, uploadDis
 		} catch (error) {
 			messageApi.open({
 				type: 'error',
-				content: "Couldn't fetch",
+				content: "Couldn't upload",
 			})
 		}
 	}

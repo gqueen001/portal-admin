@@ -67,7 +67,7 @@ const EditMovie = () => {
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
-						content: "Couldn't fetch",
+						content: "Couldn't get",
 					})
 				}
 			}
@@ -81,7 +81,7 @@ const EditMovie = () => {
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: "Couldn't fetch",
+					content: "Couldn't get",
 				})
 			}
 		}
