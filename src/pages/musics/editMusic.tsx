@@ -108,6 +108,7 @@ const EditMusic = () => {
 								margin: '0 0 10px 0',
 								padding: '0 10px 10px',
 								borderRadius: '5px',
+								boxShadow: '0px 0px 2px 0px #7a7a7da3',
 							}}
 						>
 							<Divider>Title</Divider>
