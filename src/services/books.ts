@@ -1,5 +1,5 @@
 import axios from '@/plugins/axios'
-import { DataOfMusic } from '@/types/musicsAndBook'
+import { DataOfMusAndBooks } from '../types/musicsAndBook'
 
 export async function getBooks() {
 	const { data } = await axios(`/books/admin`)
@@ -11,7 +11,7 @@ export async function getBookById(id: number) {
 	return data
 }
 
-export async function updateBookById(value: DataOfMusic, id: number) {
+export async function updateBookById(value: DataOfMusAndBooks, id: number) {
 	const { data } = await axios.put(`/books`, {
 		id,
 		title: {
@@ -22,7 +22,7 @@ export async function updateBookById(value: DataOfMusic, id: number) {
 	return data
 }
 
-export async function createNewBook(value: DataOfMusic) {
+export async function createNewBook(value: DataOfMusAndBooks) {
 	const { data } = await axios.post(`/books`, {
 		title: {
 			ru: value.titleRu,
@@ -33,7 +33,7 @@ export async function createNewBook(value: DataOfMusic) {
 }
 
 export async function deleteBook(id: number) {
-	const { data } = await axios.delete(`/musics/${id}`)
+	const { data } = await axios.delete(`/books/${id}`)
 	return data
 }
 
