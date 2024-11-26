@@ -51,7 +51,7 @@ export async function createNewMovie(value: DataOfMovie) {
 			tk: value.descriptionTk,
 			ru: value.descriptionRu,
 		},
-		duration: 3600,
+		duration: value.duration,
 		sub_categories: value.categoryTk,
 	})
 

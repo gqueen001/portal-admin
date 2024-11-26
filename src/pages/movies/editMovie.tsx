@@ -109,8 +109,8 @@ const EditMovie = () => {
 	}))
 
 	const onFinish = async (value: DataOfMovie) => {
+		value.duration = convertToSeconds(value.duration)
 		if (id && id !== 'new') {
-			value.duration = convertToSeconds(value.duration)
 			try {
 				await updateMovieById(value, +id)
 				messageApi.open({
@@ -124,8 +124,6 @@ const EditMovie = () => {
 				})
 			}
 		} else {
-			value.duration = convertToSeconds(value.duration)
-
 			try {
 				const newId: { id: number } = await createNewMovie(value)
 
