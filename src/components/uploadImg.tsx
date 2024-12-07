@@ -1,34 +1,36 @@
 import { UploadOutlined } from '@ant-design/icons'
 import ImgCrop from 'antd-img-crop'
-import { Upload, Button, Image, message, Flex } from 'antd'
+import { Upload, Button, Image, message, Flex, UploadProps } from 'antd'
 import { FC, useState } from 'react'
 import { UploadImgProps } from '@/types/movies/movies.ts'
-import { uploadImg } from '@/services/movies'
 
 const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage, uploadDisabled }) => {
 	const [messageApi, contextHolder] = message.useMessage()
 	const [timestamp, setTimestamp] = useState(Date.now())
 
-	const uploadFile = async (options: any) => {
-		const { file } = options
-		const formData = new FormData()
-		formData.append('file', file.arrayBuffer())
+	const props: UploadProps = {
+		name: 'file',
+		action: `${import.meta.env.VITE_API}/movies/image/${id}`,
+		headers: {
+			authorization: `Bearer ${localStorage.getItem('token')}`,
+		},
 
-		try {
-			await uploadImg(id, file)
+		onChange(info) {
 			setTimestamp(Date.now())
 			setUpdateImage(true)
 
-			messageApi.open({
-				type: 'success',
-				content: 'Successfully uploaded',
-			})
-		} catch (error) {
-			messageApi.open({
-				type: 'error',
-				content: "Couldn't upload",
-			})
-		}
+			if (info.file.status === 'done') {
+				messageApi.open({
+					type: 'success',
+					content: 'Successfully uploaded',
+				})
+			} else if (info.file.status === 'error') {
+				messageApi.open({
+					type: 'error',
+					content: "Couldn't upload",
+				})
+			}
+		},
 	}
 
 	return (
@@ -36,7 +38,7 @@ const UploadImg: FC<UploadImgProps> = ({ imageURL, id, setUpdateImage, uploadDis
 			{contextHolder}
 			<Flex justify='space-between' align='center' gap={80}>
 				<ImgCrop rotationSlider>
-					<Upload name='file' customRequest={uploadFile} showUploadList={false}>
+					<Upload {...props} showUploadList={false}>
 						<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
 							Click to upload image
 						</Button>
