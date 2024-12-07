@@ -36,10 +36,3 @@ export async function deleteBook(id: number) {
 	const { data } = await axios.delete(`/books/${id}`)
 	return data
 }
-
-export async function uploadBook(id: number, file: any, onUploadProgress: any) {
-	const { data } = await axios.post(`/books/${id}`, file, {
-		onUploadProgress,
-	})
-	return data
-}

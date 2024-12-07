@@ -1,10 +1,9 @@
-import { Progress, Upload, Button, Flex, message } from 'antd'
+import { Progress, Upload, Button, Flex, message, UploadProps } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadMovieProps } from '@/types/movies/movies.ts'
-import { uploadBook } from '@/services/books.ts'
 
-const UploadBook: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
+const UploadBook: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled, setIsPathUploaded }) => {
 	const [postPercent, setPostPercent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
 
@@ -14,38 +13,33 @@ const UploadBook: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 		}
 	}, [isUpload])
 
-	const onUploadProgress = (ProgressEvent: { loaded: number; total: number }) => {
-		const progress = Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100)
-		setPostPercent(progress)
-	}
-
-	const uploadFile = async (options: any) => {
-		setPostPercent(0)
-
-		const { file } = options
-		const formData = new FormData()
-		formData.append('book', file.arrayBuffer())
-
-		try {
-			await uploadBook(id, file, onUploadProgress)
-
-			messageApi.open({
-				type: 'success',
-				content: 'Successfully uploaded',
-			})
-		} catch (error) {
-			messageApi.open({
-				type: 'error',
-				content: "Couldn't upload",
-			})
-		}
+	const props: UploadProps = {
+		name: 'file',
+		action: `${import.meta.env.VITE_API}/books/${id}`,
+		headers: {
+			authorization: `Bearer ${localStorage.getItem('token')}`,
+		},
+		onChange(info) {
+			if (info.file.status === 'done') {
+				messageApi.open({
+					type: 'success',
+					content: 'Successfully uploaded',
+				})
+				setIsPathUploaded?.(true)
+			} else if (info.file.status === 'error') {
+				messageApi.open({
+					type: 'error',
+					content: "Couldn't upload",
+				})
+			}
+		},
 	}
 
 	return (
 		<>
 			{contextHolder}
 			<Flex justify='space-between' align='center' gap={80}>
-				<Upload name='file' customRequest={uploadFile} showUploadList={false}>
+				<Upload {...props} showUploadList={false}>
 					<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
 						Click to upload movie
 					</Button>

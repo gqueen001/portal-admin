@@ -11,7 +11,7 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled, setIs
 		if (isUpload) {
 			setPostPercent(100)
 		}
-	})
+	}, [isUpload])
 
 	const props: UploadProps = {
 		name: 'file',

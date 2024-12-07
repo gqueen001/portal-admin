@@ -18,6 +18,7 @@ const EditMusic = () => {
 	const [messageApi, contextHolder] = message.useMessage()
 	const [isUpload, setIsUpload] = useState<boolean>(false)
 	const [uploadDisabled, setUploadDisabled] = useState<boolean>(true)
+	const [isPathUploaded, setIsPathUploaded] = useState<boolean>(false)
 	const [form] = Form.useForm()
 	let { id } = useParams()
 	const navigate = useNavigate()
@@ -36,6 +37,7 @@ const EditMusic = () => {
 
 					setIsUpload(book.path !== null)
 					setUploadDisabled(false)
+					setIsPathUploaded(false)
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
@@ -46,7 +48,7 @@ const EditMusic = () => {
 
 			fetchBookById()
 		}
-	}, [id])
+	}, [id, isPathUploaded])
 
 	useEffect(() => {
 		if (data) {
@@ -164,6 +166,7 @@ const EditMusic = () => {
 						id={Number(id)}
 						isUpload={isUpload}
 						uploadDisabled={uploadDisabled}
+						setIsPathUploaded={setIsPathUploaded}
 					></UploadBook>
 				</div>
 			</ConfigProvider>
