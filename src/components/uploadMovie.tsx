@@ -1,7 +1,6 @@
 import { Progress, Upload, Button, Flex, message, UploadProps } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
-// import { uploadMovie } from '@/services/movies'
 import { UploadMovieProps } from '@/types/movies/movies.ts'
 
 const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled, setIsPathUploaded }) => {
@@ -34,8 +33,7 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled, setIs
 			authorization: `Bearer ${localStorage.getItem('token')}`,
 		},
 		onChange(info) {
-			console.log('it is uploading', info.file.percent)
-			setPostPercent(info.file.percent)
+			setPostPercent(Math.floor(Number(info.file.percent)))
 
 			if (info.file.status === 'done') {
 				messageApi.open({
