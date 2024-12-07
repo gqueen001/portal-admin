@@ -29,6 +29,7 @@ export interface UploadMovieProps {
 	id: number
 	isUpload: boolean
 	uploadDisabled: boolean
+	setIsMusicUploaded: (value: boolean) => void
 }
 
 export interface UploadImgProps {

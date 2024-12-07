@@ -36,8 +36,8 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		setPersent(0)
 
 		const { file } = options
-		const formData = new FormData()
-		formData.append('video', file.arrayBuffer())
+		// const formData = new FormData()
+		// formData.append('video', file.arrayBuffer())
 
 		try {
 			await uploadMovie(id, file, onUploadProgress)
