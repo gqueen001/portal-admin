@@ -18,7 +18,7 @@ const EditMusic = () => {
 	const [messageApi, contextHolder] = message.useMessage()
 	const [isUpload, setIsUpload] = useState<boolean>(false)
 	const [uploadDisabled, setUploadDisabled] = useState<boolean>(true)
-	const [isMusicUploaded, setIsMusicUploaded] = useState<boolean>(false)
+	const [isPathUploaded, setIsPathUploaded] = useState<boolean>(false)
 	const [form] = Form.useForm()
 	let { id } = useParams()
 	const navigate = useNavigate()
@@ -31,13 +31,13 @@ const EditMusic = () => {
 
 					setData({
 						id: `${music.id}`,
-						titleTk: music.title.ru,
-						titleRu: music.title.tk,
+						titleTk: music.title.tk,
+						titleRu: music.title.ru,
 					})
 
 					setIsUpload(music.path !== null)
 					setUploadDisabled(false)
-					setIsMusicUploaded(false)
+					setIsPathUploaded(false)
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
@@ -48,7 +48,7 @@ const EditMusic = () => {
 
 			fetchMusicById()
 		}
-	}, [id, isMusicUploaded])
+	}, [id, isPathUploaded])
 
 	useEffect(() => {
 		if (data) {
@@ -166,7 +166,7 @@ const EditMusic = () => {
 						id={Number(id)}
 						isUpload={isUpload}
 						uploadDisabled={uploadDisabled}
-						setIsMusicUploaded={setIsMusicUploaded}
+						setIsPathUploaded={setIsPathUploaded}
 					></UploadMusic>
 				</div>
 			</ConfigProvider>

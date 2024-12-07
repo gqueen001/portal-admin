@@ -34,13 +34,6 @@ export async function uploadImg(id: number, file: any) {
 	return data
 }
 
-export async function uploadMovie(id: number, file: any, onUploadProgress: any) {
-	const { data } = await axios.post(`/movies/${id}`, file, {
-		onUploadProgress,
-	})
-	return data
-}
-
 export async function createNewMovie(value: DataOfMovie) {
 	const { data } = await axios.post(`/movies`, {
 		title: {

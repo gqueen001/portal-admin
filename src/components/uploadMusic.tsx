@@ -3,12 +3,7 @@ import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadMovieProps } from '@/types/movies/movies.ts'
 
-const UploadMovie: FC<UploadMovieProps> = ({
-	id,
-	isUpload,
-	uploadDisabled,
-	setIsMusicUploaded,
-}) => {
+const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled, setIsPathUploaded }) => {
 	const [postPercent, setPostPercent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
 
@@ -30,7 +25,7 @@ const UploadMovie: FC<UploadMovieProps> = ({
 					type: 'success',
 					content: 'Successfully uploaded',
 				})
-				setIsMusicUploaded(true)
+				setIsPathUploaded?.(true)
 			} else if (info.file.status === 'error') {
 				messageApi.open({
 					type: 'error',

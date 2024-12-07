@@ -1,10 +1,10 @@
-import { Progress, Upload, Button, Flex, message } from 'antd'
+import { Progress, Upload, Button, Flex, message, UploadProps } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
-import { uploadMovie } from '@/services/movies'
+// import { uploadMovie } from '@/services/movies'
 import { UploadMovieProps } from '@/types/movies/movies.ts'
 
-const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
+const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled, setIsPathUploaded }) => {
 	const [percent, setPersent] = useState<number>()
 	const [postPercent, setPostPercent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
@@ -27,32 +27,29 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		}
 	}
 
-	const onUploadProgress = (ProgressEvent: { loaded: number; total: number }) => {
-		const progress = Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100)
-		setPostPercent(progress)
-	}
+	const props: UploadProps = {
+		name: 'file',
+		action: `${import.meta.env.VITE_API}/movies/${id}`,
+		headers: {
+			authorization: `Bearer ${localStorage.getItem('token')}`,
+		},
+		onChange(info) {
+			console.log('it is uploading', info.file.percent)
+			setPostPercent(info.file.percent)
 
-	const uploadFile = async (options: any) => {
-		setPersent(0)
-
-		const { file } = options
-		// const formData = new FormData()
-		// formData.append('video', file.arrayBuffer())
-
-		try {
-			await uploadMovie(id, file, onUploadProgress)
-
-			messageApi.success({
-				type: 'success',
-				content: 'Successfully uploaded',
-			})
-			videoFraction()
-		} catch (error) {
-			messageApi.open({
-				type: 'error',
-				content: "Couldn't upload",
-			})
-		}
+			if (info.file.status === 'done') {
+				messageApi.open({
+					type: 'success',
+					content: 'Successfully uploaded',
+				})
+				videoFraction()
+			} else if (info.file.status === 'error') {
+				messageApi.open({
+					type: 'error',
+					content: "Couldn't upload",
+				})
+			}
+		},
 	}
 
 	return (
@@ -60,7 +57,7 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 			{contextHolder}
 			<Flex justify='space-between' align='center' gap={80}>
 				<div>
-					<Upload name='file' customRequest={uploadFile} showUploadList={false}>
+					<Upload {...props} showUploadList={false}>
 						<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
 							Click to upload movie
 						</Button>

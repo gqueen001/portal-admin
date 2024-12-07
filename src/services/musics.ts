@@ -32,13 +32,6 @@ export async function createNewMusic(value: DataOfMusAndBooks) {
 	return data
 }
 
-export async function uploadMusic(id: number, file: any, onUploadProgress: any) {
-	const { data } = await axios.post(`/musics/${id}`, file, {
-		onUploadProgress,
-	})
-	return data
-}
-
 export async function deleteMusic(id: number) {
 	const { data } = await axios.delete(`/musics/${id}`)
 	return data

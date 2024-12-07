@@ -37,6 +37,7 @@ const EditMovie = () => {
 	const [updateImage, setUpdateImage] = useState(false)
 	const [isUpload, setIsUpload] = useState<boolean>(false)
 	const [uploadDisabled, setUploadDisabled] = useState<boolean>(true)
+	const [isPathUploaded, setIsPathUploaded] = useState<boolean>(false)
 	const [form] = Form.useForm()
 	let { id } = useParams()
 	const navigate = useNavigate()
