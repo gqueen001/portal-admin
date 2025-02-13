@@ -1,5 +1,5 @@
 import { Form, Input, Button, Flex, message } from 'antd'
-import { Login } from '@/types/login'
+import { Login } from '@/types/index'
 import { createLogin } from '@/services/login'
 import { useNavigate } from 'react-router-dom'
 

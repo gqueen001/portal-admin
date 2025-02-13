@@ -1,7 +1,7 @@
 import { FloatButton, message, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
-import { TableColumns } from '@/types/table'
+import { TableColumns } from '@/types/index'
 import { getMovies } from '@/services/movies.ts'
 import Actions from '@/components/actions'
 import DeleteModal from '@/components/modal/deleteModal'

@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadMovieProps } from '@/types/movies/movies.ts'
 
-const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled, setIsPathUploaded }) => {
+const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
 	const [percent, setPersent] = useState<number>()
 	const [postPercent, setPostPercent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()

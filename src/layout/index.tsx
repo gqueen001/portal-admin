@@ -40,6 +40,11 @@ const Layout = () => {
 			icon: <ReadOutlined />,
 		},
 		{
+			key: 'sse-connection',
+			label: 'SSE',
+			icon: <FormOutlined />,
+		},
+		{
 			key: 'dump',
 			label: 'Dump',
 			icon: <FormOutlined />,

@@ -1,7 +1,7 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Button, Col, Row } from 'antd'
 import { FC } from 'react'
-import { ActionProps } from '@/types/actions'
+import { ActionProps } from '@/types/index'
 
 const Actions: FC<ActionProps> = ({
 	setOpenModal = () => {},

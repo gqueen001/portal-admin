@@ -1,7 +1,7 @@
 import { FloatButton, message, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { PlusOutlined } from '@ant-design/icons'
-import { TableColumns, TableRows, TableRow } from '@/types/table'
+import { TableColumns, TableRows, TableRow } from '@/types/index'
 import { Categories } from '@/types/categories/movie'
 import { getCategories } from '@/services/categories/movie.ts'
 import Actions from '@/components/actions'

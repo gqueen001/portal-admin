@@ -27,6 +27,7 @@ const App = () => {
 						<Route path='movie/:id' element={<EditMovie />} />
 						<Route path='music/:id' element={<EditMusic />} />
 						<Route path='book/:id' element={<EditBook />} />
+						<Route path='sse-connection' element={<EditBook />} />
 						<Route path='dump' element={<Dump />} />
 					</Route>
 				</Routes>
