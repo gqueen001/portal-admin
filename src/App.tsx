@@ -10,6 +10,7 @@ import EditBook from './pages/books/editBook'
 import LogIn from './components/login/login'
 import Protected from './components/login/protected'
 import Dump from './pages/dump'
+import SseConnection from './pages/sseConnection'
 
 const App = () => {
 	return (
@@ -27,7 +28,7 @@ const App = () => {
 						<Route path='movie/:id' element={<EditMovie />} />
 						<Route path='music/:id' element={<EditMusic />} />
 						<Route path='book/:id' element={<EditBook />} />
-						<Route path='sse-connection' element={<EditBook />} />
+						<Route path='sse-connection' element={<SseConnection />} />
 						<Route path='dump' element={<Dump />} />
 					</Route>
 				</Routes>

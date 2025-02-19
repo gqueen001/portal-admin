@@ -2,6 +2,6 @@
 
 ## Requirements
 
-- server side of media portal
-- ```cp sample.env.local .env.local```
-- open .env.local and fill the value
+-   server side of media portal
+-   `cp .env.example .env.local`
+-   open .env.local and fill the value
