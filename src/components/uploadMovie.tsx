@@ -30,7 +30,7 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		name: 'file',
 		action: `${import.meta.env.VITE_API}/movies/${id}`,
 		headers: {
-			authorization: `Bearer ${localStorage.getItem('token')}`,
+			authorization: `Bearer ${localStorage.getItem('token')}`
 		},
 		onChange(info) {
 			setPostPercent(Math.floor(Number(info.file.percent)))
@@ -38,22 +38,22 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 			if (info.file.status === 'done') {
 				messageApi.open({
 					type: 'success',
-					content: 'Successfully uploaded',
+					content: 'Successfully uploaded'
 				})
 				videoFraction()
 			} else if (info.file.status === 'error') {
 				messageApi.open({
 					type: 'error',
-					content: "Couldn't upload",
+					content: 'Couldn\'t upload'
 				})
 			}
-		},
+		}
 	}
 
 	return (
 		<>
 			{contextHolder}
-			<Flex justify='space-between' align='center' gap={80}>
+			<Flex justify="space-between" align="center" gap={80}>
 				<div>
 					<Upload {...props} showUploadList={false}>
 						<Button icon={<UploadOutlined />} disabled={uploadDisabled}>
@@ -62,7 +62,7 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 					</Upload>
 					<Progress percent={postPercent} size={[200, 10]} />
 				</div>
-				<Progress type='circle' percent={percent} />
+				<Progress type="circle" percent={percent} />
 			</Flex>
 		</>
 	)

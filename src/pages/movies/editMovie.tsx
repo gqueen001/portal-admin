@@ -8,7 +8,7 @@ import {
 	Select,
 	TimePicker,
 	type ThemeConfig,
-	message,
+	message
 } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -26,9 +26,9 @@ const EditMovie = () => {
 	const theme: ThemeConfig = {
 		components: {
 			Form: {
-				marginLG: 10,
-			},
-		},
+				marginLG: 10
+			}
+		}
 	}
 
 	const [data, setData] = useState<DataOfMovie>()
@@ -52,13 +52,13 @@ const EditMovie = () => {
 						titleTk: movie.title.tk,
 						categoryTk: movie.sub_categories.map(category => {
 							return {
-								value: category.id,
+								value: category.id
 							}
 						}),
 						duration: `${movie.duration}`,
 						descriptionRu: movie.description.ru,
 						descriptionTk: movie.description.tk,
-						image: movie.image,
+						image: movie.image
 					})
 
 					setIsUpload(movie.is_uploaded)
@@ -67,7 +67,7 @@ const EditMovie = () => {
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
-						content: "Couldn't get",
+						content: 'Couldn\'t get'
 					})
 				}
 			}
@@ -81,7 +81,7 @@ const EditMovie = () => {
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: "Couldn't get",
+					content: 'Couldn\'t get'
 				})
 			}
 		}
@@ -97,7 +97,7 @@ const EditMovie = () => {
 				descriptionRu: data.descriptionRu,
 				descriptionTk: data.descriptionTk,
 				duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
-				categoryTk: data.categoryTk.map(category => category.value),
+				categoryTk: data.categoryTk.map(category => category.value)
 			})
 		}
 	}, [data])
@@ -105,7 +105,7 @@ const EditMovie = () => {
 	const selectCategoryTk = categories.map(categoryTk => ({
 		label: categoryTk.title.tk,
 		value: categoryTk.id,
-		name: 'categoryTk',
+		name: 'categoryTk'
 	}))
 
 	const onFinish = async (value: DataOfMovie) => {
@@ -115,12 +115,12 @@ const EditMovie = () => {
 				await updateMovieById(value, +id)
 				messageApi.open({
 					type: 'success',
-					content: 'Succeccfully updated',
+					content: 'Succeccfully updated'
 				})
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: 'Couldn`t update',
+					content: 'Couldn`t update'
 				})
 			}
 		} else {
@@ -129,14 +129,14 @@ const EditMovie = () => {
 
 				messageApi.open({
 					type: 'success',
-					content: 'Succeccfully created',
+					content: 'Succeccfully created'
 				})
 				navigate(`/movie/${newId.id}`)
 				setUploadDisabled(false)
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: 'Couldn`t create',
+					content: 'Couldn`t create'
 				})
 			}
 		}
@@ -151,45 +151,45 @@ const EditMovie = () => {
 						width: '100%',
 						display: 'flex',
 						justifyContent: 'space-evenly',
-						alignItems: 'center',
+						alignItems: 'center'
 					}}
 				>
-					<Form layout='vertical' onFinish={onFinish} form={form}>
+					<Form layout="vertical" onFinish={onFinish} form={form}>
 						<div
 							style={{
 								backgroundColor: '#ffffff',
 								margin: '0 0 10px 0',
 								padding: '0 10px 10px',
 								borderRadius: '5px',
-								boxShadow: '0px 0px 2px 0px #7a7a7da3',
+								boxShadow: '0px 0px 2px 0px #7a7a7da3'
 							}}
 						>
 							<Divider>Title</Divider>
-							<Flex justify='space-between' gap={20}>
+							<Flex justify="space-between" gap={20}>
 								<Form.Item
 									rules={[
-										{ required: true, message: 'Title in turkmen is required' },
+										{ required: true, message: 'Title in turkmen is required' }
 									]}
-									label='Title in turkmen:'
+									label="Title in turkmen:"
 									name={'titleTk'}
 								>
 									<Input
 										allowClear
-										placeholder='Enter title of movie'
-										name='titleTk'
+										placeholder="Enter title of movie"
+										name="titleTk"
 									/>
 								</Form.Item>
 								<Form.Item
 									rules={[
-										{ required: true, message: 'Title in russian is required' },
+										{ required: true, message: 'Title in russian is required' }
 									]}
-									label='Title in russian:'
+									label="Title in russian:"
 									name={'titleRu'}
 								>
 									<Input
 										allowClear
-										placeholder='Enter title of movie'
-										name='titleRu'
+										placeholder="Enter title of movie"
+										name="titleRu"
 									/>
 								</Form.Item>
 							</Flex>
@@ -200,21 +200,21 @@ const EditMovie = () => {
 								margin: '0 0 10px 0',
 								padding: '0 10px 10px',
 								borderRadius: '5px',
-								boxShadow: '0px 0px 2px 0px #7a7a7da3',
+								boxShadow: '0px 0px 2px 0px #7a7a7da3'
 							}}
 						>
 							<Divider>Categories</Divider>
-							<Flex justify='center'>
+							<Flex justify="center">
 								<Form.Item
 									rules={[{ required: true, message: 'Categories are required' }]}
 									name={'categoryTk'}
-									label='Categories are in turkmen:'
+									label="Categories are in turkmen:"
 								>
 									<Select
 										style={{ width: '200px' }}
 										options={selectCategoryTk}
-										placeholder='Choose categories'
-										mode='multiple'
+										placeholder="Choose categories"
+										mode="multiple"
 									></Select>
 								</Form.Item>
 							</Flex>
@@ -226,15 +226,15 @@ const EditMovie = () => {
 								margin: '0 0 10px 0',
 								padding: '0 10px 10px',
 								borderRadius: '5px',
-								boxShadow: '0px 0px 2px 0px #7a7a7da3',
+								boxShadow: '0px 0px 2px 0px #7a7a7da3'
 							}}
 						>
 							<Divider>Duration</Divider>
-							<Flex justify='center'>
+							<Flex justify="center">
 								<Form.Item
 									rules={[{ required: true, message: 'Duration is required' }]}
 									name={'duration'}
-									label='Duration of movie:'
+									label="Duration of movie:"
 								>
 									<TimePicker
 										showNow={false}
@@ -249,49 +249,49 @@ const EditMovie = () => {
 								margin: '0 0 10px 0',
 								padding: '0 10px 10px',
 								borderRadius: '5px',
-								boxShadow: '0px 0px 2px 0px #7a7a7da3',
+								boxShadow: '0px 0px 2px 0px #7a7a7da3'
 							}}
 						>
 							<Divider>Description</Divider>
-							<Flex justify='space-between'>
+							<Flex justify="space-between">
 								<Form.Item
 									rules={[
 										{
 											required: true,
-											message: 'Description in turkmen is required',
-										},
+											message: 'Description in turkmen is required'
+										}
 									]}
 									name={'descriptionTk'}
-									label='Description in turkmen:'
+									label="Description in turkmen:"
 								>
 									<TextArea
 										rows={5}
-										placeholder='Write a description about movie'
-										name='descriptionTk'
+										placeholder="Write a description about movie"
+										name="descriptionTk"
 									/>
 								</Form.Item>
 								<Form.Item
 									rules={[
 										{
 											required: true,
-											message: 'Description in russian is required',
-										},
+											message: 'Description in russian is required'
+										}
 									]}
 									name={'descriptionRu'}
-									label='Description in russian:'
+									label="Description in russian:"
 								>
 									<TextArea
 										rows={5}
-										placeholder='Write a description about movie'
-										name='descriptionRu'
+										placeholder="Write a description about movie"
+										name="descriptionRu"
 									/>
 								</Form.Item>
 							</Flex>
 						</div>
 
-						<Flex gap={'10px'} justify='flex-end'>
+						<Flex gap={'10px'} justify="flex-end">
 							<Form.Item>
-								<Button type='primary' htmlType='submit'>
+								<Button type="primary" htmlType="submit">
 									Submit
 								</Button>
 							</Form.Item>

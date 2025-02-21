@@ -16,14 +16,14 @@ export async function updateMovieById(value: DataOfMovie, id: number) {
 		id,
 		description: {
 			ru: value.descriptionRu,
-			tk: value.descriptionTk,
+			tk: value.descriptionTk
 		},
 		duration: value.duration,
 		sub_categories: value.categoryTk,
 		title: {
 			ru: value.titleRu,
-			tk: value.titleTk,
-		},
+			tk: value.titleTk
+		}
 	})
 
 	return data
@@ -33,14 +33,14 @@ export async function createNewMovie(value: DataOfMovie) {
 	const { data } = await axios.post(`/movies`, {
 		title: {
 			tk: value.titleTk,
-			ru: value.titleRu,
+			ru: value.titleRu
 		},
 		description: {
 			tk: value.descriptionTk,
-			ru: value.descriptionRu,
+			ru: value.descriptionRu
 		},
 		duration: value.duration,
-		sub_categories: value.categoryTk,
+		sub_categories: value.categoryTk
 	})
 
 	return data
