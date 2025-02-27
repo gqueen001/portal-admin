@@ -27,15 +27,14 @@ const Dump = () => {
 
 	return (
 		<>
-			{contextHolder}
-			{loading && <DumpLoader loading={loading} />}
+			{contextHolder} {loading && <DumpLoader loading={loading} />}
+
 			<Flex style={{ width: '100%', height: '100vh' }} justify="center" align="center">
 				<Form name="basic" onFinish={onFinish}>
 					<Flex justify="end">
 						<Form.Item label={null}>
-							<Button type="primary" htmlType="submit" loading={loading}>
-								Dump files
-							</Button>
+							<Button type="primary" htmlType="submit" loading={loading}> Dump files </Button>
+							<a href={import.meta.env.VITE_API + '/dump/media.zip'}>Download latest dump</a>
 						</Form.Item>
 					</Flex>
 				</Form>
