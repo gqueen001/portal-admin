@@ -6,19 +6,16 @@ import {
 	Form,
 	Input,
 	Select,
-	TimePicker,
 	type ThemeConfig,
 	message,
 } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import dayjs from 'dayjs'
 import UploadImg from '@/components/uploadImg'
 import { getMovieById, updateMovieById, createNewMovie } from '@/services/movies'
 import { getCategories } from '@/services/categories/movie'
 import { DataOfMovie, Categories } from '@/types/movies/editMovie'
 import { Movie } from '@/types/movies/movies'
-import { convertToSeconds, convertToHour } from '@/utils/converter'
 import UploadMovie from '@/components/uploadMovie'
 
 const EditMovie = () => {
@@ -55,7 +52,6 @@ const EditMovie = () => {
 								value: category.id,
 							}
 						}),
-						duration: `${movie.duration}`,
 						descriptionRu: movie.description.ru,
 						descriptionTk: movie.description.tk,
 						image: movie.image,
@@ -96,7 +92,6 @@ const EditMovie = () => {
 				titleRu: data.titleRu,
 				descriptionRu: data.descriptionRu,
 				descriptionTk: data.descriptionTk,
-				duration: dayjs(convertToHour(data.duration), 'HH:mm:ss'),
 				categoryTk: data.categoryTk.map(category => category.value),
 			})
 		}
@@ -109,10 +104,10 @@ const EditMovie = () => {
 	}))
 
 	const onFinish = async (value: DataOfMovie) => {
-		value.duration = convertToSeconds(value.duration)
+		const duration: number = 1
 		if (id && id !== 'new') {
 			try {
-				await updateMovieById(value, +id)
+				await updateMovieById(value, +id, duration)
 				messageApi.open({
 					type: 'success',
 					content: 'Succeccfully updated',
@@ -125,7 +120,7 @@ const EditMovie = () => {
 			}
 		} else {
 			try {
-				const newId: { id: number } = await createNewMovie(value)
+				const newId: { id: number } = await createNewMovie(value, duration)
 
 				messageApi.open({
 					type: 'success',
@@ -229,29 +224,6 @@ const EditMovie = () => {
 								boxShadow: '0px 0px 2px 0px #7a7a7da3',
 							}}
 						>
-							<Divider>Duration</Divider>
-							<Flex justify='center'>
-								<Form.Item
-									rules={[{ required: true, message: 'Duration is required' }]}
-									name={'duration'}
-									label='Duration of movie:'
-								>
-									<TimePicker
-										showNow={false}
-										onChange={value => convertToSeconds(value)}
-									/>
-								</Form.Item>
-							</Flex>
-						</div>
-						<div
-							style={{
-								backgroundColor: '#ffffff',
-								margin: '0 0 10px 0',
-								padding: '0 10px 10px',
-								borderRadius: '5px',
-								boxShadow: '0px 0px 2px 0px #7a7a7da3',
-							}}
-						>
 							<Divider>Description</Divider>
 							<Flex justify='space-between'>
 								<Form.Item
@@ -318,6 +290,7 @@ const EditMovie = () => {
 							id={Number(id)}
 							isUpload={isUpload}
 							uploadDisabled={uploadDisabled}
+							data={data}
 						></UploadMovie>
 					</Flex>
 				</div>

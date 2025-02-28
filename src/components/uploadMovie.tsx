@@ -2,11 +2,13 @@ import { Progress, Upload, Button, Flex, message, UploadProps } from 'antd'
 import { FC, useEffect, useState } from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import { UploadMovieProps } from '@/types/movies/movies.ts'
+import { updateMovieById } from '@/services/movies'
 
-const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => {
+const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled, data }) => {
 	const [percent, setPersent] = useState<number>()
 	const [postPercent, setPostPercent] = useState<number>()
 	const [messageApi, contextHolder] = message.useMessage()
+	const [isDurationSent, setIsDurationSent] = useState(false)
 
 	useEffect(() => {
 		if (isUpload) {
@@ -26,6 +28,39 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 		}
 	}
 
+	const handleFileChange = (info: any) => {
+		const selectedFile = info.file.originFileObj
+		const videoElement = document.createElement('video')
+		videoElement.src = URL.createObjectURL(selectedFile)
+		videoElement.onloadedmetadata = () => {
+			const duration = Math.floor(videoElement.duration)
+
+			const sendDuration = async () => {
+				if (data) {
+					const updatedData = {
+						...data,
+						categoryTk: data.categoryTk.map(subCat => subCat.value),
+					}
+					try {
+						await updateMovieById(updatedData, id, duration)
+						messageApi.open({
+							type: 'success',
+							content: 'Succeccfully updated',
+						})
+						setIsDurationSent(true)
+					} catch (error) {
+						messageApi.open({
+							type: 'error',
+							content: 'Couldn`t update',
+						})
+					}
+				}
+			}
+
+			sendDuration()
+		}
+	}
+
 	const props: UploadProps = {
 		name: 'file',
 		action: `${import.meta.env.VITE_API}/movies/${id}`,
@@ -33,6 +68,9 @@ const UploadMovie: FC<UploadMovieProps> = ({ id, isUpload, uploadDisabled }) => 
 			authorization: `Bearer ${localStorage.getItem('token')}`,
 		},
 		onChange(info) {
+			if (info.file.status === 'done' && !isDurationSent) {
+				handleFileChange(info)
+			}
 			setPostPercent(Math.floor(Number(info.file.percent)))
 
 			if (info.file.status === 'done') {

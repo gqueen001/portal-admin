@@ -2,7 +2,6 @@ export type DataOfMovie = {
 	titleTk: string
 	titleRu: string
 	categoryTk: Category[]
-	duration: string
 	descriptionTk: string
 	descriptionRu: string
 	image?: string

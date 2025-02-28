@@ -1,4 +1,5 @@
 import { Category } from '../categories/movie'
+import { DataOfMovie } from './editMovie'
 
 export type TitleOfMovie = {
 	key: string
@@ -30,6 +31,7 @@ export interface UploadMovieProps {
 	isUpload: boolean
 	uploadDisabled: boolean
 	setIsPathUploaded?: ((value: boolean) => void) | undefined
+	data: DataOfMovie | undefined
 }
 
 export interface UploadImgProps {
