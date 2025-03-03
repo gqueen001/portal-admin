@@ -1,14 +1,18 @@
-import { Flex, Menu } from 'antd'
+import { Button, Flex, Menu } from 'antd'
 import {
 	VideoCameraOutlined,
 	ReadOutlined,
 	CustomerServiceOutlined,
 	MenuOutlined,
 	FormOutlined,
+	MenuUnfoldOutlined,
+	MenuFoldOutlined,
 } from '@ant-design/icons'
 import { Outlet, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const Layout = () => {
+	const [collapsed, setCollapsed] = useState(false)
 	const navigate = useNavigate()
 
 	const items = [
@@ -51,17 +55,27 @@ const Layout = () => {
 		},
 	]
 
+	const toggleCollapsed = () => {
+		setCollapsed(!collapsed)
+	}
+
 	return (
 		<>
 			<Flex gap={'10px'}>
-				<Menu
-					onClick={record => {
-						navigate(`${record.key}`)
-					}}
-					style={{ width: 256, height: '100vh' }}
-					mode='inline'
-					items={items}
-				/>
+				<div style={{ width: 256 }}>
+					<Button type='primary' onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
+						{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+					</Button>
+					<Menu
+						onClick={record => {
+							navigate(`${record.key}`)
+						}}
+						style={{ height: '100vh' }}
+						mode='inline'
+						items={items}
+						inlineCollapsed={collapsed}
+					/>
+				</div>
 				<Outlet></Outlet>
 			</Flex>
 		</>
