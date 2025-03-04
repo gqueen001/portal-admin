@@ -40,13 +40,13 @@ const Musics = () => {
 					musicsTitle.map(music => ({
 						key: `${music.id}`,
 						titleRu: music.title.ru,
-						titleTk: music.title.tk,
+						titleTk: music.title.tk
 					}))
 				)
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: "Couldn't get",
+					content: 'Couldn\'t get'
 				})
 			}
 		}
@@ -65,19 +65,19 @@ const Musics = () => {
 			title: 'ID',
 			dataIndex: 'key',
 			key: 'key',
-			align: 'center',
+			align: 'center'
 		},
 		{
 			title: 'Title in turkmen',
 			dataIndex: 'titleTk',
 			key: 'titleTk',
-			align: 'center',
+			align: 'center'
 		},
 		{
 			title: 'Title in russian',
 			dataIndex: 'titleRu',
 			key: 'titleRu',
-			align: 'center',
+			align: 'center'
 		},
 		{
 			title: 'action',
@@ -85,8 +85,8 @@ const Musics = () => {
 			align: 'center',
 			render: () => (
 				<Actions setOpenModal={setOpenEditPage} setOpenDeleteModal={setOpenDeleteModal} />
-			),
-		},
+			)
+		}
 	]
 
 	return (
@@ -104,13 +104,13 @@ const Musics = () => {
 					return {
 						onClick: () => {
 							setMovieId(record.key)
-						},
+						}
 					}
 				}}
 			/>
 
 			<FloatButton
-				type='primary'
+				type="primary"
 				icon={<PlusOutlined />}
 				onClick={() => {
 					navigate(`/book/${movieId}`)
@@ -122,7 +122,7 @@ const Musics = () => {
 				setCloseModal={setOpenDeleteModal}
 				deleteId={movieId}
 				setDelete={setIsDelete}
-				item='book'
+				item="book"
 			/>
 		</>
 	)
