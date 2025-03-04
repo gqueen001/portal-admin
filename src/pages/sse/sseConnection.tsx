@@ -4,7 +4,7 @@ import {
 	FrownTwoTone,
 	CloseCircleOutlined,
 	CheckCircleTwoTone,
-	UsbTwoTone,
+	UsbTwoTone
 } from '@ant-design/icons'
 
 type TSse = {
@@ -19,7 +19,7 @@ const SseConnection = () => {
 		empty: <FrownTwoTone />,
 		on_progress: <UsbTwoTone />,
 		error: <CloseCircleOutlined />,
-		success: <CheckCircleTwoTone />,
+		success: <CheckCircleTwoTone />
 	}
 
 	useEffect(() => {

@@ -9,8 +9,8 @@ import EditMusic from './pages/musics/editMusic'
 import EditBook from './pages/books/editBook'
 import LogIn from './components/login/login'
 import Protected from './components/login/protected'
-import Dump from './pages/dump'
-import SseConnection from './pages/sseConnection'
+import Dump from './pages/dump/dump.tsx'
+import SseConnection from './pages/sse/sseConnection.tsx'
 
 const App = () => {
 	return (
