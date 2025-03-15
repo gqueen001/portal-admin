@@ -9,9 +9,9 @@ const EditMusic = () => {
 	const theme: ThemeConfig = {
 		components: {
 			Form: {
-				marginLG: 10,
-			},
-		},
+				marginLG: 10
+			}
+		}
 	}
 
 	const [data, setData] = useState<DataOfMusAndBooks>()
@@ -32,7 +32,7 @@ const EditMusic = () => {
 					setData({
 						id: `${music.id}`,
 						titleTk: music.title.tk,
-						titleRu: music.title.ru,
+						titleRu: music.title.ru
 					})
 
 					setIsUpload(music.path !== null)
@@ -41,7 +41,7 @@ const EditMusic = () => {
 				} catch (error) {
 					messageApi.open({
 						type: 'error',
-						content: "Couldn't get",
+						content: 'Couldn\'t get'
 					})
 				}
 			}
@@ -54,7 +54,7 @@ const EditMusic = () => {
 		if (data) {
 			form.setFieldsValue({
 				titleTk: data.titleTk,
-				titleRu: data.titleRu,
+				titleRu: data.titleRu
 			})
 		}
 	}, [data])
@@ -65,12 +65,12 @@ const EditMusic = () => {
 				await updateMusicById(value, +id)
 				messageApi.open({
 					type: 'success',
-					content: 'Succeccfully updated',
+					content: 'Succeccfully updated'
 				})
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: 'Couldn`t update',
+					content: 'Couldn`t update'
 				})
 			}
 		} else {
@@ -78,14 +78,14 @@ const EditMusic = () => {
 				const newId: { id: number } = await createNewMusic(value)
 				messageApi.open({
 					type: 'success',
-					content: 'Succeccfully created',
+					content: 'Succeccfully created'
 				})
 				navigate(`/music/${newId.id}`)
 				setUploadDisabled(false)
 			} catch (error) {
 				messageApi.open({
 					type: 'error',
-					content: 'Couldn`t create',
+					content: 'Couldn`t create'
 				})
 			}
 		}
@@ -100,53 +100,53 @@ const EditMusic = () => {
 						width: '100%',
 						display: 'flex',
 						justifyContent: 'space-evenly',
-						alignItems: 'center',
+						alignItems: 'center'
 					}}
 				>
-					<Form layout='vertical' onFinish={onFinish} form={form}>
+					<Form layout="vertical" onFinish={onFinish} form={form}>
 						<div
 							style={{
 								backgroundColor: '#ffffff',
 								margin: '0 0 10px 0',
 								padding: '0 10px 10px',
 								borderRadius: '5px',
-								boxShadow: '0px 0px 2px 0px #7a7a7da3',
+								boxShadow: '0px 0px 2px 0px #7a7a7da3'
 							}}
 						>
 							<Divider>Title</Divider>
-							<Flex justify='space-between' gap={20}>
+							<Flex justify="space-between" gap={20}>
 								<Form.Item
 									rules={[
-										{ required: true, message: 'Title in turkmen is required' },
+										{ required: true, message: 'Title in turkmen is required' }
 									]}
-									label='Title in turkmen:'
+									label="Title in turkmen:"
 									name={'titleTk'}
 								>
 									<Input
 										allowClear
-										placeholder='Enter title of movie'
-										name='titleTk'
+										placeholder="Enter title of movie"
+										name="titleTk"
 									/>
 								</Form.Item>
 								<Form.Item
 									rules={[
-										{ required: true, message: 'Title in russian is required' },
+										{ required: true, message: 'Title in russian is required' }
 									]}
-									label='Title in russian:'
+									label="Title in russian:"
 									name={'titleRu'}
 								>
 									<Input
 										allowClear
-										placeholder='Enter title of movie'
-										name='titleRu'
+										placeholder="Enter title of movie"
+										name="titleRu"
 									/>
 								</Form.Item>
 							</Flex>
 						</div>
 
-						<Flex gap={'10px'} justify='flex-end'>
+						<Flex gap={'10px'} justify="flex-end">
 							<Form.Item>
-								<Button type='primary' htmlType='submit'>
+								<Button type="primary" htmlType="submit">
 									Submit
 								</Button>
 							</Form.Item>
@@ -167,6 +167,7 @@ const EditMusic = () => {
 						isUpload={isUpload}
 						uploadDisabled={uploadDisabled}
 						setIsPathUploaded={setIsPathUploaded}
+						data={undefined}
 					></UploadMusic>
 				</div>
 			</ConfigProvider>
